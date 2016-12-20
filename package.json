@@ -4,14 +4,17 @@
     "main": "index.js",
     "author": "HJM",
     "license": "MIT",
-    "script": {
-      "start": "node start.js"
+    "scripts": {
+        "start": "node index.js --harmony-async-await"
     },
     "dependencies": {
         "koa": "next",
+        "koa-bodyparser": "^2.3.0",
+        "koa-json": "^1.1.3",
         "koa-logger": "^1.3.0",
+        "koa-onerror": "^3.0.1",
         "koa-router": "^5.4.0",
-        "mongoose": "^4.7.3"
+        "mongoose": "^4.7.4"
     },
     "devDependencies": {
         "babel-core": "^6.4.0",
