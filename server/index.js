@@ -6,6 +6,7 @@ const route = require('koa-route');
 const koa = require('koa');
 const app = module.exports = koa();
 const routes = require('./routes/routes.js');
+const mongoose = require('mongoose');
 /**
  * 中间件
  */
