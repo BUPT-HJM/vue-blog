@@ -1,16 +1,58 @@
+"use strict";
 /**
- * 项目依赖
+ * dependencies
  */
-const logger = require('koa-logger');
-const route = require('koa-route');
 const koa = require('koa');
-const app = module.exports = koa();
-const routes = require('./routes/routes.js');
+const logger = require('koa-logger');
+const bodyParser = require('koa-bodyparser');
+const convert = require('koa-convert');
+//const route = require('koa-route');
+//const routes = require('./routes/routes.js');
 const mongoose = require('mongoose');
+const app = new koa();
+
+
 /**
- * 中间件
+ * config
  */
-app.use(logger());
+const config = require('./configs');
+
+
+/**
+ * connect db
+ */
+mongoose.connect(config.mongodb.url);
+mongoose.connection.on('error', console.error);
+
+
+/**
+ * middleware
+ */
+app.use(convert.compose(
+  logger(),
+  bodyParser()
+));
+
+/**
+ * test/study koa middleware
+ */
+app.use(async (ctx, next) => {
+  const start = new Date();
+  await next();
+  const ms = new Date() - start;
+  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+});
+
+app.use(ctx => {
+  ctx.body = 'Hello Koa';
+});
+
+/**
+ * create server
+ */
+app.listen(config.app.port, () => {
+    console.log('The server is running at http://localhost:' + config.app.port);
+});
 
 /**
  * 路由配置
@@ -26,7 +68,4 @@ app.use(logger());
 // //删除指定ID的文章
 // app.use(route.post('/post/:id/del', routes.removepost));
 
-
-
-app.listen(3000);
-console.log('listening on port 3000');
+module.exports = app;

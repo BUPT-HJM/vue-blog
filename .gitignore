@@ -1,2 +1,5 @@
-# Dependency directories
+.DS_Store
+npm-debug.log
+.idea
 node_modules
+

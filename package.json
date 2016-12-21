@@ -5,11 +5,12 @@
     "author": "HJM",
     "license": "MIT",
     "scripts": {
-        "start": "node index.js --harmony-async-await"
+        "start": "node --harmony-async-await server/index.js"
     },
     "dependencies": {
-        "koa": "next",
+        "koa": "2",
         "koa-bodyparser": "^2.3.0",
+        "koa-convert": "^1.2.0",
         "koa-json": "^1.1.3",
         "koa-logger": "^1.3.0",
         "koa-onerror": "^3.0.1",
