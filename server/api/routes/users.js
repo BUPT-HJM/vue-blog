@@ -36,3 +36,9 @@
 
 
 // module.exports = router;
+export default (router) => {
+    router.get('/567', ctx => {
+        ctx.body = '567';
+        console.log('567!');
+    });
+}
