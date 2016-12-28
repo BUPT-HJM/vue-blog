@@ -1,4 +1,5 @@
 "use strict";
+
 import koa from 'koa';
 import convert from 'koa-convert';
 import onerror from 'koa-onerror';
