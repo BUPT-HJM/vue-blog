@@ -9,6 +9,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.4.0",
     "vue": "^2.1.0"
   },
   "devDependencies": {
