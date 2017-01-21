@@ -9,7 +9,7 @@ var path = require('path')
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function(name) {
-  baseWebpackConfig.entry[name] = [path.resolve(__dirname, './dev-client.js') /*'./admin/build/dev-client.js'*/ ].concat(baseWebpackConfig.entry[name])
+  baseWebpackConfig.entry[name] = [path.resolve(__dirname, './dev-client.js')].concat(baseWebpackConfig.entry[name])
 })
 
 module.exports = merge(baseWebpackConfig, {
