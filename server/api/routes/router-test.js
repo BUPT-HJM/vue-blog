@@ -1,6 +1,6 @@
 // test router
 export default (router) => {
-    router.get('/123', ctx => {
+    router.post('/123', ctx => {
         // console.log(this);
         // ctx.type="text/plain;charset=utf-8";
         ctx.body = { a: 123 };
@@ -10,7 +10,7 @@ export default (router) => {
         // };
 
         //ctx.throw(500,123)
-        console.log(ctx.res);
+        //console.log(ctx.res);
         // console.log(ctx.req);
 
         // console.log(ctx);

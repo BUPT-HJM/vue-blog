@@ -12,6 +12,8 @@ import App from './App'
 import Login from './components/Login.vue'
 import Hello from './components/Hello.vue'
 
+import store from './store'
+
 Vue.component(Message.name, Message)
 Vue.component(MessageBox.name, MessageBox)
 Vue.use(VueRouter)
@@ -29,5 +31,6 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   render: h => h(App),
-  router
+  router,
+  store
 })

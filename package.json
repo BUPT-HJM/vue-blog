@@ -10,6 +10,7 @@
         "admin-build": "node admin/build/build.js"
     },
     "dependencies": {
+        "axios": "^0.15.3",
         "element-ui": "^1.1.5",
         "import-dir": "^0.0.1",
         "jsonwebtoken": "^7.2.1",
@@ -22,8 +23,10 @@
         "koa-onerror": "^3.0.1",
         "koa-router": "^7.0.0",
         "mongoose": "^4.7.4",
+        "simplemde": "^1.11.2",
         "vue": "^2.1.0",
-        "vue-router": "^2.1.1"
+        "vue-router": "^2.1.1",
+        "vuex": "^2.1.1"
     },
     "devDependencies": {
         "autoprefixer": "^6.4.0",

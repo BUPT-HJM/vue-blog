@@ -5,10 +5,10 @@
     </div>
 
     <div class="login__item">
-      <input type="text" placeholder="用户名">
+      <input type="text" placeholder="用户名" v-model="username">
     </div>
     <div class="login__item">
-      <input type="password" placeholder="密码">
+      <input type="password" placeholder="密码" v-model="password">
     </div>
     <div class="login__item">
       <button @click="login">登录</button>
@@ -27,7 +27,12 @@ export default {
   },
   methods: {
     login() {
-      this.$router.push('/admin') // 编程式路由，通过push方法，改变路由。
+      let info = {
+        username: this.username,
+        password: this.password
+      }
+      this.$store.dispatch('createToken', info)
+      //this.$router.push('/admin')
     }
   }
 }
