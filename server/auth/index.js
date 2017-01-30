@@ -9,7 +9,7 @@ const routes = importDir('./routes');
 
 export default function api() {
     const router = new Router({
-        prefix: config.app.baseApi
+        prefix: config.app.authApi
     });
     Object.keys(routes).forEach(name => {
         //console.log(name)

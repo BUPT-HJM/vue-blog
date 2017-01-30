@@ -17,15 +17,23 @@
       <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
+      <button @click="test">lalalla</button>
   </div>
+
 </template>
 
 <script>
+import Axios from 'axios'
 export default {
   name: 'hello',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    test() {
+      Axios.post('/api/123',123);
     }
   }
 }

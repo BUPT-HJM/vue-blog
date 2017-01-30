@@ -1,9 +1,10 @@
 // test router
+import verify from '../../middleware/verify.js'
 export default (router) => {
-    router.post('/123', ctx => {
+    router.post('/123', verify, ctx => {
         // console.log(this);
         // ctx.type="text/plain;charset=utf-8";
-        ctx.body = { a: 123 };
+        ctx.body = { success: true };
         // ctx.status = 200;
         // ctx.state = {
         //     title: 'aaa'

@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import {Message} from 'element-ui'
+import md5 from 'md5'
 export default {
   name: 'login',
   data () {
@@ -28,11 +30,23 @@ export default {
   methods: {
     login() {
       let info = {
-        username: this.username,
-        password: this.password
+        "username": this.username,
+        "password": md5(this.password).toUpperCase()
       }
-      this.$store.dispatch('createToken', info)
-      //this.$router.push('/admin')
+      this.$store.dispatch('createToken', info).then((res) => {
+        if(res.data.success) {
+          this.$message({
+            message: '登陆成功',
+            type: 'success'
+          });
+          this.$router.push('/admin');
+        } else {
+          this.$message.error(res.data.error)
+        }
+
+      }).catch((err) => {
+        this.$message.error('登陆失败')
+      })
     }
   }
 }
