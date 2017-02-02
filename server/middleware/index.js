@@ -8,6 +8,6 @@ import onerror from 'koa-onerror';
 export default function middleware() {
     return convert.compose(
         logger(),
-        bodyParser()
+        bodyParser(),
     )
 }

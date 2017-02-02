@@ -7,15 +7,15 @@ import config from '../../configs/'
 
 
 // function async createToken(ctx) {
-// 	console.log(this);
+//  console.log(this);
 // }
 //
 
 export default async(router) => {
   let user = await User.find().exec().catch(err => {
-    console.log(err);
-  })
-  console.log(user);
+      console.log(err);
+    })
+    //console.log(user);
   if (user.length === 0) {
     user = new User({
       name: 'hjm',
@@ -36,7 +36,7 @@ export default async(router) => {
     let user = await User.findOne({
       username,
     }).exec();
-    console.log(user)
+    //console.log(user)
     if (user !== null) {
       if (user.password === password) {
         const token = jwt.sign({
@@ -44,8 +44,6 @@ export default async(router) => {
           name: user.name,
           exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 //1 hours
         }, config.jwt.secret);
-        //utils.print(token);
-        //ctx.status = 200;
         ctx.body = {
           success: true,
           uid: user._id,
@@ -53,19 +51,10 @@ export default async(router) => {
           token: token
         }
       } else {
-        ctx.body = {
-          success: false,
-          error: '密码错误'
-        }
-        console.log('密码错误')
-          // this.throw(401, '密码错误')
+        ctx.throw(401, '密码错误')
       }
     } else {
-      ctx.body = {
-        success: false,
-        error: '用户名错误'
-      }
-      console.log('用户名错误')
+      ctx.throw(401, '用户名错误')
     }
   });
 }

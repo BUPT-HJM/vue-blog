@@ -3,18 +3,18 @@
     <div class="login__header">
       <h1 class="login__title">博客后台登录</h1>
     </div>
-
     <div class="login__item">
       <input type="text" placeholder="用户名" v-model="username">
     </div>
     <div class="login__item">
-      <input type="password" placeholder="密码" v-model="password">
+      <input type="password" placeholder="密码" v-model="password" @keyup.enter="submit">
     </div>
     <div class="login__item">
       <button @click="login">登录</button>
     </div>
   </div>
 </template>
+
 
 <script>
 import {Message} from 'element-ui'
@@ -40,12 +40,9 @@ export default {
             type: 'success'
           });
           this.$router.push('/admin');
-        } else {
-          this.$message.error(res.data.error)
         }
-
       }).catch((err) => {
-        this.$message.error('登陆失败')
+        this.$message.error(err.response.data)
       })
     }
   }

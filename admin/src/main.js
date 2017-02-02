@@ -38,14 +38,14 @@ router.beforeEach((to, from, next) => {
   console.log(to)
   if (to.meta.authPage) { //login
     console.log("login")
-    if (store.state.token.token) {
+    if (store.state.auth.token) {
       next('/admin')
     }
     next()
   } else {
     console.log("admin")
-    if (store.state.token.token) {
-      Axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.token.token; // 全局设定header的token验证，注意Bearer后有个空格
+    if (store.state.auth.token) {
+      Axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.auth.token; // 全局设定header的token验证，注意Bearer后有个空格
       next()
     } else {
       console.log('没有token')
