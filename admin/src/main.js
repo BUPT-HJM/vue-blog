@@ -11,7 +11,7 @@ import './assets/stylus/main.styl'
 
 import App from './App'
 import Login from './components/Login.vue'
-import Hello from './components/Hello.vue'
+import Admin from './components/Admin.vue'
 
 import store from './store'
 
@@ -25,7 +25,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', component: Login, meta: { authPage: true } },
-  { path: '/admin', component: Hello },
+  { path: '/admin', component: Admin },
 ]
 
 

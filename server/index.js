@@ -17,7 +17,7 @@ mongoose.connection.on('error', console.error);
 
 // middleware
 app.use(middleware());
-//onerror(app);
+onerror(app);
 
 // auth/router
 //app.use(auth(),verify);
