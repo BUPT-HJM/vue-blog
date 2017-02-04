@@ -12,3 +12,4 @@ async function test() {
 }
 
 test();
+// node --harmony-async-await node7-async-test.js

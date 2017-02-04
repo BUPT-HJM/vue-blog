@@ -15,7 +15,7 @@
   @import 'assets/stylus/main.styl'
   #app
     width 100%
-  .fade-enter-active, .fade-leave-active
+	.fade-enter-active, .fade-leave-active
     transition all .5s
 
   .fade-enter, .fade-leave-active

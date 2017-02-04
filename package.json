@@ -23,6 +23,7 @@
         "koa-onerror": "^3.0.1",
         "koa-router": "^7.0.0",
         "md5": "^2.2.1",
+        "moment": "^2.17.1",
         "mongoose": "^4.7.4",
         "simplemde": "^1.11.2",
         "vue": "^2.1.0",

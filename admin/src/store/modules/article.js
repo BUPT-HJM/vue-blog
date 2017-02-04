@@ -23,13 +23,9 @@ const actions = {
     return api.createArticle(title, content, publish).then(res => {
       if (res.data.success) {
         const article = {
-          _id: res.data.id,
-          index: 0,
-          content: content,
-          title: title,
-          save: true,
-          publish: false
+          save: true
         }
+        Object.assign(article,res.data.article)
         commit(types.CREATE_ARTICLE, article);
       }
       return new Promise((resolve, reject) => {
@@ -52,9 +48,9 @@ const actions = {
     if (state.articleList.length == 0 || index == -1) {
       article = {
         _id: -1,
-        index: 0,
+        index: -1,
         title: '',
-        content: '',
+        content: '<!--more-->',
         title: '',
         save: true,
         publish: false

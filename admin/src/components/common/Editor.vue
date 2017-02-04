@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <div class="editor-box">
     <input type="text" placeholder="文章标题" v-model="articleTitle">
     <textarea id="editor"></textarea>
     <button @click="createArticle" v-if="currentArticle._id === -1">创建</button>
-    <button @click="saveArticle" v-else>保存</button>
-    <button @click="publishArticle" v-if="!currentArticle.publish">发布</button>
-    <button @click="notPublishArticle" v-else>撤回发布</button>
-    <button @click="deleteArticle" v-if="currentArticle._id !== -1">删除</button>
+    <button @click="saveArticle('button')" v-else>保存</button>
+    <template v-if="currentArticle._id !== -1">
+      <button @click="publishArticle" v-if="!currentArticle.publish">发布</button>
+      <button @click="notPublishArticle" v-else>撤回发布</button>
+    </template>
+    <button @click="deleteArticle">删除</button>
   </div>
 </template>
 <script>
@@ -54,11 +56,18 @@ export default {
       }
       if (this.currentArticle.save) {
         this.$store.dispatch('changeArticle');
+        if (this.currentArticle._id !== -1) {
+          this.saveArticle()
+        }
+
       }
       this.articleContent = value;
     })
   },
   methods: {
+    ...mapActions([
+      'getCurrentArticle'
+    ]),
     createArticle() {
       const info = {
         title: this.articleTitle,
@@ -76,10 +85,10 @@ export default {
         this.$message.error(err.response.data.error)
       })
     },
-    saveArticle() {
+    saveArticle(a) {
       let abstract;
-      if (this.currentArticle.content.indexOf("<!--more-->") !== -1) {
-        abstract = this.currentArticle.content.split("<!--more-->")[0];
+      if (this.articleContent.indexOf("<!--more-->") !== -1) {
+        abstract = this.articleContent.split("<!--more-->")[0];
       } else {
         this.$message.error('请填写摘要');
         return;
@@ -94,7 +103,7 @@ export default {
         id: this.currentArticle._id,
         article
       }).then((res) => {
-        if (res.data.success) {
+        if (res.data.success && a === "button") {
           this.$message({
             message: '保存成功',
             type: 'success'
@@ -136,20 +145,35 @@ export default {
       })
     },
     deleteArticle() {
-      this.$store.dispatch('deleteArticle', {
-        id: this.currentArticle._id,
-        index: this.currentArticle.index
-      }).then((res) => {
-        if (res.data.success) {
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          });
+      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if(this.currentArticle._id === -1) {
+          this.getCurrentArticle(0)
+          return;
         }
-      }).catch((err) => {
-        console.log(err)
-        this.$message.error(err.response.data.error)
-      })
+        this.$store.dispatch('deleteArticle', {
+          id: this.currentArticle._id,
+          index: this.currentArticle.index
+        }).then((res) => {
+          if (res.data.success) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+          }
+        }).catch((err) => {
+          console.log(err)
+          this.$message.error(err.response.data.error)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   },
   watch: {
@@ -159,8 +183,18 @@ export default {
     },
     title(val) {
       this.articleTitle = val;
+    },
+    articleContent(val) {
+
+    },
+    articleTitle(val) {
+      if (this.title !== val && this.currentArticle._id !== -1) {
+        this.$store.dispatch('changeArticle');
+        this.saveArticle()
+      }
     }
   }
 }
 </script>
-
+<style lang="stylus" scoped>
+</style>
