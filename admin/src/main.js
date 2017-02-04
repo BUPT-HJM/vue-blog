@@ -25,7 +25,10 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', component: Login, meta: { authPage: true } },
-  { path: '/admin', component: Admin },
+  { path: '/admin', component: Admin }, {
+    path: '*',
+    redirect: '/' // 输入其他不存在的地址自动跳回首页
+  }
 ]
 
 
