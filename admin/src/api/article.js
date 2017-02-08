@@ -1,13 +1,13 @@
 import Axios from 'axios'
 export default {
-  createArticle(title, content, publish) {
+  createArticle(title, content, publish, tags) {
   	let abstract;
   	if(content.indexOf("<!--more-->") !== -1) {
 		abstract = content.split("<!--more-->")[0];
   	} else {
   		abstract = '';
   	}
-    return Axios.post('/api/articles', { title, content, publish, abstract })
+    return Axios.post('/api/articles', { title, content, publish, abstract, tags})
   },
   getAllArticles() {
     return Axios.get('/api/articles')

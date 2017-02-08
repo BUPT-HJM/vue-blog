@@ -16,6 +16,7 @@ async function createArticle(ctx) {
   const content = ctx.request.body.content;
   const abstract = ctx.request.body.abstract;
   const publish = ctx.request.body.publish;
+  const tags = ctx.request.body.tags;
   const createTime = new Date();
   const lastEditTime = new Date();
   if (title == '') {
@@ -32,21 +33,28 @@ async function createArticle(ctx) {
     content,
     abstract,
     publish,
+    tags,
     createTime,
     lastEditTime
   });
-  const createResult = await article.save().catch(err => {
+  let createResult = await article.save().catch(err => {
     ctx.throw(500, '服务器内部错误')
+  });
+  await Article.populate(createResult, { path: 'tags' }, function(err, result) {
+    createResult = result;
+    console.log(result)
+
   });
   console.log('文章创建成功');
   ctx.body = {
     success: true,
     article: createResult
   }
+
 }
 
 async function getAllArticles(ctx) {
-  const articleArr = await Article.find().catch(err => {
+  const articleArr = await Article.find().populate("tags").catch(err => {
     ctx.throw(500, '服务器内部错误')
   });
   ctx.body = {
@@ -60,6 +68,7 @@ async function modifyArticle(ctx) {
   const title = ctx.request.body.title;
   const content = ctx.request.body.content;
   const abstract = ctx.request.body.abstract;
+  const tags = ctx.request.body.tags;
   if (title == '') {
     ctx.throw(400, '标题不能为空')
   }
@@ -69,11 +78,14 @@ async function modifyArticle(ctx) {
   if (abstract == '') {
     ctx.throw(400, '摘要不能为空')
   }
+  /*if (tags.length === 0) {
+    ctx.throw(400, '标签不能为空')
+  }*/
   const article = await Article.findByIdAndUpdate(id, { $set: ctx.request.body }).catch(err => {
     if (err.name === 'CastError') {
-      this.throw(400, 'id不存在');
+      ctx.throw(400, 'id不存在');
     } else {
-      this.throw(500, '服务器内部错误')
+      ctx.throw(500, '服务器内部错误')
     }
   });
   ctx.body = {

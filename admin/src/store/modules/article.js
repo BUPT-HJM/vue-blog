@@ -1,5 +1,6 @@
 import * as types from '../mutation-types'
 import api from '../../api/article.js'
+import tagApi from '../../api/tag.js'
 const state = {
   articleList: [],
   currentArticle: {
@@ -7,6 +8,7 @@ const state = {
     index: -1,
     content: '',
     title: '',
+    tags: [],
     save: true,
     publish: false
   }
@@ -19,13 +21,13 @@ const getters = {
 };
 // actions
 const actions = {
-  createArticle({ commit, state }, { title, content, publish }) {
-    return api.createArticle(title, content, publish).then(res => {
+  createArticle({ commit, state }, { title, content, publish, tags }) {
+    return api.createArticle(title, content, publish, tags).then(res => {
       if (res.data.success) {
         const article = {
           save: true
         }
-        Object.assign(article,res.data.article)
+        Object.assign(article, res.data.article)
         commit(types.CREATE_ARTICLE, article);
       }
       return new Promise((resolve, reject) => {
@@ -53,7 +55,8 @@ const actions = {
         content: '<!--more-->',
         title: '',
         save: true,
-        publish: false
+        publish: false,
+        tags: []
       }
     } else {
       article = {
@@ -63,7 +66,8 @@ const actions = {
         content: state.articleList[index].content,
         title: state.articleList[index].title,
         save: true,
-        publish: state.articleList[index].publish
+        publish: state.articleList[index].publish,
+        tags: state.articleList[index].tags
       }
     }
     commit(types.GET_CURRENT_ARTICLE, article);
@@ -123,6 +127,53 @@ const actions = {
         resolve(res);
       });
     })
+  },
+  createTag({ commit, state }, { name }) {
+    return tagApi.createTag(name).then(res => {
+      if (res.data.success) {
+        commit(types.CREATE_TAG, res.data.tag);
+      }
+      return new Promise((resolve, reject) => {
+        resolve(res);
+      });
+    })
+  },
+  getAllTags({ commit, state }) {
+    return tagApi.getAlltags().then(res => {
+      if (res.data.success) {
+        commit(types.GET_ALL_Tags, res.data.tagArr);
+      }
+      return new Promise((resolve, reject) => {
+        resolve(res);
+      });
+    })
+  },
+  modifyTag({ commit, state }, { id, name }) {
+    return tagApi.modifyTag(id, name).then(res => {
+      if (res.data.success) {
+        commit(types.MODIFY_TAG, { id, name })
+      }
+      return new Promise((resolve, reject) => {
+        resolve(res);
+      });
+    })
+  },
+  deleteTag({ commit, state }, { id }) {
+    return tagApi.deleteTag(id).then(res => {
+      if (res.data.success) {
+        commit(types.DELETE_TAG, { id })
+      }
+      return new Promise((resolve, reject) => {
+        resolve(res);
+      });
+    })
+  },
+  deleteCurrentTag({ commit, state }, { index }) {
+    console.log(2)
+    commit(types.DELETE_CURRENT_TAG, index)
+    return new Promise((resolve, reject) => {
+      resolve();
+    });
   }
 }
 
@@ -136,6 +187,7 @@ const mutations = {
     const now = state.articleList.find(p => p._id === id)
     now.title = article.title;
     now.content = article.content;
+    now.tags = article.tags;
     now.lastEditTime = article.lastEditTime;
   },
   [types.PUBLISH_ARTICLE](state) {
@@ -169,8 +221,20 @@ const mutations = {
     state.currentArticle = state.articleList[index];
     state.currentArticle.index = index;
     state.currentArticle.save = true;
-  }
+  },
+  [types.CREATE_TAG](state, tag) {
+    state.currentArticle.tags.push(tag)
+  },
+  [types.MODIFY_TAG](state, name) {
+    state.currentArticle.tags.push(name)
 
+  },
+  [types.DELETE_TAG](state, name) {
+    state.currentArticle.tags.push(name)
+  },
+  [types.DELETE_CURRENT_TAG](state, index) {
+    state.currentArticle.tags.splice(index, 1)
+  }
 }
 export default {
   state,

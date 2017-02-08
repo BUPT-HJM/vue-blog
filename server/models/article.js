@@ -6,6 +6,10 @@ const articleSchema = new Schema({
   title: String,
   content: String,
   abstract: String,
+  tags: [{
+    type: Schema.Types.ObjectId,
+    ref: 'tag'
+  }],
   publish: {
     type: Boolean,
     default: false
@@ -18,12 +22,12 @@ const articleSchema = new Schema({
     default: Date.now
   },
 });
-articleSchema.set('toJSON', { getters: true, virtuals: true});
-articleSchema.set('toObject', { getters: true, virtuals: true});
-articleSchema.path('createTime').get(function (v) {
+articleSchema.set('toJSON', { getters: true, virtuals: true });
+articleSchema.set('toObject', { getters: true, virtuals: true });
+articleSchema.path('createTime').get(function(v) {
   return moment(v).format('lll');
 });
-articleSchema.path('lastEditTime').get(function (v) {
+articleSchema.path('lastEditTime').get(function(v) {
   return moment(v).format('lll');
 });
 module.exports = mongoose.model('article', articleSchema);
