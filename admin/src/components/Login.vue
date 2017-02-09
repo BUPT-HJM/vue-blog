@@ -42,7 +42,7 @@ export default {
           this.$router.push('/admin');
         }
       }).catch((err) => {
-        this.$message.error(err.response.data)
+        this.$message.error(err.response.data.error)
       })
     }
   }

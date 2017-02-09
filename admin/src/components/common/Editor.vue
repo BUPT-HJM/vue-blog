@@ -50,6 +50,7 @@ export default {
     }
   },
   mounted: function() {
+    //console.log(1)
     simplemde = new SimpleMDE({
       //autoDownloadFontAwesome: false,
       element: document.getElementById("editor"),
@@ -72,7 +73,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getCurrentArticle'
+      'getCurrentArticle',
+      'getAllTags'
     ]),
     createArticle() {
       const info = {
@@ -196,6 +198,7 @@ export default {
               message: '创建成功',
               type: 'success'
             });
+            this.getAllTags();
             this.articleTag = ''
             if (this.currentArticle._id !== -1) {
               this.saveArticle()
@@ -212,12 +215,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(1)
+        //console.log(1)
         this.$store.dispatch('deleteCurrentTag', index).then((res) => {
-          console.log(3)
+          //console.log(3)
           if (this.currentArticle._id !== -1) {
             this.saveArticle()
           }
+          this.getAllTags();
         }).catch((err) => {
           this.$message.error(err)
         })

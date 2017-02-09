@@ -3,6 +3,7 @@ import api from '../../api/article.js'
 import tagApi from '../../api/tag.js'
 const state = {
   articleList: [],
+  tagList: [],
   currentArticle: {
     _id: -1,
     index: -1,
@@ -17,6 +18,7 @@ const state = {
 // getters
 const getters = {
   articleList: state => state.articleList,
+  tagList: state => state.tagList,
   currentArticle: state => state.currentArticle
 };
 // actions
@@ -35,8 +37,8 @@ const actions = {
       });
     })
   },
-  getAllArticles({ commit, state }) {
-    return api.getAllArticles().then(res => {
+  getAllArticles({ commit, state }, { tag = '', page = 1, limit = 0 } = {}) {
+    return api.getAllArticles(tag, page, limit).then(res => {
       if (res.data.success) {
         commit(types.GET_ALL_ARTICLES, res.data.articleArr);
       }
@@ -139,9 +141,9 @@ const actions = {
     })
   },
   getAllTags({ commit, state }) {
-    return tagApi.getAlltags().then(res => {
+    return tagApi.getAllTags().then(res => {
       if (res.data.success) {
-        commit(types.GET_ALL_Tags, res.data.tagArr);
+        commit(types.GET_ALL_TAGS, res.data.tagArr);
       }
       return new Promise((resolve, reject) => {
         resolve(res);
@@ -161,7 +163,7 @@ const actions = {
   deleteTag({ commit, state }, { id }) {
     return tagApi.deleteTag(id).then(res => {
       if (res.data.success) {
-        commit(types.DELETE_TAG, { id })
+        commit(types.DELETE_TAG, id)
       }
       return new Promise((resolve, reject) => {
         resolve(res);
@@ -169,7 +171,7 @@ const actions = {
     })
   },
   deleteCurrentTag({ commit, state }, { index }) {
-    console.log(2)
+    //console.log(2)
     commit(types.DELETE_CURRENT_TAG, index)
     return new Promise((resolve, reject) => {
       resolve();
@@ -229,11 +231,20 @@ const mutations = {
     state.currentArticle.tags.push(name)
 
   },
-  [types.DELETE_TAG](state, name) {
-    state.currentArticle.tags.push(name)
+  [types.DELETE_TAG](state, id) {
+    state.tagList = state.tagList.filter((e) => {
+      return e.id !== id;
+    })
+    state.currentArticle.tags = state.currentArticle.tags.filter((e) => {
+      return e.id !== id;
+    })
+
   },
   [types.DELETE_CURRENT_TAG](state, index) {
     state.currentArticle.tags.splice(index, 1)
+  },
+  [types.GET_ALL_TAGS](state, tagList) {
+    state.tagList = tagList;
   }
 }
 export default {

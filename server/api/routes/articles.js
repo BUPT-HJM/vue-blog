@@ -54,12 +54,56 @@ async function createArticle(ctx) {
 }
 
 async function getAllArticles(ctx) {
-  const articleArr = await Article.find().populate("tags").catch(err => {
-    ctx.throw(500, '服务器内部错误')
-  });
+  const tag = ctx.query.tag;
+  const page = +ctx.query.page;
+  const limit = +ctx.query.limit || 10;
+  let skip = 0;
+  let articleArr;
+  let allPage;
+  let allNum;
+
+  if (page !== 0) {
+    skip = limit * (page - 1)
+  }
+
+  if (tag == '') {
+    articleArr = await Article.find()
+      .populate("tags")
+      .sort({ createTime: -1 })
+      .limit(limit)
+      .skip(skip).catch(err => {
+        ctx.throw(500, '服务器内部错误')
+      });
+    allNum = await Article.count().catch(err => {
+      this.throw(500, '服务器内部错误')
+    })
+  } else {
+    let tagArr = tag.split(',')
+    console.log(tagArr)
+    articleArr = await Article.find({
+        tags: { "$in": tagArr }
+      })
+      .populate("tags")
+      .sort({ createTime: -1 })
+      .limit(limit)
+      .skip(skip).catch(err => {
+        ctx.throw(500, '服务器内部错误')
+      });
+    allNum = await Article.find({
+      tags: { "$in": tagArr }
+    }).count().catch(err => {
+      ctx.throw(500, '服务器内部错误')
+    })
+  }
+
+  allPage = Math.ceil(allNum / 10)
+
+
+
   ctx.body = {
     success: true,
-    articleArr
+    articleArr,
+    allPage: allPage
   }
 }
 
