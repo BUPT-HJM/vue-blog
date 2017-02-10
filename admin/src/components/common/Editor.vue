@@ -235,6 +235,7 @@ export default {
     },
     title(val) {
       this.articleTitle = val;
+      this.articleTag = '';
     },
     articleContent(val) {
 
