@@ -19,7 +19,19 @@ Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
-Vue.prototype.$message = Message;
+Vue.prototype.$message = (options) => {
+  options = Object.assign(options, { duration: 500 });
+  return Message(options);
+}
+Vue.prototype.$message.error = (err) => {
+  var options = {
+    message: err,
+    duration: 500,
+    type: 'error'
+  };
+  return Message(options);
+}
+
 
 Vue.use(VueRouter)
 

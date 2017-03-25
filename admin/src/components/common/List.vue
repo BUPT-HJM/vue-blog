@@ -1,15 +1,33 @@
 <template>
-  <ul class="list">
-    <li v-for="tag in tagList" @click="selectTag(tag.id)">{{tag.name}}<span v-if="selectTagArr.includes(tag.id)" @click.stop="notSelectTag(tag.id)">&nbsp;&nbsp;&nbsp;&nbsp;选中</span><span @click.stop="deleteTagFn(tag.id)">&nbsp;&nbsp;&nbsp;&nbsp;X</span></li>
-    <li>----</li>
-    <li @click="createArticle" class="list__item_button">新建</li>
-    <li v-for="(article, index) in articleList" @click="switchArticle(index)" class="list__item">
-      {{ article.title }} &nbsp;&nbsp;&nbsp;&nbsp;<span v-for="tag in article.tags"> {{tag.name}}</span>
-      <span @click.stop="deleteArticle" v-if="currentArticle.index == index">&nbsp;&nbsp;&nbsp;&nbsp;X</span>
-    </li>
-    <pagination :cur='curPage' :all='allPage'></pagination>
-  </ul>
+  <div class="list">
+    <ul class="list__tag">
+      <li class="list__tag__title">
+        <i class="fa fa-tags" aria-hidden="true"></i>&nbsp;标签
+      </li>
+      <li v-for="tag in tagList" @click="toggleSelect(tag.id)" class="list__tag__item" :class="{ 'list__tag__item--active': selectTagArr.includes(tag.id)}">
+        <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;
+        <span>{{tag.name}}</span>
+        <!-- <i class="fa fa-check" aria-hidden="true" v-if="selectTagArr.includes(tag.id)"></i> -->
+        <i class="fa fa-trash-o" aria-hidden="true" @click.stop="deleteTagFn(tag.id)"></i>
+      </li>
+    </ul>
+    <ul class="list__article">
+      <li @click="createArticle" class="list__article__button"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;新建文章</li>
+      <li v-for="(article, index) in articleList" @click="switchArticle(index)" class="list__article__item" :class="{'list__article__item--active': currentArticle.index == index}">
+        <h1>{{ article.title }}</h1>
+        <div class="list__article__item__info">
+          <i class="fa fa-tag" aria-hidden="true"></i>
+          <span v-for="tag in article.tags"> {{tag.name}}</span>
+          <p><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; {{article.lastEditTime}}</p>
+          <!-- <i class="fa fa-trash-o" aria-hidden="true" @click.stop="deleteArticle" v-if="currentArticle.index == index"></i> -->
+        </div>
+      </li>
+      <pagination :cur='curPage' :all='allPage'></pagination>
+    </ul>
+  </div>
 </template>
+
+
 <script>
 import Pagination from './Pagination.vue'
 import {
@@ -75,11 +93,18 @@ export default {
           this.$message.error(err.response.data.error)
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // });
       });
+    },
+    toggleSelect(id) {
+      if(!this.selectTagArr.includes(id)) {
+        this.selectTag(id)
+      } else {
+        this.notSelectTag(id)
+      }
     },
     selectTag(id) {
       this.selectTagArr.push(id);
@@ -113,10 +138,10 @@ export default {
           this.$message.error(err.response.data.error)
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // });
       });
 
     }
@@ -143,4 +168,56 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+@import '../../assets/stylus/_settings.styl'
+.list
+  padding 15px
+  &__tag
+    display flex
+    flex-direction row
+    flex-wrap wrap
+    list-style none
+  &__tag__title
+    width 100%
+    font-size 25px
+    padding 10px
+    color $dark-blue
+    span
+      padding-left 15px
+    //background-color $dark-blue
+  &__tag__item
+    //flex-grow 1
+    flex-shrink 1
+    background-color $dark-blue
+    color white
+    border-radius 5px
+    text-align center
+    margin 5px
+    padding 7px
+    cursor pointer
+  &__tag__item--active
+    background-color $orange
+
+
+  &__article
+    margin-top 5px
+    list-style none
+  &__article__button
+    padding 10px
+    font-size 25px
+    color $dark-blue
+    cursor pointer
+  &__article__item
+    width 100%
+    height 100px
+    background-color $grey
+    padding 15px
+    margin-bottom 5px
+    cursor pointer
+  &__article__item--active
+    border-left 10px solid $dark-blue
+  &__article__item__info
+    float right
+    text-align right
+    margin-top -5px
+    
 </style>

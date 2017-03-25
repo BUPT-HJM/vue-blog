@@ -80,7 +80,7 @@ const actions = {
   saveArticle({ commit, state }, { id, article }) {
     return api.saveArticle(id, article).then(res => {
       if (res.data.success) {
-        commit(types.SAVE_ARTICLE, { id, article })
+        commit(types.SAVE_ARTICLE, { id, article: res.data.article })
       }
       return new Promise((resolve, reject) => {
         resolve(res);

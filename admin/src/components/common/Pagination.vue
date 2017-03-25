@@ -1,8 +1,10 @@
-<template>'
+<template>
   <ul class="pagination">
-    <li class="pagination__item_prev" @click="prevPage">上一页</li>
-    <li class="pagination__item" v-for="page in pageArr" @click="switchPage(page)">{{page}}<span v-if="page == curPage">*</span></li>
-    <li class="pagination__item_next" @click="nextPage">下一页</li>
+    <li class="pagination__button" @click="prevPage"><i class="fa fa-chevron-left" aria-hidden="true"></i>
+</li>
+    <li class="pagination__item" v-for="page in pageArr" @click="switchPage(page)" :class="{'pagination__item--active':page==curPage}">{{page}}
+    </li>
+    <li class="pagination__button" @click="nextPage"><i class="fa fa-chevron-right" aria-hidden="true"></i></li>
   </ul>
 </template>
 <script>
@@ -103,3 +105,25 @@ export default {
   }
 }
 </script>
+<style lang="stylus" scoped>
+@import '../../assets/stylus/_settings.styl'
+.pagination
+  display flex
+  max-width 300px
+  list-style none
+  margin 25px auto
+  .pagination__button
+    flex 1
+    text-align center
+    color $dark-blue
+    cursor pointer
+  .pagination__item
+    flex 1
+    text-align center
+    cursor pointer
+    margin 0 10px
+    &:hover
+      background-color $grey
+  .pagination__item--active
+    background-color $grey
+</style>

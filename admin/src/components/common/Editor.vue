@@ -1,20 +1,36 @@
 <template>
   <div class="editor-box">
-    <input type="text" placeholder="文章标题" v-model="articleTitle">
-    <ul>
-      <li v-for="(tag, index) in currentArticle.tags">{{tag.name}}<span @click="deleteCurrentTag(index)">&nbsp;&nbsp;&nbsp;&nbsp;X</span></li>
+    <p class="editor-box__title"><i class="fa fa-pencil-square" aria-hidden="true"></i>&nbsp;&nbsp;请开始你的表演</p>
+    <div class="editor-box__input-box">
+      <label for="title">文章标题:</label>
+      <input type="text" placeholder="文章标题" v-model="articleTitle" class="editor-box__input" id="title">
+    </div>
+    <div class="editor-box__input-box">
+      <label for="title">添加标签:</label>
+      <input type="text" placeholder="回车添加文章标签" v-model="articleTag" @keyup.enter="AddTag">
+    </div>
+    <ul class="editor-box__tagList">
+      <li v-for="(tag, index) in currentArticle.tags">
+        <span>{{tag.name}}</span>&nbsp;&nbsp;
+        <i class="fa fa-trash-o" aria-hidden="true" @click="deleteCurrentTag(index)"></i>
+      </li>
     </ul>
-    <input type="text" placeholder="回车添加文章标签" v-model="articleTag" @keyup.enter="AddTag">
     <textarea id="editor"></textarea>
-    <button @click="createArticle" v-if="currentArticle._id === -1">创建</button>
-    <button @click="saveArticle('button')" v-else>保存</button>
-    <template v-if="currentArticle._id !== -1">
-      <button @click="publishArticle" v-if="!currentArticle.publish">发布</button>
-      <button @click="notPublishArticle" v-else>撤回发布</button>
-    </template>
-    <button @click="deleteArticle">删除</button>
+    <div class="editor-box__button-box">
+      <button @click="createArticle" v-if="currentArticle._id === -1">创建</button>
+      <button @click="saveArticle('button')" v-else>保存</button>
+      <template v-if="currentArticle._id !== -1">
+        <button @click="publishArticle" v-if="!currentArticle.publish">发布</button>
+        <button @click="notPublishArticle" v-else>撤回发布</button>
+      </template>
+      <button @click="deleteArticle">删除</button>
+    </div>
   </div>
 </template>
+
+
+
+
 <script>
 import SimpleMDE from 'simplemde'
 import css from 'simplemde/dist/simplemde.min.css'
@@ -52,7 +68,7 @@ export default {
   mounted: function() {
     //console.log(1)
     simplemde = new SimpleMDE({
-      //autoDownloadFontAwesome: false,
+      autoDownloadFontAwesome: false,
       element: document.getElementById("editor"),
       spellChecker: false,
     });
@@ -196,7 +212,8 @@ export default {
           if (res.data.success) {
             this.$message({
               message: '创建成功',
-              type: 'success'
+              type: 'success',
+              duration:500
             });
             this.getAllTags();
             this.articleTag = ''
@@ -253,4 +270,43 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+  @import '../../assets/stylus/_settings.styl'
+  .editor-box 
+    padding 15px
+    input
+      padding 7px
+      background-color $grey
+    &__title
+      font-size 25px
+      color $dark-blue
+      padding 10px
+    &__input-box
+      font-size 17px
+      margin 15px 0    
+    &__tagList
+      list-style none
+      height 30px
+      margin-bottom 15px
+      li
+        float left
+        height 30px
+        line-height @height
+        margin-right 20px  
+        verticle-align center
+        text-algin center
+        //border 1px solid black
+        border-radius 5px
+        padding 0 5px
+        cursor pointer
+      li:hover
+        background-color $grey
+    &__button-box
+      float right
+      margin 10px
+      button
+        width 80px
+        padding 5px
+        background-color $dark-blue
+        color white
+        margin-left 15px
 </style>
