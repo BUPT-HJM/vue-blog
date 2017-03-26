@@ -39,12 +39,13 @@ const routes = [
   { path: '/', component: Login, meta: { authPage: true } },
   { path: '/admin', component: Admin }, {
     path: '*',
-    redirect: '/' // 输入其他不存在的地址自动跳回首页
+    redirect: '/admin' // 输入其他不存在的地址自动跳回首页
   }
 ]
 
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 

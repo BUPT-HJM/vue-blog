@@ -6,12 +6,13 @@
     "license": "MIT",
     "scripts": {
         "server": "nodemon server/start.js",
-        "admin-dev": "node admin/build/dev-server.js",
-        "admin-build": "node admin/build/build.js"
+        "admin-dev": "node client/build/dev-server.js",
+        "admin-build": "node client/build/build.js"
     },
     "dependencies": {
         "axios": "^0.15.3",
         "element-ui": "^1.1.5",
+        "font-awesome": "^4.7.0",
         "import-dir": "^0.0.1",
         "jsonwebtoken": "^7.2.1",
         "koa": "2",

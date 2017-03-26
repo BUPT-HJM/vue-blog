@@ -17,9 +17,9 @@
     </ul>
     <textarea id="editor"></textarea>
     <div class="editor-box__button-box">
-      <button @click="createArticle" v-if="currentArticle._id === -1">创建</button>
+      <button @click="createArticle" v-if="currentArticle.id === -1">创建</button>
       <button @click="saveArticle('button')" v-else>保存</button>
-      <template v-if="currentArticle._id !== -1">
+      <template v-if="currentArticle.id !== -1">
         <button @click="publishArticle" v-if="!currentArticle.publish">发布</button>
         <button @click="notPublishArticle" v-else>撤回发布</button>
       </template>
@@ -34,6 +34,7 @@
 <script>
 import SimpleMDE from 'simplemde'
 import css from 'simplemde/dist/simplemde.min.css'
+
 import {
   mapGetters,
   mapActions
@@ -79,7 +80,8 @@ export default {
       }
       if (this.currentArticle.save) {
         this.$store.dispatch('changeArticle');
-        if (this.currentArticle._id !== -1) {
+        if (this.currentArticle.id !== -1) {
+          this.articleContent = value;
           this.saveArticle()
         }
 
@@ -127,7 +129,7 @@ export default {
         lastEditTime: new Date()
       }
       this.$store.dispatch('saveArticle', {
-        id: this.currentArticle._id,
+        id: this.currentArticle.id,
         article
       }).then((res) => {
         if (res.data.success && a === "button") {
@@ -143,7 +145,7 @@ export default {
     },
     publishArticle() {
       this.$store.dispatch('publishArticle', {
-        id: this.currentArticle._id
+        id: this.currentArticle.id
       }).then((res) => {
         if (res.data.success) {
           this.$message({
@@ -158,7 +160,7 @@ export default {
     },
     notPublishArticle() {
       this.$store.dispatch('notPublishArticle', {
-        id: this.currentArticle._id
+        id: this.currentArticle.id
       }).then((res) => {
         if (res.data.success) {
           this.$message({
@@ -177,12 +179,12 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (this.currentArticle._id === -1) {
+        if (this.currentArticle.id === -1) {
           this.getCurrentArticle(0)
           return;
         }
         this.$store.dispatch('deleteArticle', {
-          id: this.currentArticle._id,
+          id: this.currentArticle.id,
           index: this.currentArticle.index
         }).then((res) => {
           if (res.data.success) {
@@ -206,6 +208,13 @@ export default {
       if (this.currentArticle.tags.find(p => p.name === this.articleTag)) {
         this.$message.error("该标签已存在")
       } else {
+        if(this.currentArticle.tags.length >= 5) {
+          this.$message({
+            type: 'error',
+            message: '不能创建超过5个标签'
+          });
+          return;
+        }
         this.$store.dispatch('createTag', {
           name: this.articleTag
         }).then((res) => {
@@ -217,7 +226,7 @@ export default {
             });
             this.getAllTags();
             this.articleTag = ''
-            if (this.currentArticle._id !== -1) {
+            if (this.currentArticle.id !== -1) {
               this.saveArticle()
             }
           }
@@ -235,7 +244,7 @@ export default {
         //console.log(1)
         this.$store.dispatch('deleteCurrentTag', index).then((res) => {
           //console.log(3)
-          if (this.currentArticle._id !== -1) {
+          if (this.currentArticle.id !== -1) {
             this.saveArticle()
           }
           this.getAllTags();
@@ -258,9 +267,10 @@ export default {
 
     },
     articleTitle(val) {
-      if (this.title !== val && this.currentArticle._id !== -1) {
+      if (this.title !== val && this.currentArticle.id !== -1) {
         this.$store.dispatch('changeArticle');
         this.saveArticle()
+        console.log(this.articleTitle)
       }
     },
     articleTag(val) {
@@ -272,6 +282,7 @@ export default {
 <style lang="stylus" scoped>
   @import '../../assets/stylus/_settings.styl'
   .editor-box 
+    position relative
     padding 15px
     input
       padding 7px
@@ -285,7 +296,7 @@ export default {
       margin 15px 0    
     &__tagList
       list-style none
-      height 30px
+      overflow hidden
       margin-bottom 15px
       li
         float left

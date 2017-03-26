@@ -14,6 +14,7 @@
 
 <style lang="stylus">
   @import 'assets/stylus/main.styl'
+  @import '../../node_modules/font-awesome/css/font-awesome.min.css'
   #app
     width 100%
 	.fade-enter-active, .fade-leave-active

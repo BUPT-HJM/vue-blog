@@ -49,5 +49,8 @@ export default {
   &__list
     width 500px
   &__editor
-    flex 1
+    width 200px
+    flex-grow 1
+    flex-shrink 1
+    flex-wrap nowrap
 </style>

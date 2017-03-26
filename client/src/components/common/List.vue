@@ -18,9 +18,10 @@
         <div class="list__article__item__info">
           <i class="fa fa-tag" aria-hidden="true"></i>
           <span v-for="tag in article.tags"> {{tag.name}}</span>
-          <p><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; {{article.lastEditTime}}</p>
+          <p class="list__article__item__abstract"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; {{article.createTime}}</p>
           <!-- <i class="fa fa-trash-o" aria-hidden="true" @click.stop="deleteArticle" v-if="currentArticle.index == index"></i> -->
         </div>
+       <!--  <p class="list__article__item__abstract">{{ article.abstract }}</p> -->
       </li>
       <pagination :cur='curPage' :all='allPage'></pagination>
     </ul>
@@ -207,6 +208,7 @@ export default {
     color $dark-blue
     cursor pointer
   &__article__item
+    position relative
     width 100%
     height 100px
     background-color $grey
@@ -216,8 +218,13 @@ export default {
   &__article__item--active
     border-left 10px solid $dark-blue
   &__article__item__info
-    float right
+    position absolute
+    bottom 5px
+    right 15px
     text-align right
-    margin-top -5px
-    
+  &__article__item__abstract
+    width 100%
+    max-height 50px   
+    word-wrap: break-word; 
+    word-break all
 </style>
