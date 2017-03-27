@@ -55,16 +55,9 @@ export default {
     overflow-y auto
     overflow-x hidden
   &__editor
-<<<<<<< HEAD:admin/src/components/Admin.vue
     // width 200px
     margin-left 500px
     // flex-grow 1
     // flex-shrink 1
     // flex-wrap nowrap
-=======
-    width 200px
-    flex-grow 1
-    flex-shrink 1
-    flex-wrap nowrap
->>>>>>> 184e981bceaa0ad7a2d231edcee49322bd62f5bb:client/src/components/Admin.vue
 </style>
