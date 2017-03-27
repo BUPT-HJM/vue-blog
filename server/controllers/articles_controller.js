@@ -127,8 +127,7 @@ export async function modifyArticle(ctx) {
     }
   });
   ctx.body = {
-    success: true,
-    article: article
+    success: true
   }
 }
 

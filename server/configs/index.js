@@ -2,7 +2,7 @@
 import privateConfig from './private.js'
 let config = {
     app: {
-        port: process.env.PORT || 8888,
+        port: process.env.PORT || 8889,
         baseApi: '/api'
     },
     mongodb: {
