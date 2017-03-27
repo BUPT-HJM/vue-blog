@@ -10,8 +10,8 @@
     },
     "scripts": {
         "server": "nodemon server/start.js",
-        "admin-dev": "node admin/build/dev-server.js",
-        "admin-build": "node admin/build/build.js"
+        "admin-dev": "node client/build/dev-server.js",
+        "admin-build": "node client/build/build.js"
     },
     "dependencies": {
         "axios": "^0.15.3",
