@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken'
-import config from '../configs/'
+import jwt from 'jsonwebtoken';
+import config from '../configs/';
 export default async(ctx, next) => {
   // console.log(ctx.get('Authorization'));
   const authorization = ctx.get('Authorization');
@@ -14,7 +14,7 @@ export default async(ctx, next) => {
     if ('TokenExpiredError' === err.name) {
       ctx.throw(401, 'token expired');
     }
-    ctx.throw(401, 'invalid token')
+    ctx.throw(401, 'invalid token');
   }
   console.log("鉴权成功");
   await next();

@@ -8,15 +8,15 @@ import config from '../configs';
 const routes = importDir('./routes');
 
 export default function api() {
-    const router = new Router({
-        prefix: config.app.baseApi
-    });
-    Object.keys(routes).forEach(name => {
-        //console.log(name)
-        return routes[name](router)
-    });
-    return convert.compose([
-        router.routes(),
-        router.allowedMethods(),
-    ]);
+  const router = new Router({
+    prefix: config.app.baseApi
+  });
+  Object.keys(routes).forEach(name => {
+    // console.log(name)
+    return routes[name](router)
+  });
+  return convert.compose([
+    router.routes(),
+    router.allowedMethods(),
+  ]);
 }

@@ -3,8 +3,8 @@ import verify from '../../middleware/verify.js'
 
 
 export default async(router) => {
-  router.post('/articles', verify, $.createArticle)
-    .get('/articles', $.getAllArticles)
+  router.get('/articles', $.getAllArticles)
+  	.post('/articles', verify, $.createArticle)
     .patch('/articles/:id', verify, $.modifyArticle)
     .delete('/articles/:id', verify, $.deleteArticle)
 }
