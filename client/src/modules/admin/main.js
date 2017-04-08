@@ -36,11 +36,12 @@ Vue.prototype.$message.error = (err) => {
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Login, meta: { authPage: true } },
-  { path: '/admin', component: Admin }, {
-    path: '*',
-    redirect: '/admin' // 输入其他不存在的地址自动跳回首页
-  }
+  { path: '/admin/login', component: Login, meta: { authPage: true } },
+  { path: '/admin', component: Admin }
+  // {
+  //   path: '*',
+  //   redirect: '/admin' // 输入其他不存在的地址自动跳回首页
+  // }
 ]
 
 
@@ -65,7 +66,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       console.log('没有token')
-      next('/')
+      next('/admin/login')
     }
   }
 })

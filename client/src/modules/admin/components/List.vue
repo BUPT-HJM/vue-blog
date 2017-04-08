@@ -23,14 +23,14 @@
         </div>
        <!--  <p class="list__article__item__abstract">{{ article.abstract }}</p> -->
       </li>
-      <pagination :cur='curPage' :all='allPage'></pagination>
+      <pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></pagination>
     </ul>
   </div>
 </template>
 
 
 <script>
-import Pagination from './Pagination.vue'
+import Pagination from '../../../components/Pagination.vue'
 import {
   mapGetters,
   mapActions
@@ -145,6 +145,13 @@ export default {
         // });
       });
 
+    },
+    changePage(cur) {
+      this.getAllArticles({page: cur}).then(res => {
+        this.allPage = res.data.allPage;
+        this.curPage = cur;
+        this.getCurrentArticle(0);
+      });
     }
   },
 
@@ -169,7 +176,7 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../assets/stylus/_settings.styl'
+@import '../assets/stylus/_settings.styl'
 .list
   padding 15px
   &__tag

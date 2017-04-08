@@ -1,6 +1,6 @@
 import * as types from '../mutation-types'
-import api from '../../api/article.js'
-import tagApi from '../../api/tag.js'
+import api from '../../../../api/article.js'
+import tagApi from '../../../../api/tag.js'
 
 
 const state = {

@@ -1,26 +1,19 @@
 <template>
   <ul class="pagination">
     <li class="pagination__button" @click="prevPage"><i class="fa fa-chevron-left" aria-hidden="true"></i>
-</li>
+    </li>
     <li class="pagination__item" v-for="page in pageArr" @click="switchPage(page)" :class="{'pagination__item--active':page==curPage}">{{page}}
     </li>
     <li class="pagination__button" @click="nextPage"><i class="fa fa-chevron-right" aria-hidden="true"></i></li>
   </ul>
 </template>
+
 <script>
-import {
-  mapGetters,
-  mapActions
-} from 'vuex'
 export default {
   name: 'pagination',
   data() {
-    return {
-      curPage: this.cur,
-      allPage: this.all,
-    }
+    return {}
   },
-
   computed: {
     pageArr() {
       let arr = [];
@@ -55,58 +48,41 @@ export default {
     }
   },
   props: {
-    cur: {
+    curPage: {
       type: Number,
       required: true
     },
-    all: {
+    allPage: {
       type: Number,
       required: true
     }
   },
   methods: {
-    ...mapActions([
-      'getAllArticles',
-      'getCurrentArticle'
-    ]),
     prevPage() {
       if (this.curPage == 1) {
         return;
       }
-      this.curPage--;
+      this.$emit('changePage', this.curPage - 1)
     },
     nextPage() {
       if (this.curPage == this.allPage) {
         return;
       }
-      this.curPage++;
+      this.$emit('changePage', this.curPage + 1)
     },
     switchPage(page) {
       if (page == '...') {
         return;
       }
-      this.curPage = page;
+      console.log(page)
+      this.$emit('changePage', page)
     }
   },
-  watch: {
-    curPage(val) {
-      this.getAllArticles({
-        page: val
-      }).then(res => {
-        this.getCurrentArticle(0);
-      });
-    },
-    all(val) {
-      this.allPage = val;
-    },
-    cur(val) {
-      this.curPage = val;
-    }
-  }
+  watch: {}
 }
 </script>
+
 <style lang="stylus" scoped>
-@import '../../assets/stylus/_settings.styl'
 .pagination
   display flex
   max-width 300px
@@ -115,7 +91,7 @@ export default {
   .pagination__button
     flex 1
     text-align center
-    color $dark-blue
+    color #0288D1
     cursor pointer
   .pagination__item
     flex 1
@@ -123,7 +99,7 @@ export default {
     cursor pointer
     margin 0 10px
     &:hover
-      background-color $grey
+      background-color #efefef
   .pagination__item--active
-    background-color $grey
+    background-color #efefef
 </style>

@@ -131,6 +131,27 @@ export async function modifyArticle(ctx) {
   }
 }
 
+export async function getArticle(ctx) {
+  const id = ctx.params.id;
+  if (id == '') {
+    ctx.throw(400, 'id不能为空')
+  }
+  /*if (tags.length === 0) {
+    ctx.throw(400, '标签不能为空')
+  }*/
+  const article = await Article.findById(id).catch(err => {
+    if (err.name === 'CastError') {
+      ctx.throw(400, 'id不存在');
+    } else {
+      ctx.throw(500, '服务器内部错误')
+    }
+  });
+  ctx.body = {
+    success: true,
+    article: article
+  }
+}
+
 export async function deleteArticle(ctx) {
   const id = ctx.params.id;
   const article = await Article.findByIdAndRemove(id).catch(err => {

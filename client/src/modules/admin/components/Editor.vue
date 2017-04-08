@@ -280,7 +280,7 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-  @import '../../assets/stylus/_settings.styl'
+  @import '../assets/stylus/_settings.styl'
   .editor-box 
     position relative
     padding 15px

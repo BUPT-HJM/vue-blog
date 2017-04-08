@@ -10,8 +10,8 @@
 </template>
 <script>
 import Axios from 'axios'
-import Editor from './common/Editor.vue'
-import List from './common/List.vue'
+import Editor from './Editor.vue'
+import List from './List.vue'
 
 import {
   mapGetters,

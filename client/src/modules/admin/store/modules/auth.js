@@ -1,5 +1,5 @@
 import * as types from '../mutation-types'
-import api from '../../api/login.js'
+import api from '../../../../api/login.js'
 
 
 const state = {

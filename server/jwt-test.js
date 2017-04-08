@@ -5,9 +5,7 @@ var token = jwt.sign({
     password: 'heiheihei'
 }, 'secret', { expiresIn: '1h' });
 
-
 var decoded = jwt.verify(token, 'secret');
-
 
 console.log(token);
 console.log(decoded.username)

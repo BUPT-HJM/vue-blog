@@ -5,17 +5,15 @@ import convert from 'koa-convert';
 import onerror from 'koa-onerror';
 import serve from 'koa-static';
 import mongoose from 'mongoose';
-import historyApiFallback from 'koa-history-api-fallback';
+import historyApiFallback from 'koa-connect-history-api-fallback';
 import config from './configs';
 import middleware from './middleware'
 import api from "./api";
-
 
 mongoose.Promise = Promise;
 // connect mongodb
 mongoose.connect(config.mongodb.url);
 mongoose.connection.on('error', console.error);
-
 
 const app = new koa();
 
@@ -29,7 +27,13 @@ app.use(api());
 app.use(serve('./client/static'));
 
 app.use(convert(historyApiFallback({
-  verbose: false
+  verbose: true,
+  rewrites: [
+    { from: /^\/admin$/, to: '/admin.html'},
+    { from: /^\/admin\/login$/, to: '/admin.html'},
+    { from: /^\/$/, to: '/front.html'},
+    { from: /^\/article/, to: '/front.html'}
+  ]
 })))
 
 
@@ -45,7 +49,8 @@ if (process.env.NODE_ENV !== 'production') {
     dev: {
       //noInfo: true,
       stats: {
-        colors: true
+        colors: true,
+        chunks: false
       },
       publicPath: webpackConfig.output.publicPath,
     }

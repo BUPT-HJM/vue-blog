@@ -23,5 +23,8 @@ export default {
     },
     deleteArticle(id) {
       return Axios.delete('/api/articles/' + id)
+    },
+    getArticle(id) {
+      return Axios.get('/api/articles/' + id)
     }
 }
