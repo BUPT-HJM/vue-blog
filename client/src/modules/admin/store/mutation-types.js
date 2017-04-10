@@ -17,3 +17,9 @@ export const MODIFY_TAG = 'MODIFY_TAG'
 export const DELETE_TAG = 'DELETE_TAG'
 export const DELETE_CURRENT_TAG = 'DELETE_CURRENT_TAG'
 export const GET_ALL_TAGS = 'GET_ALL_TAGS'
+export const TOGGLE_SELECT_TAG = 'TOGGLE_SELECT_TAG'
+export const CLEAR_SELECT_TAG = 'CLEAR_SELECT_TAG'
+//page
+export const GET_ALL_PAGE = 'GET_ALL_PAGE'
+export const GET_CUR_PAGE = 'GET_CUR_PAGE'
+

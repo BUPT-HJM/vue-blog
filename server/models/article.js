@@ -21,7 +21,7 @@ const articleSchema = new Schema({
     type: Date,
     default: Date.now
   },
-});
+}, { versionKey: false });
 articleSchema.set('toJSON', { getters: true, virtuals: true });
 articleSchema.set('toObject', { getters: true, virtuals: true });
 articleSchema.path('createTime').get(function(v) {

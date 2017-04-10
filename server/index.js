@@ -30,7 +30,7 @@ app.use(convert(historyApiFallback({
   verbose: true,
   rewrites: [
     { from: /^\/admin$/, to: '/admin.html'},
-    { from: /^\/admin\/login$/, to: '/admin.html'},
+    { from: /^\/admin\/login/, to: '/admin.html'},
     { from: /^\/$/, to: '/front.html'},
     { from: /^\/article/, to: '/front.html'}
   ]

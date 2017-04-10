@@ -18,7 +18,7 @@
     <textarea id="editor"></textarea>
     <div class="editor-box__button-box">
       <button @click="createArticle" v-if="currentArticle.id === -1">创建</button>
-      <button @click="saveArticle('button')" v-else>保存</button>
+      <button @click="saveArticle({button: 'true'})" v-else>保存</button>
       <template v-if="currentArticle.id !== -1">
         <button @click="publishArticle" v-if="!currentArticle.publish">发布</button>
         <button @click="notPublishArticle" v-else>撤回发布</button>
@@ -28,16 +28,15 @@
   </div>
 </template>
 
-
-
-
 <script>
 import SimpleMDE from 'simplemde'
+import debounce from '../../../lib/debounce.js'
 import css from 'simplemde/dist/simplemde.min.css'
 
 import {
   mapGetters,
-  mapActions
+  mapActions,
+  mapMutations
 } from 'vuex'
 
 let simplemde;
@@ -45,29 +44,25 @@ export default {
   name: 'editor',
   data() {
     return {
-      articleTitle: this.title,
-      articleContent: this.content,
       articleTag: '',
-      tags: []
+      tags: [],
+      articleTitle: '',
+      articleContent: '',
     }
   },
   computed: {
     ...mapGetters([
-      'currentArticle'
+      'currentArticle',
+      'selectTagArr'
     ]),
   },
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    content: {
-      type: String,
-      required: true
-    }
-  },
   mounted: function() {
-    //console.log(1)
+    setTimeout(() => {
+      // setTimeout 0为了正确拿到mapGetters的东西
+      this.articleTitle = this.currentArticle.title;
+      this.articleContent = this.currentArticle.content;
+      simplemde.value(this.articleContent);
+    }, 0)
     simplemde = new SimpleMDE({
       autoDownloadFontAwesome: false,
       element: document.getElementById("editor"),
@@ -75,25 +70,33 @@ export default {
     });
     simplemde.codemirror.on("change", () => {
       let value = simplemde.value();
-      if (this.articleContent === value) {
+      // 如果文章内容相同就不保存了
+      if (this.currentArticle.content === value) {
         return;
       }
+      // 如果文章已经保存
       if (this.currentArticle.save) {
+        // 改变文章状态 => 未保存
         this.$store.dispatch('changeArticle');
-        if (this.currentArticle.id !== -1) {
-          this.articleContent = value;
-          this.saveArticle()
-        }
-
       }
-      this.articleContent = value;
+      // 如果不是新建的文章，则保存，这是自动保存，如果不要自动保存可以注释
+      if (this.currentArticle.id !== -1) {
+        this.saveArticle({
+          content: value
+        })
+      }
+      this.articleContent = value
     })
   },
   methods: {
     ...mapActions([
       'getCurrentArticle',
-      'getAllTags'
+      'getAllTags',
+      'getAllArticles'
     ]),
+    ...mapMutations({
+      clearSelect: 'CLEAR_SELECT_TAG'
+    }),
     createArticle() {
       const info = {
         title: this.articleTitle,
@@ -107,23 +110,30 @@ export default {
             message: '创建成功',
             type: 'success'
           });
-          this.getCurrentArticle(0);
+          //this.getAllArticles().then(res => {
+          //  this.clearSelect();
+          //})
+          this.clearSelect();
         }
       }).catch((err) => {
         this.$message.error(err.response.data.error)
       })
     },
-    saveArticle(a) {
+    saveArticle: debounce(function({
+      title = this.articleTitle,
+      content = this.articleContent,
+      button = false
+    }) {
       let abstract;
-      if (this.articleContent.indexOf("<!--more-->") !== -1) {
-        abstract = this.articleContent.split("<!--more-->")[0];
+      if (content.indexOf("<!--more-->") !== -1) {
+        abstract = content.split("<!--more-->")[0];
       } else {
         this.$message.error('请填写摘要');
         return;
       }
       const article = {
-        title: this.articleTitle,
-        content: this.articleContent,
+        title: title,
+        content: content,
         abstract: abstract,
         tags: this.currentArticle.tags,
         lastEditTime: new Date()
@@ -132,7 +142,8 @@ export default {
         id: this.currentArticle.id,
         article
       }).then((res) => {
-        if (res.data.success && a === "button") {
+        console.log("save article")
+        if (res.data.success && button) {
           this.$message({
             message: '保存成功',
             type: 'success'
@@ -142,7 +153,7 @@ export default {
         console.log(err);
         this.$message.error(err.response.data.error)
       })
-    },
+    }),
     publishArticle() {
       this.$store.dispatch('publishArticle', {
         id: this.currentArticle.id
@@ -169,7 +180,6 @@ export default {
           });
         }
       }).catch((err) => {
-
         this.$message.error(err.response.data.error)
       })
     },
@@ -192,6 +202,9 @@ export default {
               message: '删除成功',
               type: 'success'
             });
+            //this.getAllArticles();
+            //因为clearSelect就可以更新全部文章了
+            this.clearSelect();
           }
         }).catch((err) => {
           console.log(err)
@@ -208,7 +221,7 @@ export default {
       if (this.currentArticle.tags.find(p => p.name === this.articleTag)) {
         this.$message.error("该标签已存在")
       } else {
-        if(this.currentArticle.tags.length >= 5) {
+        if (this.currentArticle.tags.length >= 5) {
           this.$message({
             type: 'error',
             message: '不能创建超过5个标签'
@@ -222,7 +235,7 @@ export default {
             this.$message({
               message: '创建成功',
               type: 'success',
-              duration:500
+              duration: 500
             });
             this.getAllTags();
             this.articleTag = ''
@@ -241,9 +254,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        //console.log(1)
         this.$store.dispatch('deleteCurrentTag', index).then((res) => {
-          //console.log(3)
           if (this.currentArticle.id !== -1) {
             this.saveArticle()
           }
@@ -255,30 +266,26 @@ export default {
     }
   },
   watch: {
-    content(val) {
-      this.articleContent = val;
+    currentArticle(val) {
+      // 监听vuex current变化改变组件data
+      this.articleTitle = val.title;
+      this.articleContent = val.content;
+      this.articleTag = '';
       simplemde.value(this.articleContent);
     },
-    title(val) {
-      this.articleTitle = val;
-      this.articleTag = '';
-    },
-    articleContent(val) {
-
-    },
     articleTitle(val) {
-      if (this.title !== val && this.currentArticle.id !== -1) {
-        this.$store.dispatch('changeArticle');
-        this.saveArticle()
-        console.log(this.articleTitle)
+      // 监听v-model, 假如变化并且不是新建文章则保存
+      if (this.currentArticle.title !== val && this.currentArticle.id !== -1) {
+        this.$store.dispatch('changeArticle')
+        this.saveArticle({
+          title: val
+        })
       }
-    },
-    articleTag(val) {
-      //if()
     }
   }
 }
 </script>
+
 <style lang="stylus" scoped>
   @import '../assets/stylus/_settings.styl'
   .editor-box 

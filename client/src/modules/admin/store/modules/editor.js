@@ -14,43 +14,62 @@ const state = {
     tags: [],
     save: true,
     publish: false
-  }
+  },
+  allPage: 1,
+  curPage: 1,
+  selectTagArr: []
 };
 
 // getters
 const getters = {
   articleList: state => state.articleList,
   tagList: state => state.tagList,
-  currentArticle: state => state.currentArticle
+  currentArticle: state => state.currentArticle,
+  allPage: state => state.allPage,
+  curPage: state => state.curPage,
+  selectTagArr: state => state.selectTagArr
 };
 // actions
 const actions = {
   createArticle({ commit, state }, { title, content, publish, tags }) {
     return api.createArticle(title, content, publish, tags).then(res => {
+      console.log(res.data)
       if (res.data.success) {
         const article = {
-          save: true
-        }
-        Object.assign(article, res.data.article)
-        commit(types.CREATE_ARTICLE, article);
+            save: true
+          }
+          //Object.assign(article, res.data.article)
+          //commit(types.CREATE_ARTICLE, article);
       }
       return new Promise((resolve, reject) => {
         resolve(res);
       });
+    }).catch(err => {
+      console.log(err)
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
     })
   },
-  getAllArticles({ commit, state }, { tag = '', page = 1, limit = 0 } = {}) {
+  getAllArticles({ commit, state, dispatch }, { tag = '', page = 1, limit = 0 } = {}) {
     return api.getAllArticles(tag, page, limit).then(res => {
       if (res.data.success) {
-        commit(types.GET_ALL_ARTICLES, res.data.articleArr);
+        commit(types.GET_ALL_ARTICLES, { articleList: res.data.articleArr, allPage: res.data.allPage, curPage: page });
+        dispatch('getCurrentArticle',0);
       }
       return new Promise((resolve, reject) => {
         resolve(res);
       });
+    }).catch(err => {
+      console.log(err)
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
     })
   },
-  getCurrentArticle({ commit, state }, index) {
+  getCurrentArticle({ commit, state}, index) {
     let article;
+    console.log("currentIndex:", index)
     if (state.articleList.length == 0 || index == -1) {
       article = {
         id: -1,
@@ -82,7 +101,7 @@ const actions = {
   saveArticle({ commit, state }, { id, article }) {
     return api.saveArticle(id, article).then(res => {
       if (res.data.success) {
-        commit(types.SAVE_ARTICLE, { id, article})
+        commit(types.SAVE_ARTICLE, { id, article })
       }
       return new Promise((resolve, reject) => {
         resolve(res);
@@ -124,7 +143,7 @@ const actions = {
           }
           commit(types.GET_CURRENT_ARTICLE, article)
         }
-        commit(types.DELETE_ARTICLE, index)
+        //commit(types.DELETE_ARTICLE, index)
 
       }
       return new Promise((resolve, reject) => {
@@ -189,17 +208,21 @@ const mutations = {
   [types.SAVE_ARTICLE](state, { id, article }) {
     state.currentArticle.save = true;
     let now = state.articleList.find(p => p.id === id)
-    now.title = article.title;
-    now.content = article.content;
-    now.abstract = article.abstract;
-    now.tags = article.tags;
-    now.lastEditTime = article.lastEditTime;
+    if (now) {
+      now.title = article.title;
+      now.content = article.content;
+      now.abstract = article.abstract;
+      now.tags = article.tags;
+      now.lastEditTime = article.lastEditTime;
+    }
   },
   [types.PUBLISH_ARTICLE](state) {
     state.currentArticle.publish = true;
   },
-  [types.GET_ALL_ARTICLES](state, articleList) {
+  [types.GET_ALL_ARTICLES](state, { articleList, allPage, curPage }) {
     state.articleList = articleList;
+    state.allPage = allPage;
+    state.curPage = curPage;
   },
   [types.GET_CURRENT_ARTICLE](state, article) {
     state.currentArticle = article;
@@ -248,7 +271,25 @@ const mutations = {
   },
   [types.GET_ALL_TAGS](state, tagList) {
     state.tagList = tagList;
-  }
+  },
+  [types.SET_ALL_PAGE](state, allPage) {
+    state.allPage = allPage;
+  },
+  [types.SET_CUR_PAGE](state, curPage) {
+    state.curPage = curPage;
+  },
+  [types.TOGGLE_SELECT_TAG](state, id) {
+    if (!state.selectTagArr.includes(id)) {
+      state.selectTagArr.push(id);
+    } else {
+      state.selectTagArr = state.selectTagArr.filter((e) => {
+        return e !== id;
+      })
+    }
+  },
+  [types.CLEAR_SELECT_TAG](state) {
+    state.selectTagArr = [];
+  },
 }
 export default {
   state,

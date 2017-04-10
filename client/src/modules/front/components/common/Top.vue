@@ -1,10 +1,11 @@
 <template>
   <header class="header">
+    <a href="">HJM's Blog</a>
   </header>
 </template>
 <script>
 export default {
-  name: 'header',
+  name: 'top-header',
   data() {
     return {}
   },

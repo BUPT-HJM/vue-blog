@@ -4,7 +4,7 @@
       <li class="list__tag__title">
         <i class="fa fa-tags" aria-hidden="true"></i>&nbsp;标签
       </li>
-      <li v-for="tag in tagList" @click="toggleSelect(tag.id)" class="list__tag__item" :class="{ 'list__tag__item--active': selectTagArr.includes(tag.id)}">
+      <li v-for="tag in tagList" @click="toggleSelectFn(tag.id)" class="list__tag__item" :class="{ 'list__tag__item--active': selectTagArr.includes(tag.id)}">
         <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;
         <span>{{tag.name}}</span>
         <!-- <i class="fa fa-check" aria-hidden="true" v-if="selectTagArr.includes(tag.id)"></i> -->
@@ -33,7 +33,8 @@
 import Pagination from '../../../components/Pagination.vue'
 import {
   mapGetters,
-  mapActions
+  mapActions,
+  mapMutations
 } from 'vuex'
 export default {
   name: 'list',
@@ -41,7 +42,10 @@ export default {
     ...mapGetters([
       'articleList',
       'tagList',
-      'currentArticle'
+      'currentArticle',
+      'allPage',
+      'curPage',
+      'selectTagArr'
     ])
   },
   components: {
@@ -51,9 +55,9 @@ export default {
     return {
       "activeIndex": 0,
       "searchKey": '',
-      allPage: 0,
-      curPage: 1,
-      selectTagArr: []
+      // allPage: 0,
+      // curPage: 1,
+      // selectTagArr: []
     }
   },
   methods: {
@@ -63,6 +67,14 @@ export default {
       'getCurrentArticle',
       'deleteTag'
     ]),
+    ...mapMutations({
+      setAllPage: 'SET_ALL_PAGE',
+      setCurPage: 'SET_CUR_PAGE',
+      toggleSelect: 'TOGGLE_SELECT_TAG'
+    }),
+    toggleSelectFn(id) {
+      this.toggleSelect(id);
+    },
     switchArticle(index) {
       if (!this.currentArticle.save) {
         this.$message.error('请先保存当前文章');
@@ -100,21 +112,6 @@ export default {
         // });
       });
     },
-    toggleSelect(id) {
-      if(!this.selectTagArr.includes(id)) {
-        this.selectTag(id)
-      } else {
-        this.notSelectTag(id)
-      }
-    },
-    selectTag(id) {
-      this.selectTagArr.push(id);
-    },
-    notSelectTag(id) {
-      this.selectTagArr = this.selectTagArr.filter((e) => {
-        return e !== id;
-      })
-    },
     deleteTagFn(id) {
       this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -147,9 +144,10 @@ export default {
 
     },
     changePage(cur) {
-      this.getAllArticles({page: cur}).then(res => {
-        this.allPage = res.data.allPage;
-        this.curPage = cur;
+      this.getAllArticles({
+        page: cur,
+        tag: this.selectTagArr
+      }).then(res => {
         this.getCurrentArticle(0);
       });
     }
@@ -157,24 +155,25 @@ export default {
 
   mounted() {
     this.getAllArticles().then(res => {
-      this.allPage = res.data.allPage;
-      this.getCurrentArticle(0);
+      //this.allPage = res.data.allPage;
+      //this.getCurrentArticle(0);
+      console.log("allPage:", this.allPage)
+      console.log("curPage:", this.curPage) 
     });
     this.getAllTags();
+
   },
   watch: {
-    selectTagArr(val) {
-
+    selectTagArr(val, oldVal) {
+      console.log("change selectTagArr")
       this.getAllArticles({
         tag: val
-      }).then(res => {
-        this.allPage = res.data.allPage;
-        //this.getCurrentArticle(0);
-      });
+      })
     }
   }
 }
 </script>
+
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
 .list

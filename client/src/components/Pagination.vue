@@ -59,13 +59,13 @@ export default {
   },
   methods: {
     prevPage() {
-      if (this.curPage == 1) {
+      if (this.curPage <= 1) {
         return;
       }
       this.$emit('changePage', this.curPage - 1)
     },
     nextPage() {
-      if (this.curPage == this.allPage) {
+      if (this.curPage >= this.allPage) {
         return;
       }
       this.$emit('changePage', this.curPage + 1)

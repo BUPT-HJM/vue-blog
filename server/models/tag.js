@@ -5,7 +5,7 @@ const tagSchema = new Schema({
     type: String,
     default: ''
   }
-});
+}, { versionKey: false });
 tagSchema.set('toJSON', { getters: true, virtuals: true });
 tagSchema.set('toObject', { getters: true, virtuals: true }); //普通+虚拟
 

@@ -1,6 +1,6 @@
 <template>
   <div class="blog">
-    <Header></Header>  
+    <Top></Top>  
     <div class="blog__list">
       <list></list>
     </div>
@@ -8,12 +8,13 @@
 </template>
 <script>
 import List from './List.vue'
-import Header from './common/Header.vue'
+import Top from './common/Top.vue'
 
 export default {
   name: 'blog',
   components: {
-    List
+    List,
+    Top
   },
   data() {
     return {}

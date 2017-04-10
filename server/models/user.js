@@ -6,5 +6,5 @@ const userSchema = new Schema({
   password: String,
   avatar: String,
   createTime: String
-});
+}, { versionKey: false });
 module.exports = mongoose.model('user', userSchema);

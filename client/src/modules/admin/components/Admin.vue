@@ -4,19 +4,13 @@
       <list></list>
     </div>
     <div class="admin__editor">
-      <editor :content="currentArticle.content" :title="currentArticle.title"></editor>
+      <editor></editor>
     </div>
   </div>
 </template>
 <script>
-import Axios from 'axios'
 import Editor from './Editor.vue'
 import List from './List.vue'
-
-import {
-  mapGetters,
-  mapActions
-} from 'vuex'
 export default {
   name: 'admin',
   components: {
@@ -30,14 +24,8 @@ export default {
 
   },
   methods: {
-    test() {
-      Axios.post('/api/123', 123);
-    }
   },
   computed: {
-    ...mapGetters([
-      'currentArticle'
-    ]),
   }
 }
 </script>
