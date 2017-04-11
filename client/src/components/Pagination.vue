@@ -1,10 +1,10 @@
 <template>
   <ul class="pagination">
-    <li class="pagination__button" @click="prevPage"><i class="fa fa-chevron-left" aria-hidden="true"></i>
+    <li class="pagination__button" @click="prevPage"><</i>
     </li>
     <li class="pagination__item" v-for="page in pageArr" @click="switchPage(page)" :class="{'pagination__item--active':page==curPage}">{{page}}
     </li>
-    <li class="pagination__button" @click="nextPage"><i class="fa fa-chevron-right" aria-hidden="true"></i></li>
+    <li class="pagination__button" @click="nextPage">><!-- <i class="fa fa-chevron-right" aria-hidden="true"> --></i></li>
   </ul>
 </template>
 

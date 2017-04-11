@@ -1,8 +1,9 @@
 <template>
   <div id="app">
+    <Top></Top> 
     <transition name="fade" mode="out-in">
-        <router-view>
-        </router-view>
+      <router-view>
+      </router-view>
     </transition>
   </div>
 </template>
@@ -10,6 +11,14 @@
 
 
 <script>
+import Top from './components/common/Top.vue'
+
+export default {
+  name: 'app',
+  components: {
+    Top
+  }
+}
 </script>
 
 <style lang="stylus">

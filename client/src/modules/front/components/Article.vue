@@ -1,16 +1,21 @@
 <template>
   <div class="article">
-    {{post}}
+    <h1 class="article__title">{{post.title}}</h1>
+    <p class="article__time">{{post.createTime}}</p>
+    <div class="article__content markdown-body" v-html="compiledPost">
+    </div>
   </div>
 </template>
 <script>
 import articleApi from '../../../api/article.js'
+import marked from '../../../lib/marked.js'
 export default {
   name: 'article',
   computed: {},
   data() {
     return {
-      post: {}
+      post: {},
+      compiledPost: ''
     }
   },
   mounted() {},
@@ -20,11 +25,15 @@ export default {
     this.fetchData()
   },
   methods: {
+    compiledMarkdown(value) {
+      return marked(value)
+    },
     fetchData() {
       articleApi.getArticle(this.$route.params.id)
         .then(res => {
           console.log(res)
           this.post = res.data.article;
+          this.compiledPost = this.compiledMarkdown(this.post.content)
           //this.getCurrentArticle(0);
         });
     }
@@ -36,61 +45,18 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
-.list
-  padding 15px
-  &__tag
-    display flex
-    flex-direction row
-    flex-wrap wrap
-    list-style none
-  &__tag__title
-    width 100%
-    font-size 25px
-    padding 10px
-    color $dark-blue
-    span
-      padding-left 15px
-    //background-color $dark-blue
-  &__tag__item
-    //flex-grow 1
-    flex-shrink 1
-    background-color $dark-blue
-    color white
-    border-radius 5px
-    text-align center
-    margin 5px
-    padding 7px
-    cursor pointer
-  &__tag__item--active
-    background-color $orange
-
-
-  &__article
-    margin-top 5px
-    list-style none
-  &__article__button
-    padding 10px
-    font-size 25px
-    color $dark-blue
-    cursor pointer
-  &__article__item
-    position relative
-    width 100%
-    height 100px
-    background-color $grey
-    padding 15px
-    margin-bottom 5px
-    cursor pointer
-  &__article__item--active
-    border-left 10px solid $dark-blue
-  &__article__item__info
-    position absolute
-    bottom 5px
-    right 15px
-    text-align right
-  &__article__item__abstract
-    width 100%
-    max-height 50px   
-    word-wrap: break-word; 
-    word-break all
+.article
+  max-width 850px
+  margin 80px auto 0 auto
+  padding 0 20px 20px 20px
+  &__title
+    font-size 28px
+  &__time
+    color #7f8c8d
+    font-weight 400
+    margin-bottom 10px
+    
+    
+  
+    
 </style>

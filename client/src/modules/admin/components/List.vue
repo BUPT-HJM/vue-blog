@@ -1,9 +1,9 @@
 <template>
   <div class="list">
+    <div class="list__top-title">
+      <i class="fa fa-tags" aria-hidden="true"></i>&nbsp;标签
+    </div>
     <ul class="list__tag">
-      <li class="list__tag__title">
-        <i class="fa fa-tags" aria-hidden="true"></i>&nbsp;标签
-      </li>
       <li v-for="tag in tagList" @click="toggleSelectFn(tag.id)" class="list__tag__item" :class="{ 'list__tag__item--active': selectTagArr.includes(tag.id)}">
         <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;
         <span>{{tag.name}}</span>
@@ -14,7 +14,7 @@
     <ul class="list__article">
       <li @click="createArticle" class="list__article__button"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;新建文章</li>
       <li v-for="(article, index) in articleList" @click="switchArticle(index)" class="list__article__item" :class="{'list__article__item--active': currentArticle.index == index}">
-        <h1>{{ article.title }}</h1>
+        <h1>{{ article.title | cutTitle}}</h1>
         <div class="list__article__item__info">
           <i class="fa fa-tag" aria-hidden="true"></i>
           <span v-for="tag in article.tags"> {{tag.name}}</span>
@@ -58,6 +58,15 @@ export default {
       // allPage: 0,
       // curPage: 1,
       // selectTagArr: []
+    }
+  },
+  filters: {
+    cutTitle(value) {
+      if(value.length > 13) {
+        return value.substring(0, 13) + "..."
+      } else {
+        return value
+      }
     }
   },
   methods: {
@@ -126,10 +135,9 @@ export default {
               message: '删除成功',
               type: 'success'
             });
-            this.notSelectTag(id)
-            this.getAllArticles({
-              tag: this.selectTagArr
-            })
+            // this.getAllArticles({
+            //   tag: this.selectTagArr
+            // })
           }
         }).catch((err) => {
           console.log(err)
@@ -178,18 +186,20 @@ export default {
 @import '../assets/stylus/_settings.styl'
 .list
   padding 15px
-  &__tag
-    display flex
-    flex-direction row
-    flex-wrap wrap
-    list-style none
-  &__tag__title
+  &__top-title
     width 100%
     font-size 25px
     padding 10px
     color $dark-blue
     span
       padding-left 15px
+  &__tag
+    height 140px
+    overflow auto
+    display flex
+    flex-direction row
+    flex-wrap wrap
+    list-style none
     //background-color $dark-blue
   &__tag__item
     //flex-grow 1

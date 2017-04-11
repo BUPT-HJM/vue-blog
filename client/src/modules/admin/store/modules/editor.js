@@ -55,7 +55,7 @@ const actions = {
     return api.getAllArticles(tag, page, limit).then(res => {
       if (res.data.success) {
         commit(types.GET_ALL_ARTICLES, { articleList: res.data.articleArr, allPage: res.data.allPage, curPage: page });
-        dispatch('getCurrentArticle',0);
+        dispatch('getCurrentArticle', 0);
       }
       return new Promise((resolve, reject) => {
         resolve(res);
@@ -67,7 +67,7 @@ const actions = {
       });
     })
   },
-  getCurrentArticle({ commit, state}, index) {
+  getCurrentArticle({ commit, state }, index) {
     let article;
     console.log("currentIndex:", index)
     if (state.articleList.length == 0 || index == -1) {
@@ -193,6 +193,7 @@ const actions = {
   },
   deleteCurrentTag({ commit, state }, { index }) {
     //console.log(2)
+    console.log(index)
     commit(types.DELETE_CURRENT_TAG, index)
     return new Promise((resolve, reject) => {
       resolve();
@@ -263,6 +264,9 @@ const mutations = {
     })
     state.currentArticle.tags = state.currentArticle.tags.filter((e) => {
       return e.id !== id;
+    })
+    state.selectTagArr = state.selectTagArr.filter((e) => {
+      return e !== id;
     })
 
   },

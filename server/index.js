@@ -28,6 +28,7 @@ app.use(serve('./client/static'));
 
 app.use(convert(historyApiFallback({
   verbose: true,
+  index: '/front.html',
   rewrites: [
     { from: /^\/admin$/, to: '/admin.html'},
     { from: /^\/admin\/login/, to: '/admin.html'},
@@ -56,6 +57,7 @@ if (process.env.NODE_ENV !== 'production') {
     }
   }));
 } else {
+  console.log('prod');
   app.use(serve('./client/dist'));
 }
 
