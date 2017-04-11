@@ -31,6 +31,7 @@
 <script>
 import SimpleMDE from 'simplemde'
 import debounce from '../../../lib/debounce.js'
+import marked from '../../../lib/marked.js'
 import css from 'simplemde/dist/simplemde.min.css'
 
 import {
@@ -67,6 +68,9 @@ export default {
       autoDownloadFontAwesome: false,
       element: document.getElementById("editor"),
       spellChecker: false,
+      previewRender: function(plainText) {
+          return marked(plainText); // Returns HTML from a custom parser
+      },
     });
     simplemde.codemirror.on("change", () => {
       let value = simplemde.value();
@@ -240,7 +244,7 @@ export default {
             this.getAllTags();
             this.articleTag = ''
             if (this.currentArticle.id !== -1) {
-              this.saveArticle()
+              this.saveArticle({})
             }
           }
         }).catch((err) => {
@@ -249,14 +253,15 @@ export default {
       }
     },
     deleteCurrentTag(index) {
+      console.log("tagIndex:",index)
       this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.dispatch('deleteCurrentTag', index).then((res) => {
+        this.$store.dispatch('deleteCurrentTag', {index}).then((res) => {
           if (this.currentArticle.id !== -1) {
-            this.saveArticle()
+            this.saveArticle({})
           }
           this.getAllTags();
         }).catch((err) => {
@@ -266,11 +271,14 @@ export default {
     }
   },
   watch: {
-    currentArticle(val) {
+    currentArticle(val, oldVal) {
       // 监听vuex current变化改变组件data
       this.articleTitle = val.title;
       this.articleContent = val.content;
       this.articleTag = '';
+      if(oldVal.id !== val.id && simplemde.isPreviewActive()) {
+        simplemde.togglePreview();
+      }
       simplemde.value(this.articleContent);
     },
     articleTitle(val) {
@@ -286,6 +294,9 @@ export default {
 }
 </script>
 
+<style lang="stylus">
+  @import '../assets/stylus/preview.styl'
+</style>
 <style lang="stylus" scoped>
   @import '../assets/stylus/_settings.styl'
   .editor-box 
@@ -294,6 +305,7 @@ export default {
     input
       padding 7px
       background-color $grey
+      width 350px
     &__title
       font-size 25px
       color $dark-blue

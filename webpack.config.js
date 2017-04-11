@@ -35,14 +35,14 @@ let config = {
     new HtmlWebpackPlugin({
       filename: /*'../../server/public/views/index.html'*/ 'admin.html',
       template: CLIENT_FOLDER + '/src/modules/admin/index.html',
-      chunks: ['admin'],
+      chunks: ['admin','commons'],
       inject: 'body'
     }),
 
     new HtmlWebpackPlugin({
       filename: /*'../../server/public/views/index.html'*/ 'front.html',
       template: CLIENT_FOLDER + '/src/modules/front/index.html',
-      chunks: ['front'],
+      chunks: ['front','commons'],
       inject: 'body'
     }),
 
@@ -107,6 +107,7 @@ if (process.env.NODE_ENV === 'production') {
   }), new webpack.optimize.CommonsChunkPlugin({
     name: "commons"
   })]);
+  console.log(config)
   // for(var key in config.module.rules[0].options.loaders) {
   //   config.module.rules[0].options.loaders[key] = ExtractTextPlugin.extract(config.module.rules[0].options.loaders[key])
   // }
