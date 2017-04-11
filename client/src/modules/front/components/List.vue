@@ -37,7 +37,7 @@ import marked from '../../../lib/marked.js'
 export default {
   name: 'list',
   computed: {
-    
+
   },
   components: {
     Pagination
@@ -105,6 +105,7 @@ export default {
 @import '../assets/stylus/_settings.styl'
 .list
   //display flex
+  display flex
   padding 10px
   // &__tag
   //   display flex
@@ -131,7 +132,7 @@ export default {
   //   cursor pointer
   // &__tag__item--active
   //   background-color $orange
-  
+
 
   // &__me-box
   //   width 200px
@@ -175,8 +176,8 @@ export default {
   //   text-align right
   // &__article__item__abstract
   //   width 100%
-  //   max-height 50px   
-  //   word-wrap: break-word; 
+  //   max-height 50px
+  //   word-wrap: break-word;
   //   word-break all
 </style>
 <style lang="stylus">
