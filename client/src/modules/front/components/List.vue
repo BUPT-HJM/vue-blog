@@ -8,10 +8,10 @@
         <span>{{tag.name}}</span>
       </li>
     </ul> -->
-   <!--  <div class="list__me-box">
+    <div class="list__me-box">
       <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="list__me-box__img">
       <p>小深刻的秋鼠</p>
-    </div> -->
+    </div>
     <ul class="list__article">
       <li v-for="(article, index) in articleList" class="list__article__item">
         <!-- <a :href="('/article/'+article.id)"> -->
@@ -104,7 +104,7 @@ export default {
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
 .list
-  //display flex
+  display flex
   padding 10px
   // &__tag
   //   display flex
@@ -133,10 +133,10 @@ export default {
   //   background-color $orange
   
 
-  // &__me-box
-  //   width 200px
-  //   &__img
-  //     width 100px
+  &__me-box
+    width 200px
+    &__img
+      width 100px
 
 
   &__article
@@ -145,7 +145,7 @@ export default {
     list-style none
   &__article__item
     position relative
-    width 850px
+    max-width 850px
     margin 0 auto
     padding 10px
     margin-bottom 5px
