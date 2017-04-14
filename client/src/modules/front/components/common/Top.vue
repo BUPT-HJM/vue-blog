@@ -1,6 +1,7 @@
 <template>
   <header class="top-header">
-    <router-link to="/" class="top-header__main-icon">HJM's Blog</router-link>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAALEwAACxMBAJqcGAAAADlJREFUWMPt08ERACAIBDEomvqxBh18EQogn9us+HsJAAAAt0BPfQU8A2YKULKSdQAQmpIBAMBm4AAtdCIhmRB8RAAAAABJRU5ErkJggg==" alt="" class="top-header__menu-button" @click="toggleSideBox">
+    <router-link to="/" class="top-header__main-icon" @click.native='clearFilter'>HJM's Blog</router-link>
   </header>
 </template>
 <script>
@@ -12,6 +13,13 @@ export default {
   created() {
   },
   methods: {
+    toggleSideBox() {
+      this.$eventBus.$emit('toggleSideBox');
+    },
+    clearFilter() {
+      this.$eventBus.$emit('filterListByTag',{tag: []});
+      this.$eventBus.$emit('clearSelectTagArr')
+    }
   },
   computed: {
   }
@@ -29,13 +37,24 @@ export default {
     box-shadow: 0 0 1px rgba(0,0,0,0.25);
     padding 0 40px 0 40px
     background white
-    z-index 2
+    z-index 3
     &__main-icon
       text-decoration none
       color $dark-blue
       font-weight 600
       font-size 20px
+    &__menu-button
+      position absolute
+      left 10px
+      top 50%
+      width 32px
+      height 32px
+      margin-top -(@height/2)
+      display none
   @media screen and (max-width: 850px) 
     .top-header 
       text-align center
+      padding 0
+      &__menu-button
+        display block
 </style>

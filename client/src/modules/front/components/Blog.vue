@@ -26,13 +26,13 @@ export default {
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style lang="stylus">
   @import '../assets/stylus/markdown.styl'
 </style>
 <style lang="stylus" scoped>
 .blog
   &__list
-    // max-width 850px
-    // margin 0 auto
+    max-width 1000px
+    margin 0 auto
     margin-top 60px
 </style>

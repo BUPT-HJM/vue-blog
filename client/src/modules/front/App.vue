@@ -2,8 +2,10 @@
   <div id="app">
     <Top></Top> 
     <transition name="fade" mode="out-in">
-      <router-view>
-      </router-view>
+      <keep-alive exclude="article">
+        <router-view>
+        </router-view>
+      </keep-alive>
     </transition>
   </div>
 </template>

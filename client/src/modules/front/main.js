@@ -14,13 +14,23 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', component: Blog},
-  { path: '/article/:id', component: Article }
+  { path: '/article/:id', component: Article },
+  { path: '/tag/:id', component: Blog }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   routes
 })
+
+var EventBus = new Vue();
+Object.defineProperties(Vue.prototype, {
+    $eventBus: {
+        get: function () {
+            return EventBus;
+        }
+    }
+});
 
 /* eslint-disable no-new */
 new Vue({

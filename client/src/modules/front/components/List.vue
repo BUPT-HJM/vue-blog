@@ -1,46 +1,55 @@
 <template>
   <div class="list">
-    <!-- <ul class="list__tag">
-      <li class="list__tag__title">
-        标签
-      </li>
-      <li v-for="tag in tagList" @click="toggleSelect(tag.id)" class="list__tag__item" :class="{ 'list__tag__item--active': selectTagArr.includes(tag.id)}">
-        <span>{{tag.name}}</span>
-      </li>
-    </ul> -->
-    <div class="list__me-box">
-      <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="list__me-box__img">
-      <p>小深刻的秋鼠</p>
+    <Side :isInList='true'></Side>
+    <div class="list__loading" v-if="isLoading">
+      <Loading :loadingMsg='loadingMsg'></Loading>
     </div>
     <ul class="list__article">
-      <li v-for="(article, index) in articleList" class="list__article__item">
-        <!-- <a :href="('/article/'+article.id)"> -->
+      <li class="list__article__filterMsg" v-if="(selectTagArr.length !== 0)">
+        筛选
+        <span>{{filterMsg}}</span>
+        分类
+      </li>
+      <template v-if="articleList.length!==0 && isLoading == false">
+        <li v-for="(article, index) in articleList" class="list__article__item">
           <h1 class="list__article__item__title"><router-link :to="'article/'+article.id">{{ article.title }}</router-link></h1>
           <div class="list__article__item__info">
             <p class="list__article__item__time">{{article.createTime}}</p>
-            <p class="list__article__item__abstract markdown-body" v-html="compiledMarkdown(article.abstract)"></p>
-            <span v-for="tag in article.tags"> {{tag.name}}</span>
+            <div class="list__article__item__abstract markdown-body" v-html="compiledMarkdown(article.abstract)"></div>
+            <!-- <span v-for="tag in article.tags"> {{tag.name}}</span> -->
             <p><router-link :to="'article/'+article.id" class="continue-reading">继续阅读...</router-link></p>
           </div>
-          <!--  <p class="list__article__item__abstract">{{ article.abstract }}</p> -->
-        <!-- </a> -->
-      </li>
-      <pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></pagination>
+        </li>
+        <pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></pagination>
+      </template>
+      <div v-if="articleList.length==0 && isLoading==false" class="msg-box">
+        <p>暂时没有相关文章</p>
+      </div>
     </ul>
   </div>
 </template>
 <script>
 import Pagination from '../../../components/Pagination.vue'
+import Loading from '../../../components/Loading.vue'
+import Side from './common/Side.vue'
 import articleApi from '../../../api/article.js'
-import tagApi from '../../../api/tag.js'
 import marked from '../../../lib/marked.js'
 export default {
   name: 'list',
   computed: {
+    filterMsg() {
+      let msg = ''
+      this.selectTagArr.forEach((item) => {
+        msg += item.name + '、'
+      })
+      return msg.replace(/、$/,'')
+    }
 
   },
   components: {
-    Pagination
+    Pagination,
+    Side,
+    Loading
   },
   data() {
     return {
@@ -50,33 +59,42 @@ export default {
       limit: 5,
       selectTagArr: [],
       articleList: [],
-      tagList: []
+      tagList: [],
+      sideBoxClose: false,
+      isLoading: true,
+      loadingMsg: '加载中...'
     }
+  },
+  created() {
+    this.$eventBus.$on('filterListByTag', this.filterListByTag);
   },
   methods: {
     compiledMarkdown(value) {
       return marked(value)
-    },
-    toggleSelect(id) {
-      if (!this.selectTagArr.includes(id)) {
-        this.selectTag(id)
-      } else {
-        this.notSelectTag(id)
-      }
-    },
-    selectTag(id) {
-      this.selectTagArr.push(id);
-    },
-    notSelectTag(id) {
-      this.selectTagArr = this.selectTagArr.filter((e) => {
-        return e !== id;
-      })
     },
     changePage(cur) {
       articleApi.getAllArticles('',cur,this.limit).then(res => {
         this.allPage = res.data.allPage;
         this.articleList = res.data.articleArr;
         this.curPage = cur;
+      });
+    },
+    filterListByTag({tag}) {
+      if(this.selectTagArr.length == 0 && tag.length == 0) {
+        return;
+      }
+      this.isLoading = true
+      this.selectTagArr = tag
+      let searchTag = [];
+      if(tag.length) {
+        tag.forEach((item) => {
+          searchTag.push(item.id)
+        })
+      }
+      articleApi.getAllArticles(searchTag,'',this.limit).then(res => {
+        this.allPage = res.data.allPage;
+        this.articleList = res.data.articleArr;
+        this.isLoading = false
       });
     }
   },
@@ -85,18 +103,10 @@ export default {
     articleApi.getAllArticles('','',this.limit).then(res => {
       this.allPage = res.data.allPage;
       this.articleList = res.data.articleArr;
-    });
-    tagApi.getAllTags().then(res => {
-      this.tagList = res.data.tagArr;
+      this.isLoading = false;
     });
   },
   watch: {
-    selectTagArr(tag) {
-      articleApi.getAllArticles(tag,'',this.limit).then(res => {
-        this.allPage = res.data.allPage;
-        this.articleList = res.data.articleArr;
-      });
-    }
   }
 }
 </script>
@@ -104,52 +114,54 @@ export default {
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
 .list
-  //display flex
-  display flex
   padding 10px
-  // &__tag
-  //   display flex
-  //   flex-direction row
-  //   flex-wrap wrap
-  //   list-style none
-  // &__tag__title
-  //   width 100%
-  //   font-size 25px
-  //   padding 10px
-  //   color $dark-blue
-  //   span
-  //     padding-left 15px
-  //   //background-color $dark-blue
-  // &__tag__item
-  //   //flex-grow 1
-  //   flex-shrink 1
-  //   background-color $dark-blue
-  //   color white
-  //   border-radius 5px
-  //   text-align center
-  //   margin 5px
-  //   padding 7px
-  //   cursor pointer
-  // &__tag__item--active
-  //   background-color $orange
-  
-
-  &__me-box
+  &__sideBox
     width 200px
+    float left
+    text-align center
     &__img
-      width 100px
+      width 150px
+      border-radius 50%
+      box-shadow 0 0 2px black
+      margin-top 10px
+    &__name
+      color #808080
+      font-size 20px
+      margin-top 5px
+      margin-bottom 5px
+    &__motto
+      color #bfbfbf
+      margin-bottom 10px
+    
+    &__tagList
+      list-style none
+    &__tagItem
+      display inline-block
+      border 1px solid #bfbfbf
+      border-radius 4px
+      margin 5px
+      padding 10px
+      color #bfbfbf
+      cursor pointer
+      &:hover
+        color $dark-blue
+    &__tagItem--active
+      color $dark-blue
+      border 1px solid $dark-blue
 
 
   &__article
-    flex 1
+    //flex 1
+    //max-width 800px
     margin-top 5px
     list-style none
+    margin-left 250px
   &__article__item
-    position relative
-    max-width 850px
+    //position relative
     margin 0 auto
     padding 10px
     margin-bottom 5px
+    
   &__article__item__title
     font-size 28px
     a
@@ -164,24 +176,40 @@ export default {
   .continue-reading
     text-decoration none
     color #0366d6
-    &:hover
-      text-decoration underline
-    //cursor pointer
-  // &__article__item--active
-  //   border-left 10px solid $dark-blue
-  // &__article__item__info
-  //   position absolute
-  //   bottom 5px
-  //   right 15px
-  //   text-align right
-  // &__article__item__abstract
-  //   width 100%
-  //   max-height 50px
-  //   word-wrap: break-word;
-  //   word-break all
-</style>
-<style lang="stylus">
-  // .markdown-body
-  //   img
-  //     width 100%
+  &__article__filterMsg
+    font-size 20px
+    text-align center
+    span
+      color $dark-blue
+  &__loading
+    position fixed
+    top 50%
+    left 50%
+    width 300px
+    height 200px
+    margin-left -(@width/2)+125
+    margin-top  -(@height/2)+60
+  .msg-box
+    position fixed
+    top 50%
+    left 50%
+    width 200px
+    height 200px
+    margin-left -(@width/2)+125
+    margin-top  -(@height/2)+60
+    text-align center
+    
+@media screen and (max-width: 850px) 
+  .list
+    &__article
+      margin-left 0
+    &__article__filterMsg
+      font-size 18px
+    .msg-box
+      width 200px
+      margin-left -(@width/2)
+    &__loading
+      width 300px
+      margin-left -(@width/2)
+    
 </style>

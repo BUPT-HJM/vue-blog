@@ -71,6 +71,18 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+// Add a response interceptor
+Axios.interceptors.response.use(function (response) {
+    // Do something with response data
+    return response;
+  }, function (error) {
+    if(error.response.data.error.indexOf("token expired") !== -1) {
+      store.commit("DELETE_TOKEN")
+    }
+    // Do something with response error
+    return Promise.reject(error);
+});
+
 
 /* eslint-disable no-new */
 new Vue({
