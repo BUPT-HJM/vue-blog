@@ -99,9 +99,13 @@ export default {
     margin-top  -(@height/2)+60
 @media screen and (max-width: 850px) 
   .article
+    position relative
     &__main
       margin-left 0
     &__loading
+      position absolute
+      top 200px
+      left 50%
       width 300px
       margin-left -(@width/2)
     

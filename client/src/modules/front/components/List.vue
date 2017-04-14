@@ -53,11 +53,11 @@ export default {
   },
   data() {
     return {
-      searchKey: '',
       allPage: 0,
       curPage: 1,
       limit: 5,
       selectTagArr: [],
+      searchTag: [],
       articleList: [],
       tagList: [],
       sideBoxClose: false,
@@ -73,7 +73,7 @@ export default {
       return marked(value)
     },
     changePage(cur) {
-      articleApi.getAllArticles('',cur,this.limit).then(res => {
+      articleApi.getAllArticles(this.searchTag, cur, this.limit).then(res => {
         this.allPage = res.data.allPage;
         this.articleList = res.data.articleArr;
         this.curPage = cur;
@@ -85,13 +85,13 @@ export default {
       }
       this.isLoading = true
       this.selectTagArr = tag
-      let searchTag = [];
+      this.searchTag = []
       if(tag.length) {
         tag.forEach((item) => {
-          searchTag.push(item.id)
+          this.searchTag.push(item.id)
         })
       }
-      articleApi.getAllArticles(searchTag,'',this.limit).then(res => {
+      articleApi.getAllArticles(this.searchTag,'',this.limit).then(res => {
         this.allPage = res.data.allPage;
         this.articleList = res.data.articleArr;
         this.isLoading = false
@@ -201,14 +201,21 @@ export default {
     
 @media screen and (max-width: 850px) 
   .list
+    position relative
     &__article
       margin-left 0
     &__article__filterMsg
       font-size 18px
     .msg-box
-      width 200px
+      position absolute
+      top 250px
+      left 50%
+      width 300px
       margin-left -(@width/2)
     &__loading
+      position absolute
+      top 250px
+      left 50%
       width 300px
       margin-left -(@width/2)
     

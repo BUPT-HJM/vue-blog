@@ -143,6 +143,7 @@ export default {
         text-align left
         //list-style-type: square;
         margin-bottom 5px
+        padding-left 20px
         word-wrap break-word
         word-break all
         a
@@ -169,32 +170,33 @@ export default {
     .categoryBox--fixed
       position fixed
       top 60px 
-      width 200px     
+      width 250px     
   @media screen and (max-width: 850px) 
     .sideBox
       position fixed
-      left -250px
+      left 0px
       top 60px
-      //width 0px
+      width 250px
       height 100%
-      transition left 0.3s
-      -webkit-transtion left 0.3s
+      transform translateX(-250px)
+      -webkit-transform translateX(-250px)
+      transition transform 0.3s
+      -webkit-transtion transform 0.3s
       background-color white
       .mask
         position fixed
-        top 0
+        top 60px
         left 0
-        width 100%
-        height 100%
+        width 100vw
+        height 100vh
         display none
       &--open
-        left 0
-        width 250px
         box-shadow: 0 0 10px rgba(0,0,0,0.2);
         z-index 2
-        opacity 1
-        transition left 0.3s
-        -webkit-transtion left 0.3s
+        transform translateX(0px)
+        -webkit-transform translateX(0px)
+        transition transform 0.3s
+        -webkit-transtion transform 0.3s
         .mask
           display block
           z-index -1
@@ -203,5 +205,6 @@ export default {
       &__tagItem--active:hover
         color $dark-blue
       .categoryBox--fixed
-        position static  
+        position static
+        width auto
 </style>
