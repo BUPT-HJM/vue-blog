@@ -6,6 +6,8 @@
   "scripts": {
     "start": "npm run clean && nodemon server/start.js",
     "clean": "rimraf client/dist",
+    "build:prod:json": "export NODE_ENV=production && npm run clean && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size --json > stats.json",
+    "build:prod:detail": "export NODE_ENV=production && npm run clean && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size",
     "build:prod": "export NODE_ENV=production && npm run clean && webpack --config webpack.config.js --colors --profile",
     "start:prod": "NODE_ENV=production node server/start.js",
     "prod": "npm run build:prod && npm run start:prod"
@@ -13,6 +15,7 @@
   "dependencies": {
     "axios": "^0.16.0",
     "element-ui": "^1.2.7",
+    "fastclick": "^1.0.6",
     "font-awesome": "^4.7.0",
     "highlight.js": "^9.10.0",
     "import-dir": "^0.0.1",
@@ -42,6 +45,7 @@
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-stage-0": "^6.22.0",
     "connect-history-api-fallback": "^1.3.0",
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "*",

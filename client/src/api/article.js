@@ -12,14 +12,18 @@ export default {
     getAllArticles(tag = '', page = 1, limit = 0) {
       return Axios.get(`/api/articles?tag=${tag}&page=${page}&limit=${limit}`)
     },
+    getAllPublishArticles(tag = '', page = 1, limit = 0) {
+      return Axios.get(`/api/publishArticles?tag=${tag}&page=${page}&limit=${limit}`)
+    },
     saveArticle(id, article) {
+      console.log(article)
       return Axios.patch('/api/articles/' + id, article)
     },
     publishArticle(id) {
-      return Axios.patch('/api/articles/' + id, { publish: true })
+      return Axios.patch('/api/articles/' + id, { "publish": true })
     },
     notPublishArticle(id) {
-      return Axios.patch('/api/articles/' + id, { publish: false })
+      return Axios.patch('/api/articles/' + id, { "publish": false })
     },
     deleteArticle(id) {
       return Axios.delete('/api/articles/' + id)

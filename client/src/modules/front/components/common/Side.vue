@@ -1,22 +1,22 @@
 <template>
   <div class="sideBox" :class="{ 'sideBox--open': sideBoxOpen}">
     <div class="mask" @click="closeSideBox"></div>
-      <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="sideBox__img">
-      <p class="sideBox__name">小深刻的秋鼠</p>
-      <p class="sideBox__motto">Love Life, Love sharing</p>
-      <ul class="sideBox__tagList" v-if="isInList">
-        <li v-for="tag in tagList" class="sideBox__tagItem" :class="{ 'sideBox__tagItem--active': (typeof selectTagArr.find(function(e){return e.id == tag.id}) !== 'undefined')}" @click="toggleSelect(tag.id, tag.name)">
-          <span>{{tag.name}}</span>
+    <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="sideBox__img">
+    <p class="sideBox__name">小深刻的秋鼠</p>
+    <p class="sideBox__motto">Love Life, Love sharing</p>
+    <ul class="sideBox__tagList" v-if="isInList">
+      <li v-for="tag in tagList" class="sideBox__tagItem" :class="{ 'sideBox__tagItem--active': (typeof selectTagArr.find(function(e){return e.id == tag.id}) !== 'undefined')}" @click="toggleSelect(tag.id, tag.name)">
+        <span>{{tag.name}}</span>
+      </li>
+    </ul>
+    <div class="categoryBox" v-if="!isInList" :class="{ 'categoryBox--fixed': (scrollTop >236)}" ref="categoryBox">
+      <p class="categoryBox__title">文章目录</p>
+      <ul class="categoryBox__list">
+        <li v-for="item in category" :class="'categoryBox__'+item.tagName">
+          <a :href="item.href">{{item.text}}</a>
         </li>
       </ul>
-      <div class="categoryBox" v-if="!isInList" :class="{ 'categoryBox--fixed': (scrollTop >236)}" ref="categoryBox">
-        <p class="categoryBox__title">文章目录</p>
-        <ul>
-          <li v-for="item in category" :class="'categoryBox__'+item.tagName">
-            <a :href="item.href">{{item.text}}</a>
-          </li>
-        </ul>
-      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -49,19 +49,32 @@ export default {
   },
   created() {
     this.$eventBus.$on('toggleSideBox', this.toggleSideBox);
+    this.$eventBus.$on('closeSideBox', this.closeSideBox);
     this.$eventBus.$on('clearSelectTagArr', this.clearSelectTagArr)
     window.addEventListener('scroll', throttle(this.getScrollTop, 50))
+    // document.addEventListener('click', this.closeSideBox)
+    // $(document).mouseup(function(e) {
+    //   var _con = $(' 目标区域 '); // 设置目标区域
+    //   if (!_con.is(e.target) && _con.has(e.target).length === 0) { // Mark 1
+    //     some code... // 功能代码
+    //   }
+    // });
   },
   methods: {
     toggleSideBox() {
-      this.sideBoxOpen = !this.sideBoxOpen;
+      this.sideBoxOpen = !this.sideBoxOpen
     },
     closeSideBox() {
       this.sideBoxOpen = false
     },
     toggleSelect(id, name) {
-      if (typeof this.selectTagArr.find(function(e){return e.id == id}) == 'undefined') {
-        this.selectTagArr.push({id,name})
+      if (typeof this.selectTagArr.find(function(e) {
+          return e.id == id
+        }) == 'undefined') {
+        this.selectTagArr.push({
+          id,
+          name
+        })
       } else {
         this.selectTagArr = this.selectTagArr.filter((e) => {
           return e.id !== id;
@@ -88,10 +101,10 @@ export default {
     }
   },
   computed: {},
-  watch: {
-  }
+  watch: {}
 }
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
@@ -170,25 +183,30 @@ export default {
     .categoryBox--fixed
       position fixed
       top 60px 
-      width 250px     
+      bottom 0
+      overflow-y auto
+      width 200px     
   @media screen and (max-width: 850px) 
     .sideBox
       position fixed
       left 0px
       top 60px
+      bottom 0
       width 250px
-      height 100%
       transform translateX(-250px)
       -webkit-transform translateX(-250px)
       transition transform 0.3s
       -webkit-transtion transform 0.3s
       background-color white
+      overflow-x hidden
+      overflow-y auto
       .mask
         position fixed
-        top 60px
+        top 0
         left 0
+        bottom 0
         width 100vw
-        height 100vh
+        height 9999px
         display none
       &--open
         box-shadow: 0 0 10px rgba(0,0,0,0.2);

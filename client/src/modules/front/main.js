@@ -10,6 +10,10 @@ import App from './App'
 import Blog from './components/Blog.vue'
 import Article from './components/Article.vue'
 
+import Fastclick from 'fastclick'
+Fastclick.attach(document.body)
+
+
 Vue.use(VueRouter)
 
 const routes = [

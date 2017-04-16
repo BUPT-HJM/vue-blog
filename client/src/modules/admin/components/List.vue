@@ -19,6 +19,9 @@
           <i class="fa fa-tag" aria-hidden="true"></i>
           <span v-for="tag in article.tags"> {{tag.name}}</span>
           <p class="list__article__item__abstract"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; {{article.createTime}}</p>
+          <p class="list__article__item__publish" v-if="article.publish">
+            已发布
+          </p>
           <!-- <i class="fa fa-trash-o" aria-hidden="true" @click.stop="deleteArticle" v-if="currentArticle.index == index"></i> -->
         </div>
        <!--  <p class="list__article__item__abstract">{{ article.abstract }}</p> -->
@@ -243,4 +246,10 @@ export default {
     max-height 50px   
     word-wrap: break-word; 
     word-break all
+  &__article__item__publish
+    position absolute
+    top -45px
+    right -3px
+    font-size 13px
+    color #aab2b3
 </style>

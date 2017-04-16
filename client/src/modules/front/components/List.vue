@@ -73,7 +73,7 @@ export default {
       return marked(value)
     },
     changePage(cur) {
-      articleApi.getAllArticles(this.searchTag, cur, this.limit).then(res => {
+      articleApi.getAllPublishArticles(this.searchTag, cur, this.limit).then(res => {
         this.allPage = res.data.allPage;
         this.articleList = res.data.articleArr;
         this.curPage = cur;
@@ -91,7 +91,7 @@ export default {
           this.searchTag.push(item.id)
         })
       }
-      articleApi.getAllArticles(this.searchTag,'',this.limit).then(res => {
+      articleApi.getAllPublishArticles(this.searchTag,'',this.limit).then(res => {
         this.allPage = res.data.allPage;
         this.articleList = res.data.articleArr;
         this.isLoading = false
@@ -100,7 +100,7 @@ export default {
   },
 
   mounted() {
-    articleApi.getAllArticles('','',this.limit).then(res => {
+    articleApi.getAllPublishArticles('','',this.limit).then(res => {
       this.allPage = res.data.allPage;
       this.articleList = res.data.articleArr;
       this.isLoading = false;

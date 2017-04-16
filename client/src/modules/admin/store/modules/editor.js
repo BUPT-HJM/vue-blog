@@ -109,7 +109,7 @@ const actions = {
     })
   },
   publishArticle({ commit, state }, { id }) {
-    return api.saveArticle(id).then(res => {
+    return api.publishArticle(id).then(res => {
       if (res.data.success) {
         commit(types.PUBLISH_ARTICLE, id)
       }
@@ -119,7 +119,7 @@ const actions = {
     })
   },
   notPublishArticle({ commit, state }, { id }) {
-    return api.saveArticle(id).then(res => {
+    return api.notPublishArticle(id).then(res => {
       if (res.data.success) {
         commit(types.NOT_PUBLISH_ARTICLE, id)
       }

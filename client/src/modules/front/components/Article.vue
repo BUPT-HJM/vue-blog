@@ -55,7 +55,6 @@ export default {
           this.compiledPost = this.compiledMarkdown(this.post.content)
             //this.getCurrentArticle(0);
           setTimeout(() => {
-            console.log(this.$refs.post.querySelectorAll("h1,h2,h3,h4,h5,h6"))
             this.$refs.post.querySelectorAll("h1,h2,h3,h4,h5,h6").forEach((item, index) => {
               item.id = item.localName + '-' + index;
               this.category.push({
