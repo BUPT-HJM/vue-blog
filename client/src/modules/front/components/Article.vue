@@ -8,15 +8,17 @@
       <h1 class="article__title">{{post.title}}</h1>
       <p class="article__time">{{post.createTime}}</p>
       <div class="article__content markdown-body" v-html="compiledPost" ref="post">
+      </div>
     </div>
-    </div>
+    <Foot></Foot>  
   </div>
 </template>
 <script>
-import articleApi from '../../../api/article.js'
-import marked from '../../../lib/marked.js'
+import articleApi from 'api/article.js'
+import marked from 'lib/marked.js'
 import Side from './common/Side.vue'
-import Loading from '../../../components/Loading.vue'
+import Foot from './common/Foot.vue'
+import Loading from 'publicComponents/Loading.vue'
 export default {
   name: 'article',
   computed: {},
@@ -32,7 +34,8 @@ export default {
   },
   components: {
     Side,
-    Loading
+    Loading,
+    Foot
   },
   mounted() {
     this.hash = window.location.hash
@@ -54,7 +57,7 @@ export default {
           this.post = res.data.article;
           this.compiledPost = this.compiledMarkdown(this.post.content)
             //this.getCurrentArticle(0);
-          setTimeout(() => {
+          this.$nextTick(() => {
             this.$refs.post.querySelectorAll("h1,h2,h3,h4,h5,h6").forEach((item, index) => {
               item.id = item.localName + '-' + index;
               this.category.push({
@@ -79,7 +82,7 @@ export default {
 .article
   max-width 850px
   margin 80px auto 0 auto
-  padding 0 20px 20px 20px
+  padding 0 20px 0px 20px
   &__main
     margin-left 250px
   &__title

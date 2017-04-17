@@ -4,12 +4,17 @@
     <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="sideBox__img">
     <p class="sideBox__name">小深刻的秋鼠</p>
     <p class="sideBox__motto">Love Life, Love sharing</p>
+    <ul class="sideBox__iconList">
+      <li v-for="icon in iconList" class="sideBox__iconItem">
+        <a :href="icon.href"><i class="iconfont" :class="'icon-'+icon.name"></i></a>
+      </li>
+    </ul>
     <ul class="sideBox__tagList" v-if="isInList">
       <li v-for="tag in tagList" class="sideBox__tagItem" :class="{ 'sideBox__tagItem--active': (typeof selectTagArr.find(function(e){return e.id == tag.id}) !== 'undefined')}" @click="toggleSelect(tag.id, tag.name)">
         <span>{{tag.name}}</span>
       </li>
     </ul>
-    <div class="categoryBox" v-if="!isInList" :class="{ 'categoryBox--fixed': (scrollTop >236)}" ref="categoryBox">
+    <div class="categoryBox" v-if="!isInList" :class="{ 'categoryBox--fixed': (scrollTop > 270)}" ref="categoryBox">
       <p class="categoryBox__title">文章目录</p>
       <ul class="categoryBox__list">
         <li v-for="item in category" :class="'categoryBox__'+item.tagName">
@@ -20,8 +25,8 @@
   </div>
 </template>
 <script>
-import tagApi from '../../../../api/tag.js'
-import throttle from '../../../../lib/throttle.js'
+import tagApi from 'api/tag.js'
+import throttle from 'lib/throttle.js'
 export default {
   name: 'sideBox',
   data() {
@@ -29,7 +34,11 @@ export default {
       tagList: [],
       selectTagArr: [],
       sideBoxOpen: false,
-      scrollTop: 0
+      scrollTop: 0,
+      iconList: [{
+        name: 'github',
+        href: 'https://github.com/BUPT-HJM'
+      }]
     }
   },
   props: {
@@ -45,20 +54,23 @@ export default {
   mounted() {
     tagApi.getAllTags().then(res => {
       this.tagList = res.data.tagArr;
-    });
+    })
   },
   created() {
+    console.log('side created')
     this.$eventBus.$on('toggleSideBox', this.toggleSideBox);
     this.$eventBus.$on('closeSideBox', this.closeSideBox);
     this.$eventBus.$on('clearSelectTagArr', this.clearSelectTagArr)
-    window.addEventListener('scroll', throttle(this.getScrollTop, 50))
-    // document.addEventListener('click', this.closeSideBox)
-    // $(document).mouseup(function(e) {
-    //   var _con = $(' 目标区域 '); // 设置目标区域
-    //   if (!_con.is(e.target) && _con.has(e.target).length === 0) { // Mark 1
-    //     some code... // 功能代码
-    //   }
-    // });
+    if(!this.isInList) {
+       window.onscroll = throttle(this.getScrollTop, 30)
+    }
+  },
+  beforeDestroy() {
+    console.log('side beforeDestroy')
+    window.onscroll = null
+    this.$eventBus.$off('toggleSideBox', this.toggleSideBox);
+    this.$eventBus.$off('closeSideBox', this.closeSideBox);
+    this.$eventBus.$off('clearSelectTagArr', this.clearSelectTagArr)
   },
   methods: {
     toggleSideBox() {
@@ -95,15 +107,18 @@ export default {
         documentScrollTop = document.documentElement.scrollTop;　　
       }　　
       this.scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+      console.log(this.scrollTop)
     },
     clearSelectTagArr() {
       this.selectTagArr = []
     }
   },
   computed: {},
-  watch: {}
+  watch: {
+  }
 }
 </script>
+
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -125,7 +140,22 @@ export default {
       margin-bottom 5px
     &__motto
       color #bfbfbf
-      margin-bottom 10px
+      margin-bottom 8px
+    &__iconList
+      list-style none
+      margin-bottom 8px
+    &__iconItem
+      display inline-block
+      cursor pointer
+      a
+        text-decoration none
+        color #bfbfbf
+        .iconfont
+          font-size 28px
+          &:hover
+            color black
+      // &:hover
+      //   color $dark-blue
     &__tagList
       list-style none
     &__tagItem
@@ -226,3 +256,7 @@ export default {
         position static
         width auto
 </style>
+<style>
+  @import '../../assets/iconfont/iconfont.css'
+</style>
+

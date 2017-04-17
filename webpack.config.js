@@ -25,7 +25,9 @@ let config = {
     filename: '[name].js',
     publicPath: '/'
   },
-  externals: {},
+  externals: {
+    'simplemde': 'SimpleMDE'
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     // 开启全局的模块热替换(HMR)
@@ -37,7 +39,12 @@ let config = {
       filename: 'admin.html',
       template: CLIENT_FOLDER + '/src/modules/admin/index.html',
       inject: 'body',
-      chunks: productionEnv ? ['manifest_admin', 'vendor_admin', 'modules/admin'] : ['modules/admin'],
+      chunks: productionEnv ? ['modules/manifest_admin', 'modules/vendor_admin', 'modules/admin'] : ['modules/admin'],
+      minify: { // 压缩的方式
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
       //chunksSortMode: 'dependency'
     }),
 
@@ -45,7 +52,12 @@ let config = {
       filename: 'front.html',
       template: CLIENT_FOLDER + '/src/modules/front/index.html',
       inject: 'body',
-      chunks: productionEnv ? ['manifest_front', 'vendor_front', 'modules/front'] : ['modules/front'],
+      chunks: productionEnv ? ['modules/manifest_front', 'modules/vendor_front', 'modules/front'] : ['modules/front'],
+      minify: { // 压缩的方式
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
       //chunksSortMode: 'dependency'
     }),
 
@@ -55,7 +67,7 @@ let config = {
     new webpack.DefinePlugin({
       __RELEASE__: JSON.stringify(process.env.NODE_ENV === 'production'),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV === 'production' ? 'production' : 'development')
-    })
+    }),
   ],
   module: {
     rules: [{
@@ -64,7 +76,7 @@ let config = {
       options: {
         loaders: {
           styl: ['vue-style-loader', 'css-loader', 'stylus-loader'],
-          stylus: ['vue-style-loader', 'css-loader', 'stylus-loader']
+          stylus: ['vue-style-loader', 'css-loader', 'stylus-loader'],
         }
       }
     }, {
@@ -99,9 +111,14 @@ let config = {
     modules: [join(__dirname, './node_modules')],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
+      'vuex$': 'vuex/dist/vuex.esm.js',
+      'vue-router$': 'vue-router/dist/vue-router.esm.js',
       'simplemde$': 'simplemde/dist/simplemde.min.js',
       'highlight.js$': 'highlight.js/lib/highlight.js',
-      'fastclick': 'Fastclick'
+      'fastclick': 'fastclick/lib/fastclick.js',
+      'lib': resolve(__dirname, './client/src/lib'),
+      'api': resolve(__dirname, './client/src/api'),
+      'publicComponents': resolve(__dirname, './client/src/components'),
     }
   },
   cache: true
@@ -117,7 +134,7 @@ if (process.env.NODE_ENV === 'production') {
       use: [{
         loader: 'css-loader',
         options: {
-          minimize: false,
+          minimize: true,
           sourceMap: true
         }
       }, {
@@ -132,7 +149,7 @@ if (process.env.NODE_ENV === 'production') {
       use: [{
         loader: 'css-loader',
         options: {
-          minimize: false,
+          minimize: true,
           sourceMap: true
         }
       }, {
@@ -147,17 +164,24 @@ if (process.env.NODE_ENV === 'production') {
   config.plugins.splice(0, 2);
   config.plugins = config.plugins.concat([
     new webpack.optimize.UglifyJsPlugin({
+      // 最紧凑的输出
+      beautify: false,
+      // 删除所有的注释
+      comments: false,
       compress: {
-        warnings: false
-      },
-      sourceMap: true
-    }),
+        // 在UglifyJs删除没有用到的代码时不输出警告  
+        warnings: false,
+        // 删除所有的 `console` 语句
+        // 还可以兼容ie浏览器
+        drop_console: true,
+        // 内嵌定义了但是只用到一次的变量
+        collapse_vars: true,
+        // 提取出出现多次但是没有定义成变量去引用的静态值
+        reduce_vars: true,
+      }
+    }), //14452
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest_admin',
-      chunks: ['vendor_admin']
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor_admin',
+      name: 'modules/vendor_admin',
       chunks: ['modules/admin'],
       minChunks: function(module, count) {
         return (
@@ -170,11 +194,11 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest_front',
-      chunks: ['vendor_front']
+      name: 'modules/manifest_admin',
+      chunks: ['modules/vendor_admin']
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor_front',
+      name: 'modules/vendor_front',
       chunks: ['modules/front'],
       minChunks: function(module, count) {
         return (
@@ -185,6 +209,10 @@ if (process.env.NODE_ENV === 'production') {
           ) === 0
         )
       }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'modules/manifest_front',
+      chunks: ['modules/vendor_front']
     }),
     new CopyWebpackPlugin([{
       from: CLIENT_FOLDER + '/static',

@@ -30,8 +30,8 @@
 
 <script>
 import SimpleMDE from 'simplemde'
-import debounce from '../../../lib/debounce.js'
-import marked from '../../../lib/marked.js'
+import debounce from 'lib/debounce.js'
+import marked from 'lib/marked.js'
 import css from 'simplemde/dist/simplemde.min.css'
 
 import {
@@ -58,12 +58,11 @@ export default {
     ]),
   },
   mounted: function() {
-    setTimeout(() => {
-      // setTimeout 0为了正确拿到mapGetters的东西
+    this.$nextTick(() => {
       this.articleTitle = this.currentArticle.title;
       this.articleContent = this.currentArticle.content;
       simplemde.value(this.articleContent);
-    }, 0)
+    })
     simplemde = new SimpleMDE({
       autoDownloadFontAwesome: false,
       element: document.getElementById("editor"),

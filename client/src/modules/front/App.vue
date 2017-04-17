@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Top></Top> 
+    <Top></Top>
     <transition name="fade" mode="out-in">
       <keep-alive exclude="article">
         <router-view>
@@ -10,10 +10,10 @@
   </div>
 </template>
 
-
-
 <script>
 import Top from './components/common/Top.vue'
+import Fastclick from 'fastclick'
+Fastclick.attach(document.body)
 
 export default {
   name: 'app',
@@ -27,6 +27,7 @@ export default {
   @import 'assets/stylus/main.styl'
   #app
     width 100%
+    height 100%
 	.fade-enter-active, .fade-leave-active
     transition all .5s
 
@@ -37,6 +38,6 @@ export default {
     transform translateX(50px);
 
   .fade-leave-active
-    transform translateX(-50px);
-
+    transform translateX(-50px); 
+    
 </style>

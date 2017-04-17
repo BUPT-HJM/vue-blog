@@ -8,7 +8,7 @@
     "clean": "rimraf client/dist",
     "build:prod:json": "export NODE_ENV=production && npm run clean && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size --json > stats.json",
     "build:prod:detail": "export NODE_ENV=production && npm run clean && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size",
-    "build:prod": "export NODE_ENV=production && npm run clean && webpack --config webpack.config.js --colors --profile",
+    "build:prod": "export NODE_ENV=production && npm run clean && webpack --config webpack.config.js --colors --profile --progress",
     "start:prod": "NODE_ENV=production node server/start.js",
     "prod": "npm run build:prod && npm run start:prod"
   },
