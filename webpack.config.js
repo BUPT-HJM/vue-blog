@@ -7,6 +7,7 @@ const SERVER_FOLDER = resolve(__dirname, 'server');
 const productionEnv = process.env.NODE_ENV === 'production' ? true : false;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 let config = {
   devtool: '#cheap-module-eval-source-map',
@@ -29,6 +30,9 @@ let config = {
     'simplemde': 'SimpleMDE'
   },
   plugins: [
+    new CleanWebpackPlugin([
+      CLIENT_FOLDER + '/dist',
+    ]),
     new webpack.HotModuleReplacementPlugin(),
     // 开启全局的模块热替换(HMR)
 
@@ -172,7 +176,7 @@ if (process.env.NODE_ENV === 'production') {
       fallback: 'vue-style-loader'
     }),
   }
-  config.plugins.splice(0, 2);
+  config.plugins.splice(1, 2);
   config.plugins = config.plugins.concat([
     new webpack.optimize.UglifyJsPlugin({
       // 最紧凑的输出
@@ -232,7 +236,5 @@ if (process.env.NODE_ENV === 'production') {
     }])
   ]);
 }
-
-
 
 module.exports = config;

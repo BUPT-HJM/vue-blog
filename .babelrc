@@ -6,11 +6,5 @@
       "libraryName": "element-ui",
       "styleLibraryName": "theme-default"
     }
-  ]]],
-  "comments": false,
-  "env": {
-    "test": {
-      "plugins": [ "istanbul" ]
-    }
-  }
+  ]]]
 }

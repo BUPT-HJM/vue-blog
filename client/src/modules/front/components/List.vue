@@ -163,7 +163,7 @@ export default {
     font-size 20px
     text-align center
     span
-      color $dark-blue
+      color $blue
   &__loading
     position fixed
     top 50%
