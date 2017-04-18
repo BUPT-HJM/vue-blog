@@ -65,7 +65,7 @@ export default {
       display block
       width 300px
       height 50px
-      border 1px solid $light-text
+      border 1px solid $login-text 
       margin 0 auto
       padding-left 10px
     button
@@ -73,6 +73,6 @@ export default {
       width 300px
       height 50px
       margin 20px auto
-      background-color $dark-blue
-      color $white
+      background-color $blue
+      color white
 </style>

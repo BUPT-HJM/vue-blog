@@ -7,7 +7,7 @@
     <ul class="list__article">
       <li class="list__article__filterMsg" v-if="(selectTagArr.length !== 0)">
         筛选
-        <span>{{filterMsg}}</span>
+        <span>{{filterMsg}}</span> 
         分类
       </li>
       <template v-if="articleList.length!==0 && isLoading == false">
@@ -17,7 +17,9 @@
             <p class="list__article__item__time">{{article.createTime}}</p>
             <div class="list__article__item__abstract markdown-body" v-html="compiledMarkdown(article.abstract)"></div>
             <!-- <span v-for="tag in article.tags"> {{tag.name}}</span> -->
-            <p><router-link :to="'article/'+article.id" class="continue-reading">继续阅读...</router-link></p>
+            <p>
+              <router-link :to="'article/'+article.id" class="continue-reading">继续阅读...</router-link>
+            </p>
           </div>
         </li>
         <pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></pagination>
@@ -25,10 +27,11 @@
       <div v-if="articleList.length==0 && isLoading==false" class="msg-box">
         <p>暂时没有相关文章</p>
       </div>
-      <Foot :isFixed="footerIsFixed"></Foot>  
+      <Foot :isFixed="footerIsFixed"></Foot>
     </ul>
   </div>
 </template>
+
 <script>
 import Pagination from 'publicComponents/Pagination.vue'
 import Loading from 'publicComponents/Loading.vue'
@@ -114,7 +117,6 @@ export default {
       });
     }
   },
-
   mounted() {
     articleApi.getAllPublishArticles('','',this.limit).then(res => {
       this.allPage = res.data.allPage;
@@ -131,41 +133,6 @@ export default {
 @import '../assets/stylus/_settings.styl'
 .list
   padding 10px
-  &__sideBox
-    width 200px
-    float left
-    text-align center
-    &__img
-      width 150px
-      border-radius 50%
-      box-shadow 0 0 2px black
-      margin-top 10px
-    &__name
-      color #808080
-      font-size 20px
-      margin-top 5px
-      margin-bottom 5px
-    &__motto
-      color #bfbfbf
-      margin-bottom 10px
-    
-    &__tagList
-      list-style none
-    &__tagItem
-      display inline-block
-      border 1px solid #bfbfbf
-      border-radius 4px
-      margin 5px
-      padding 10px
-      color #bfbfbf
-      cursor pointer
-      &:hover
-        color $dark-blue
-    &__tagItem--active
-      color $dark-blue
-      border 1px solid $dark-blue
-
-
   &__article
     //flex 1
     //max-width 800px

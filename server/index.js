@@ -12,7 +12,7 @@ import api from "./api";
 
 mongoose.Promise = Promise;
 // connect mongodb
-mongoose.connect(config.mongodb.url);
+mongoose.connect(config.mongodb.url, config.mongodbSecret);
 mongoose.connection.on('error', console.error);
 
 const app = new koa();

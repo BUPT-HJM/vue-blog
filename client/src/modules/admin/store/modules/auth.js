@@ -1,7 +1,6 @@
 import * as types from '../mutation-types'
 import api from '../../../../api/login.js'
 
-
 const state = {
   token: sessionStorage.getItem('token')
 };

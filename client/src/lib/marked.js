@@ -20,8 +20,9 @@ highlight.registerLanguage('scss', require('highlight.js/lib/languages/scss'));
 highlight.registerLanguage('sql', require('highlight.js/lib/languages/sql'));
 highlight.registerLanguage('stylus', require('highlight.js/lib/languages/stylus'));
 highlight.configure({
-  classPrefix: ''     // don't append class prefix
+  classPrefix: '' // don't append class prefix
 })
+// https://github.com/chjj/marked
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -31,11 +32,11 @@ marked.setOptions({
   breaks: true,
   smartLists: true,
   smartypants: true,
-  highlight: function (code,lang) {
-    if(!~languages.indexOf(lang)){
+  highlight: function(code, lang) {
+    if (!~languages.indexOf(lang)) {
       return highlight.highlightAuto(code).value;
     }
-    return highlight.highlight(lang,code).value;
+    return highlight.highlight(lang, code).value;
   }
 });
 export default marked

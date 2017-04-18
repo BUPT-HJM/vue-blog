@@ -7,7 +7,6 @@
       <li v-for="tag in tagList" @click="toggleSelectFn(tag.id)" class="list__tag__item" :class="{ 'list__tag__item--active': selectTagArr.includes(tag.id)}">
         <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;
         <span>{{tag.name}}</span>
-        <!-- <i class="fa fa-check" aria-hidden="true" v-if="selectTagArr.includes(tag.id)"></i> -->
         <i class="fa fa-trash-o" aria-hidden="true" @click.stop="deleteTagFn(tag.id)"></i>
       </li>
     </ul>
@@ -22,14 +21,13 @@
           <p class="list__article__item__publish" v-if="article.publish">
             已发布
           </p>
-          <!-- <i class="fa fa-trash-o" aria-hidden="true" @click.stop="deleteArticle" v-if="currentArticle.index == index"></i> -->
         </div>
-       <!--  <p class="list__article__item__abstract">{{ article.abstract }}</p> -->
       </li>
       <pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></pagination>
     </ul>
   </div>
 </template>
+
 
 
 <script>
@@ -55,17 +53,11 @@ export default {
     Pagination
   },
   data() {
-    return {
-      "activeIndex": 0,
-      "searchKey": '',
-      // allPage: 0,
-      // curPage: 1,
-      // selectTagArr: []
-    }
+    return {}
   },
   filters: {
     cutTitle(value) {
-      if(value.length > 13) {
+      if (value.length > 13) {
         return value.substring(0, 13) + "..."
       } else {
         return value
@@ -166,10 +158,8 @@ export default {
 
   mounted() {
     this.getAllArticles().then(res => {
-      //this.allPage = res.data.allPage;
-      //this.getCurrentArticle(0);
       console.log("allPage:", this.allPage)
-      console.log("curPage:", this.curPage) 
+      console.log("curPage:", this.curPage)
     });
     this.getAllTags();
 
@@ -185,6 +175,7 @@ export default {
 }
 </script>
 
+
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
 .list
@@ -193,7 +184,7 @@ export default {
     width 100%
     font-size 25px
     padding 10px
-    color $dark-blue
+    color $blue
     span
       padding-left 15px
   &__tag
@@ -203,11 +194,10 @@ export default {
     flex-direction row
     flex-wrap wrap
     list-style none
-    //background-color $dark-blue
   &__tag__item
     //flex-grow 1
     flex-shrink 1
-    background-color $dark-blue
+    background-color $blue
     color white
     border-radius 5px
     text-align center
@@ -217,25 +207,24 @@ export default {
   &__tag__item--active
     background-color $orange
 
-
   &__article
     margin-top 5px
     list-style none
   &__article__button
     padding 10px
     font-size 25px
-    color $dark-blue
+    color $blue
     cursor pointer
   &__article__item
     position relative
     width 100%
     height 100px
-    background-color $grey
+    background-color $grey-bg
     padding 15px
     margin-bottom 5px
     cursor pointer
   &__article__item--active
-    border-left 10px solid $dark-blue
+    border-left 10px solid $blue
   &__article__item__info
     position absolute
     bottom 5px
@@ -251,5 +240,5 @@ export default {
     top -45px
     right -3px
     font-size 13px
-    color #aab2b3
+    color $grey-publish
 </style>

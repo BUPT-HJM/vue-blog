@@ -1,10 +1,14 @@
 <template>
   <ul class="pagination">
-    <li class="pagination__button" @click="prevPage"><</i>
+    <li class="pagination__button" @click="prevPage">
+      <
     </li>
-    <li class="pagination__item" v-for="page in pageArr" @click="switchPage(page)" :class="{'pagination__item--active':page==curPage}">{{page}}
+    <li class="pagination__item" v-for="page in pageArr" @click="switchPage(page)" :class="{'pagination__item--active':page==curPage}">
+      {{page}}
     </li>
-    <li class="pagination__button" @click="nextPage">><!-- <i class="fa fa-chevron-right" aria-hidden="true"> --></i></li>
+    <li class="pagination__button" @click="nextPage">
+      >
+    </li>
   </ul>
 </template>
 
@@ -75,12 +79,14 @@ export default {
         return;
       }
       console.log(page)
+      // 触发父组件的changePage方法，实现从父组件再修改props,单向数据流
       this.$emit('changePage', page)
     }
   },
   watch: {}
 }
 </script>
+
 
 <style lang="stylus" scoped>
 .pagination

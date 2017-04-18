@@ -77,6 +77,7 @@ let config = {
         loaders: {
           styl: ['vue-style-loader', 'css-loader', 'stylus-loader'],
           stylus: ['vue-style-loader', 'css-loader', 'stylus-loader'],
+          css: ['vue-style-loader', 'css-loader'],
         }
       }
     }, {
@@ -155,6 +156,16 @@ if (process.env.NODE_ENV === 'production') {
       }, {
         loader: 'stylus-loader',
         options: {
+          sourceMap: true
+        }
+      }],
+      fallback: 'vue-style-loader'
+    }),
+    css: ExtractTextPlugin.extract({
+      use: [{
+        loader: 'css-loader',
+        options: {
+          minimize: true,
           sourceMap: true
         }
       }],

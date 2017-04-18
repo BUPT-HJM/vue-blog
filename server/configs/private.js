@@ -1,12 +1,9 @@
-"use strict";
-
-let config = {
-    mongodbSecret: {
-        user: 'hjm',
-        pwd: 'hjm'
-    },
-    jwt: {
-    	secret: 'hjm'
-    }
+module.exports = {
+  mongodbSecret: {
+    user: 'hjm',
+    pwd: 'hjm'
+  },
+  jwt: {
+    secret: 'hjm'
+  }
 }
-export default config;

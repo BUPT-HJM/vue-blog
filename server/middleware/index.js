@@ -1,5 +1,3 @@
-'use strict';
-
 import logger from 'koa-logger';
 import bodyParser from 'koa-bodyparser';
 import convert from 'koa-convert';

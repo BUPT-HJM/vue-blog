@@ -3,7 +3,6 @@ import md5 from "md5";
 import jwt from 'jsonwebtoken'
 import config from '../configs/'
 
-
 export async function createArticle(ctx) {
   const title = ctx.request.body.title;
   const content = ctx.request.body.content;
@@ -120,8 +119,8 @@ export async function getAllPublishArticles(ctx) {
         ctx.throw(500, '服务器内部错误')
       });
     allNum = await Article.find({
-        publish: true
-      }).count().catch(err => {
+      publish: true
+    }).count().catch(err => {
       this.throw(500, '服务器内部错误')
     })
   } else {

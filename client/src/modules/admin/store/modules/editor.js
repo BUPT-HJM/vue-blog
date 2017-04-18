@@ -2,7 +2,6 @@ import * as types from '../mutation-types'
 import api from '../../../../api/article.js'
 import tagApi from '../../../../api/tag.js'
 
-
 const state = {
   articleList: [],
   tagList: [],
@@ -19,7 +18,6 @@ const state = {
   curPage: 1,
   selectTagArr: []
 };
-
 // getters
 const getters = {
   articleList: state => state.articleList,
@@ -36,10 +34,8 @@ const actions = {
       console.log(res.data)
       if (res.data.success) {
         const article = {
-            save: true
-          }
-          //Object.assign(article, res.data.article)
-          //commit(types.CREATE_ARTICLE, article);
+          save: true
+        }
       }
       return new Promise((resolve, reject) => {
         resolve(res);
@@ -143,8 +139,6 @@ const actions = {
           }
           commit(types.GET_CURRENT_ARTICLE, article)
         }
-        //commit(types.DELETE_ARTICLE, index)
-
       }
       return new Promise((resolve, reject) => {
         resolve(res);
@@ -192,8 +186,6 @@ const actions = {
     })
   },
   deleteCurrentTag({ commit, state }, { index }) {
-    //console.log(2)
-    console.log(index)
     commit(types.DELETE_CURRENT_TAG, index)
     return new Promise((resolve, reject) => {
       resolve();

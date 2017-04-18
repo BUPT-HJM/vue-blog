@@ -10,9 +10,10 @@
       <div class="article__content markdown-body" v-html="compiledPost" ref="post">
       </div>
     </div>
-    <Foot></Foot>  
+    <Foot></Foot>
   </div>
 </template>
+
 <script>
 import articleApi from 'api/article.js'
 import marked from 'lib/marked.js'
@@ -29,7 +30,9 @@ export default {
       category: [],
       hash: '',
       loadingMsg: '加载中...',
-      isLoading: true
+      isLoading: true,
+      footerIsFixed: false,
+      over: false
     }
   },
   components: {
@@ -58,6 +61,7 @@ export default {
           this.compiledPost = this.compiledMarkdown(this.post.content)
             //this.getCurrentArticle(0);
           this.$nextTick(() => {
+            // 提取文章标签，生成目录
             this.$refs.post.querySelectorAll("h1,h2,h3,h4,h5,h6").forEach((item, index) => {
               item.id = item.localName + '-' + index;
               this.category.push({
@@ -68,12 +72,14 @@ export default {
             })
             window.location.hash = this.hash
             this.isLoading = false
-          }, 0)
+          })
         });
     }
   }
 }
 </script>
+
+
 
 
 
@@ -85,6 +91,7 @@ export default {
   padding 0 20px 0px 20px
   &__main
     margin-left 250px
+    min-height 100%
   &__title
     font-size 28px
   &__time
@@ -110,8 +117,4 @@ export default {
       left 50%
       width 300px
       margin-left -(@width/2)
-    
-    
-  
-    
 </style>

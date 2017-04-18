@@ -58,6 +58,7 @@ export default {
     ]),
   },
   mounted: function() {
+    // dom渲染完成后置入编辑器当前文章内容
     this.$nextTick(() => {
       this.articleTitle = this.currentArticle.title;
       this.articleContent = this.currentArticle.content;
@@ -113,6 +114,7 @@ export default {
             message: '创建成功',
             type: 'success'
           });
+          // 这里不再需要getAllArticles因为有watch函数监听变化
           //this.getAllArticles().then(res => {
           //  this.clearSelect();
           //})
@@ -122,6 +124,7 @@ export default {
         this.$message.error(err.response.data.error)
       })
     },
+    // 保存文章引入去抖
     saveArticle: debounce(function({
       title = this.articleTitle,
       content = this.articleContent,
@@ -303,11 +306,11 @@ export default {
     padding 15px
     input
       padding 7px
-      background-color $grey
+      background-color $grey-bg
       width 350px
     &__title
       font-size 25px
-      color $dark-blue
+      color $blue
       padding 10px
     &__input-box
       font-size 17px
@@ -323,19 +326,18 @@ export default {
         margin-right 20px  
         verticle-align center
         text-algin center
-        //border 1px solid black
         border-radius 5px
         padding 0 5px
         cursor pointer
       li:hover
-        background-color $grey
+        background-color $grey-bg
     &__button-box
       float right
       margin 10px
       button
         width 80px
         padding 5px
-        background-color $dark-blue
+        background-color $blue
         color white
         margin-left 15px
 </style>

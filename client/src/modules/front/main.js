@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import Axios from "axios";
@@ -10,6 +8,7 @@ import App from './App'
 import Blog from './components/Blog.vue'
 import Article from './components/Article.vue'
 
+// 解决移动端300ms延迟问题
 import Fastclick from 'fastclick'
 Fastclick.attach(document.body)
 
@@ -17,9 +16,10 @@ Fastclick.attach(document.body)
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Blog},
+  { path: '/', component: Blog },
   { path: '/article/:id', component: Article },
-  { path: '/tag/:id', component: Blog }
+  { path: '/tag/:id', component: Blog },
+  { path: '*', component: Blog }
 ]
 
 const router = new VueRouter({
@@ -27,13 +27,14 @@ const router = new VueRouter({
   routes
 })
 
+// 定义全局event bus,不使用vuex管理
 var EventBus = new Vue();
 Object.defineProperties(Vue.prototype, {
-    $eventBus: {
-        get: function () {
-            return EventBus;
-        }
+  $eventBus: {
+    get: function() {
+      return EventBus;
     }
+  }
 });
 
 /* eslint-disable no-new */

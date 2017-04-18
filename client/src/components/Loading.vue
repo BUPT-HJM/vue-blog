@@ -6,7 +6,7 @@
       <div class="sk-cube4 sk-cube"></div>
       <div class="sk-cube3 sk-cube"></div>
     </div>
-    <p>{{loadingMsg}}</p>
+    <p>{{ loadingMsg }}</p>
   </div>
 </template>
 
@@ -16,28 +16,26 @@ export default {
   data() {
     return {}
   },
-  computed: {
-  },
+  computed: {},
   props: {
     loadingMsg: {
       type: String,
       require: true
     }
   },
-  methods: {
-
-  },
+  methods: {},
   watch: {}
 }
 </script>
 
 <style lang="stylus" scoped>
 .loading
-    text-align center
-    color #0288D1
-    .sk-folding-cube .sk-cube:before
-      background-color #0288D1
+  text-align center
+  color #0288D1
+  .sk-folding-cube .sk-cube:before
+    background-color #0288D1
 </style>
+
 <style scoped>
 .sk-folding-cube {
   margin: 20px auto;

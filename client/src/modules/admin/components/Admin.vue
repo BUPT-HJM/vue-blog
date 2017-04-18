@@ -6,11 +6,18 @@
     <div class="admin__editor">
       <editor></editor>
     </div>
+    <div class="admin__logout">
+      <i class="fa fa-power-off" aria-hidden="true" @click="logout"></i>
+    </div>
   </div>
 </template>
+
 <script>
 import Editor from './Editor.vue'
 import List from './List.vue'
+import {
+  mapMutations
+} from 'vuex'
 export default {
   name: 'admin',
   components: {
@@ -20,20 +27,33 @@ export default {
   data() {
     return {}
   },
-  created() { //写成created：{}让你找不到错误= =
+  created() {
 
   },
   methods: {
+    ...mapMutations({
+      deleteToken: 'DELETE_TOKEN'
+    }),
+    logout() {
+      this.$confirm('此操作将退出系统, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteToken()
+        this.$router.push('/admin/login')
+      }).catch(() => {
+
+      })
+    }
   },
-  computed: {
-  }
+  computed: {}
 }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style lang="stylus" scoped>
+@import '../assets/stylus/_settings.styl'
 .admin
-  //display flex
-  //flex-flow row wrap
   &__list
     position fixed 
     left 0
@@ -43,9 +63,12 @@ export default {
     overflow-y auto
     overflow-x hidden
   &__editor
-    // width 200px
     margin-left 500px
-    // flex-grow 1
-    // flex-shrink 1
-    // flex-wrap nowrap
+  &__logout
+    position absolute
+    top 22px
+    right 30px
+    font-size 28px
+    cursor pointer
+    color $blue
 </style>

@@ -1,29 +1,32 @@
 <template>
-  <div class="sideBox" :class="{ 'sideBox--open': sideBoxOpen}">
-    <div class="mask" @click="closeSideBox"></div>
-    <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="sideBox__img">
-    <p class="sideBox__name">小深刻的秋鼠</p>
-    <p class="sideBox__motto">Love Life, Love sharing</p>
-    <ul class="sideBox__iconList">
-      <li v-for="icon in iconList" class="sideBox__iconItem">
-        <a :href="icon.href"><i class="iconfont" :class="'icon-'+icon.name"></i></a>
-      </li>
-    </ul>
-    <ul class="sideBox__tagList" v-if="isInList">
-      <li v-for="tag in tagList" class="sideBox__tagItem" :class="{ 'sideBox__tagItem--active': (typeof selectTagArr.find(function(e){return e.id == tag.id}) !== 'undefined')}" @click="toggleSelect(tag.id, tag.name)">
-        <span>{{tag.name}}</span>
-      </li>
-    </ul>
-    <div class="categoryBox" v-if="!isInList" :class="{ 'categoryBox--fixed': (scrollTop > 270)}" ref="categoryBox">
-      <p class="categoryBox__title">文章目录</p>
-      <ul class="categoryBox__list">
-        <li v-for="item in category" :class="'categoryBox__'+item.tagName">
-          <a :href="item.href">{{item.text}}</a>
+  <div class="sideBox">
+    <div class="sideBox__mask" @click="closeSideBox"></div>
+    <div class="sideBox__main" :class="{ 'sideBox__main--open': sideBoxOpen}">
+      <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="sideBox__img" @click="backToIndex">
+      <p class="sideBox__name">小深刻的秋鼠</p>
+      <p class="sideBox__motto">Love Life, Love sharing</p>
+      <ul class="sideBox__iconList">
+        <li v-for="icon in iconList" class="sideBox__iconItem">
+          <a :href="icon.href"><i class="iconfont" :class="'icon-'+icon.name"></i></a>
         </li>
       </ul>
+      <ul class="sideBox__tagList" v-if="isInList">
+        <li v-for="tag in tagList" class="sideBox__tagItem" :class="{ 'sideBox__tagItem--active': (typeof selectTagArr.find(function(e){return e.id == tag.id}) !== 'undefined')}" @click="toggleSelect(tag.id, tag.name)">
+          <span>{{tag.name}}</span>
+        </li>
+      </ul>
+      <div class="categoryBox" v-if="!isInList" :class="{ 'categoryBox--fixed': (scrollTop > 270)}" ref="categoryBox">
+        <p class="categoryBox__title">文章目录</p>
+        <ul class="categoryBox__list">
+          <li v-for="item in category" :class="'categoryBox__'+item.tagName">
+            <a :href="item.href">{{item.text}}</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
+
 <script>
 import tagApi from 'api/tag.js'
 import throttle from 'lib/throttle.js'
@@ -63,7 +66,7 @@ export default {
     this.$eventBus.$on('clearSelectTagArr', this.clearSelectTagArr)
     if(!this.isInList) {
        window.onscroll = throttle(this.getScrollTop, 30)
-    }
+    } 
   },
   beforeDestroy() {
     console.log('side beforeDestroy')
@@ -73,6 +76,9 @@ export default {
     this.$eventBus.$off('clearSelectTagArr', this.clearSelectTagArr)
   },
   methods: {
+    backToIndex() {
+      this.$router.push('/')
+    },
     toggleSideBox() {
       this.sideBoxOpen = !this.sideBoxOpen
     },
@@ -119,8 +125,6 @@ export default {
 }
 </script>
 
-
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
   @import '../../assets/stylus/_settings.styl'
@@ -133,13 +137,14 @@ export default {
       border-radius 50%
       box-shadow 0 0 2px black
       margin-top 10px
+      cursor pointer
     &__name
-      color #808080
+      color $grey-dark
       font-size 20px
       margin-top 5px
       margin-bottom 5px
     &__motto
-      color #bfbfbf
+      color $grey
       margin-bottom 8px
     &__iconList
       list-style none
@@ -149,28 +154,28 @@ export default {
       cursor pointer
       a
         text-decoration none
-        color #bfbfbf
+        color $grey
         .iconfont
           font-size 28px
           &:hover
             color black
       // &:hover
-      //   color $dark-blue
+      //   color $blue
     &__tagList
       list-style none
     &__tagItem
       display inline-block
-      border 1px solid #bfbfbf
+      border 1px solid $grey
       border-radius 4px
       margin 5px
       padding 10px
-      color #bfbfbf
+      color $grey
       cursor pointer
       &:hover
-        color $dark-blue
+        color $blue
     &__tagItem--active
-      color $dark-blue
-      border 1px solid $dark-blue
+      color $blue
+      border 1px solid $blue
     .categoryBox
       padding-left 20px
       padding-right 15px
@@ -190,13 +195,13 @@ export default {
         word-wrap break-word
         word-break all
         a
-          color #bfbfbf
+          color $grey
           text-decoration none
           margin-left -18px
           word-wrap break-word
           word-break break-all
           &:hover
-            color $dark-blue 
+            color $blue 
             text-decoration underline
       &__h1 
         margin-left 0 
@@ -210,6 +215,8 @@ export default {
         margin-left 80px 
       &__h6
         margin-left 100px
+    &__mask
+      display none
     .categoryBox--fixed
       position fixed
       top 60px 
@@ -218,40 +225,41 @@ export default {
       width 200px     
   @media screen and (max-width: 850px) 
     .sideBox
-      position fixed
-      left 0px
-      top 60px
-      bottom 0
-      width 250px
-      transform translateX(-250px)
-      -webkit-transform translateX(-250px)
-      transition transform 0.3s
-      -webkit-transtion transform 0.3s
-      background-color white
-      overflow-x hidden
-      overflow-y auto
-      .mask
+      position absolute
+      top 0 
+      left 0
+      &__main
         position fixed
-        top 0
-        left 0
+        left 0px
+        top 60px
         bottom 0
-        width 100vw
-        height 9999px
-        display none
-      &--open
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        z-index 2
-        transform translateX(0px)
-        -webkit-transform translateX(0px)
+        width 250px
+        transform translateX(-250px)
+        -webkit-transform translateX(-250px)
         transition transform 0.3s
         -webkit-transtion transform 0.3s
-        .mask
-          display block
-          z-index -1
+        background-color white
+        overflow-x hidden
+        overflow-y auto
+        &--open
+          box-shadow: 0 0 10px rgba(0,0,0,0.2);
+          z-index 2
+          transform translateX(0px)
+          -webkit-transform translateX(0px)
+          transition transform 0.3s
+          -webkit-transtion transform 0.3s
+      &__mask
+        position fixed
+        top 60px
+        left 250px
+        right 0
+        bottom 0
+        display block
+        z-index 1
       &__tagItem:hover
-        color #bfbfbf
+        color $grey
       &__tagItem--active:hover
-        color $dark-blue
+        color $blue
       .categoryBox--fixed
         position static
         width auto

@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import Axios from "axios";
@@ -15,15 +13,16 @@ import Admin from './components/Admin.vue'
 
 import store from './store'
 
+// 按需引入element-ui相关弹出
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
-Vue.prototype.$message = (options) => {
+Vue.prototype.$message = (options) => { //重新定义默认参数
   options = Object.assign(options, { duration: 500 });
   return Message(options);
 }
-Vue.prototype.$message.error = (err) => {
+Vue.prototype.$message.error = (err) => { //重新定义默认参数
   var options = {
     message: err,
     duration: 500,
@@ -32,18 +31,15 @@ Vue.prototype.$message.error = (err) => {
   return Message(options);
 }
 
-
 Vue.use(VueRouter)
 
 const routes = [
   { path: '/admin/login', component: Login, meta: { authPage: true } },
-  { path: '/admin', component: Admin }
-  // {
-  //   path: '*',
-  //   redirect: '/admin' // 输入其他不存在的地址自动跳回首页
-  // }
+  { path: '/admin', component: Admin }, {
+    path: '*',
+    redirect: '/admin' // 输入其他不存在的地址自动跳回首页
+  }
 ]
-
 
 const router = new VueRouter({
   mode: 'history',
@@ -71,20 +67,16 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-// Add a response interceptor
-Axios.interceptors.response.use(function (response) {
-    // Do something with response data
-    return response;
-  }, function (error) {
-    if(error.response.data.error.indexOf("token expired") !== -1) {
-      store.commit("DELETE_TOKEN")
-    }
-    // Do something with response error
-    return Promise.reject(error);
+// axios拦截返回，拦截token过期
+Axios.interceptors.response.use(function(response) {
+  return response;
+}, function(error) {
+  if (error.response.data.error.indexOf("token expired") !== -1) {
+    store.commit("DELETE_TOKEN")
+  }
+  return Promise.reject(error);
 });
 
-
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   render: h => h(App),

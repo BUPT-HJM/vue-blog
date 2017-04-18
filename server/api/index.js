@@ -1,5 +1,3 @@
-'use strict';
-
 import compose from 'koa-compose';
 import Router from 'koa-router';
 import convert from 'koa-convert';
@@ -12,7 +10,6 @@ export default function api() {
     prefix: config.app.baseApi
   });
   Object.keys(routes).forEach(name => {
-    // console.log(name)
     return routes[name](router)
   });
   return convert.compose([
