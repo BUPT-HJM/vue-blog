@@ -194,6 +194,7 @@ export default {
     flex-direction row
     flex-wrap wrap
     list-style none
+    align-content flex-start
   &__tag__item
     //flex-grow 1
     flex-shrink 1
@@ -204,6 +205,7 @@ export default {
     margin 5px
     padding 7px
     cursor pointer
+    height 36px
   &__tag__item--active
     background-color $orange
 

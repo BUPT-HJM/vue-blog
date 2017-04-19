@@ -47,7 +47,7 @@ export default {
       this.selectTagArr.forEach((item) => {
         msg += item.name + '、'
       })
-      return msg.replace(/、$/,'')
+      return msg.replace(/、$/, '')
     }
   },
   components: {
@@ -73,6 +73,14 @@ export default {
   },
   created() {
     this.$eventBus.$on('filterListByTag', this.filterListByTag);
+    this.$nextTick(() => {
+      if (document.querySelector('.list__article').getBoundingClientRect().height < 550) {
+        this.footerIsFixed = true
+      } else {
+        this.footerIsFixed = false
+      }
+    })
+
   },
   methods: {
     compiledMarkdown(value) {
@@ -85,49 +93,52 @@ export default {
         this.curPage = cur;
       });
     },
-    filterListByTag({tag}) {
-      if(this.selectTagArr.length == 0 && tag.length == 0) {
+    filterListByTag({
+      tag
+    }) {
+      if (this.selectTagArr.length == 0 && tag.length == 0) {
         return;
       }
       this.isLoading = true
       this.selectTagArr = tag
       this.searchTag = []
-      if(tag.length) {
+      if (tag.length) {
         tag.forEach((item) => {
           this.searchTag.push(item.id)
         })
       }
-      articleApi.getAllPublishArticles(this.searchTag,'',this.limit).then(res => {
+      articleApi.getAllPublishArticles(this.searchTag, '', this.limit).then(res => {
         this.allPage = res.data.allPage;
         this.articleList = res.data.articleArr;
         this.isLoading = false
-        if(this.articleList.length == 0) {
+        if (this.articleList.length == 0) {
           this.footerIsFixed = true
         } else {
           this.footerIsFixed = false
         }
         this.$nextTick(() => {
           // DOM updated
-          if(document.querySelector('.list__article').getBoundingClientRect().height < 550) {
-              this.footerIsFixed = true
-           } else {
-              this.footerIsFixed = false
-           }
-        })   
+          if (document.querySelector('.list__article').getBoundingClientRect().height < 550) {
+            this.footerIsFixed = true
+          } else {
+            this.footerIsFixed = false
+          }
+        })
       });
     }
   },
   mounted() {
-    articleApi.getAllPublishArticles('','',this.limit).then(res => {
+    articleApi.getAllPublishArticles('', '', this.limit).then(res => {
       this.allPage = res.data.allPage;
       this.articleList = res.data.articleArr;
       this.isLoading = false;
     });
   },
-  watch: {
-  }
+  watch: {}
 }
 </script>
+
+
 
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
