@@ -93,7 +93,8 @@ export default {
     margin-left 250px
     min-height 100%
   &__title
-    font-size 28px
+    font-size 24px
+    word-break break-all
   &__time
     color #7f8c8d
     font-weight 400

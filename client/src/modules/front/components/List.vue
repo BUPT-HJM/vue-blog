@@ -157,7 +157,8 @@ export default {
     margin-bottom 5px
     
   &__article__item__title
-    font-size 28px
+    font-size 24px
+    word-break break-all
     a
       text-decoration none
       color black

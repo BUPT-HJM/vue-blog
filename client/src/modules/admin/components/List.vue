@@ -57,8 +57,8 @@ export default {
   },
   filters: {
     cutTitle(value) {
-      if (value.length > 25) {
-        return value.substring(0, 25) + "..."
+      if (value.length > 23) {
+        return value.substring(0, 23) + "..."
       } else {
         return value
       }
