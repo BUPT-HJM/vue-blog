@@ -130,10 +130,13 @@ let config = {
 }
 
 if (process.env.NODE_ENV === 'production') {
+  // 删除devtool
   delete config.devtool;
+  // 删除webpack-hot-middleware
   config.entry['modules/admin'].splice(0, 1);
   config.entry['modules/front'].splice(0, 1);
   config.output.filename = '[name].[chunkhash:8].min.js';
+  // 提取css
   config.module.rules[0].options.loaders = {
     styl: ExtractTextPlugin.extract({
       use: [{
@@ -176,6 +179,7 @@ if (process.env.NODE_ENV === 'production') {
       fallback: 'vue-style-loader'
     }),
   }
+  // 删除HotModuleReplacementPlugin和NamedModulesPlugin
   config.plugins.splice(1, 2);
   config.plugins = config.plugins.concat([
     new webpack.optimize.UglifyJsPlugin({
@@ -194,7 +198,8 @@ if (process.env.NODE_ENV === 'production') {
         // 提取出出现多次但是没有定义成变量去引用的静态值
         reduce_vars: true,
       }
-    }), //14452
+    }),
+    // 分别提取vendor、manifest
     new webpack.optimize.CommonsChunkPlugin({
       name: 'modules/vendor_admin',
       chunks: ['modules/admin'],
@@ -229,6 +234,7 @@ if (process.env.NODE_ENV === 'production') {
       name: 'modules/manifest_front',
       chunks: ['modules/vendor_front']
     }),
+    // copy static 
     new CopyWebpackPlugin([{
       from: CLIENT_FOLDER + '/static',
       to: CLIENT_FOLDER + '/dist/static',
