@@ -1,15 +1,15 @@
 {
-  "name": "vue-test",
+  "name": "vue-blog",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "description": "a blog platform built with vue2, koa2 and mongo",
   "scripts": {
-    "start": "nodemon server/start.js",
-    "build:prod:json": "export NODE_ENV=production && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size --json > stats.json",
-    "build:prod:detail": "export NODE_ENV=production && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size",
-    "build:prod": "export NODE_ENV=production && webpack --config webpack.config.js --colors --profile --progress",
-    "start:prod": "NODE_ENV=production node server/start.js",
-    "prod": "npm run build:prod && npm run start:prod"
+    "dev": "nodemon server/start.js",
+    "start": "npm run build && npm run prod",
+    "prod": "NODE_ENV=production node server/start.js",
+    "build": "export NODE_ENV=production && webpack --config webpack.config.js --colors --profile --progress",
+    "build:json": "export NODE_ENV=production && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size --json > stats.json",
+    "build:detail": "export NODE_ENV=production && webpack --config webpack.config.js --colors --profile --display-modules --sort-modules-by size"
   },
   "dependencies": {
     "axios": "^0.16.0",
