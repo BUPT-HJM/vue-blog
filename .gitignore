@@ -1,10 +1,10 @@
 .DS_Store
 node_modules/
 **/dist/
-npm-debug.log
-debug.log
-yarn-error.log
+*.log
+*.pid
 stats.json
 server/configs/private.js
 test-code/
+server/logs/*.log
 
