@@ -13,11 +13,11 @@
     <ul class="list__article">
       <li @click="createArticle" class="list__article__button"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;新建文章</li>
       <li v-for="(article, index) in articleList" @click="switchArticle(index)" class="list__article__item" :class="{'list__article__item--active': currentArticle.index == index}">
-        <h1>{{ article.title | cutTitle}}</h1>
+        <h1 class="list__article__item__title">{{ article.title | cutTitle}}</h1>
         <div class="list__article__item__info">
           <i class="fa fa-tag" aria-hidden="true"></i>
           <span v-for="tag in article.tags"> {{tag.name}}</span>
-          <p class="list__article__item__abstract"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; {{article.createTime}}</p>
+          <p class="list__article__item__createTime"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; {{article.createTime}}</p>
           <p class="list__article__item__publish" v-if="article.publish">
             已发布
           </p>
@@ -57,8 +57,8 @@ export default {
   },
   filters: {
     cutTitle(value) {
-      if (value.length > 13) {
-        return value.substring(0, 13) + "..."
+      if (value.length > 25) {
+        return value.substring(0, 25) + "..."
       } else {
         return value
       }
@@ -212,6 +212,8 @@ export default {
   &__article
     margin-top 5px
     list-style none
+  &__article__item__title
+    font-size 22px
   &__article__button
     padding 10px
     font-size 25px
