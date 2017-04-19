@@ -71,7 +71,7 @@ router.beforeEach((to, from, next) => {
 Axios.interceptors.response.use(function(response) {
   return response;
 }, function(error) {
-  if (error.response.data.error.indexOf("token expired") !== -1) {
+  if (error.response.data.error.indexOf("token") !== -1) {
     store.commit("DELETE_TOKEN")
   }
   return Promise.reject(error);
