@@ -73,14 +73,20 @@ export default {
   },
   created() {
     this.$eventBus.$on('filterListByTag', this.filterListByTag);
-    this.$nextTick(() => {
-      if (document.querySelector('.list__article').getBoundingClientRect().height < 550) {
-        this.footerIsFixed = true
-      } else {
-        this.footerIsFixed = false
-      }
-    })
-
+  },
+  mounted() {
+    articleApi.getAllPublishArticles('', '', this.limit).then(res => {
+      this.allPage = res.data.allPage;
+      this.articleList = res.data.articleArr;
+      this.isLoading = false;
+      this.$nextTick(() => {
+        if (document.querySelector('.list__article').getBoundingClientRect().height < 550) {
+          this.footerIsFixed = true
+        } else {
+          this.footerIsFixed = false
+        }
+      })
+    });
   },
   methods: {
     compiledMarkdown(value) {
@@ -127,31 +133,18 @@ export default {
       });
     }
   },
-  mounted() {
-    articleApi.getAllPublishArticles('', '', this.limit).then(res => {
-      this.allPage = res.data.allPage;
-      this.articleList = res.data.articleArr;
-      this.isLoading = false;
-    });
-  },
   watch: {}
 }
 </script>
-
-
 
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
 .list
   padding 10px
   &__article
-    //flex 1
-    //max-width 800px
-    margin-top 5px
     list-style none
     margin-left 250px
   &__article__item
-    //position relative
     margin 0 auto
     padding 10px
     margin-bottom 5px
@@ -166,6 +159,7 @@ export default {
     color #7f8c8d
     font-weight 400
     margin-bottom 10px
+    margin-top 2px
   &__article__item__abstract
     margin-bottom 5px
   .continue-reading

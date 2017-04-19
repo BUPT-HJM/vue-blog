@@ -79,10 +79,6 @@ export default {
 }
 </script>
 
-
-
-
-
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
 .article

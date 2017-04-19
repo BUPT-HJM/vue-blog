@@ -163,6 +163,7 @@ export default {
       //   color $blue
     &__tagList
       list-style none
+      padding 10px
     &__tagItem
       display inline-block
       border 1px solid $grey
