@@ -45,8 +45,6 @@ if (process.env.NODE_ENV !== 'production') {
   let compiler = webpack(webpackConfig);
   app.use(koaWebpack({
     compiler: compiler,
-    // config: {
-    // },
     dev: {
       //noInfo: true,
       stats: {

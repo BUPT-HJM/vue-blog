@@ -34,7 +34,7 @@ export async function createArticle(ctx) {
   });
   await Article.populate(createResult, { path: 'tags' }, function(err, result) {
     createResult = result;
-    console.log(result)
+    // console.log(result)
 
   });
   console.log('文章创建成功');
@@ -71,7 +71,7 @@ export async function getAllArticles(ctx) {
     })
   } else {
     let tagArr = tag.split(',')
-    console.log(tagArr)
+    // console.log(tagArr)
     articleArr = await Article.find({
         tags: { "$in": tagArr },
       })
@@ -125,7 +125,7 @@ export async function getAllPublishArticles(ctx) {
     })
   } else {
     let tagArr = tag.split(',')
-    console.log(tagArr)
+    // console.log(tagArr)
     articleArr = await Article.find({
         tags: { "$in": tagArr },
         publish: true
@@ -156,7 +156,7 @@ export async function getAllPublishArticles(ctx) {
 
 
 export async function modifyArticle(ctx) {
-  console.log(ctx.request.body)
+  // console.log(ctx.request.body)
   const id = ctx.params.id;
   const title = ctx.request.body.title;
   const content = ctx.request.body.content;

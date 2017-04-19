@@ -10,11 +10,29 @@ let config = {
   jwt: {
     secret: 'me' //默认
   },
-  mongodbSecret: {
+  mongodbSecret: { //mongodb用户和密码
     user: '',
-    pwd: ''
+    pass: ''
   },
+  admin: {  //后台初始化的用户名密码
+  	user: 'admin',
+  	pwd: 'password'
+  }
 }
+// 可在private.js定义自己私有的配置
+// module.exports = {
+//   mongodbSecret: {
+//     user: '',
+//     pass: ''
+//   },
+//   jwt: {
+//     secret: ''
+//   },
+//   admin: {
+//   	 user: '',
+//   	 pwd: ''
+//   }
+// }
 if (fs.existsSync(__dirname + '/private.js')) {
   config = Object.assign(config, require('./private.js'));
 }
