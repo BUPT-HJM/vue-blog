@@ -27,13 +27,13 @@ app.use(api());
 app.use(serve('./client/static'));
 
 app.use(convert(historyApiFallback({
-  verbose: true,
+  verbose: process.env.NODE_ENV == 'production' ? false : true,
   index: '/front.html',
   rewrites: [
-    { from: /^\/admin$/, to: '/admin.html'},
-    { from: /^\/admin\/login/, to: '/admin.html'},
-    { from: /^\/$/, to: '/front.html'},
-    { from: /^\/article/, to: '/front.html'}
+    { from: /^\/admin$/, to: '/admin.html' },
+    { from: /^\/admin\/login/, to: '/admin.html' },
+    { from: /^\/$/, to: '/front.html' },
+    { from: /^\/article/, to: '/front.html' }
   ]
 })))
 
