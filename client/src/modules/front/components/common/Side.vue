@@ -223,7 +223,7 @@ export default {
       top 60px 
       bottom 0
       overflow-y auto
-      width 200px     
+      width 250px     
   @media screen and (max-width: 850px) 
     .sideBox
       position absolute
