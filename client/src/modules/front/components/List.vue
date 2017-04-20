@@ -27,7 +27,6 @@
       <div v-if="articleList.length==0 && isLoading==false" class="msg-box">
         <p>暂时没有相关文章</p>
       </div>
-      <Foot :isFixed="footerIsFixed"></Foot>
     </ul>
   </div>
 </template>
@@ -36,7 +35,6 @@
 import Pagination from 'publicComponents/Pagination.vue'
 import Loading from 'publicComponents/Loading.vue'
 import Side from './common/Side.vue'
-import Foot from './common/Foot.vue'
 import articleApi from 'api/article.js'
 import marked from 'lib/marked.js'
 export default {
@@ -53,8 +51,7 @@ export default {
   components: {
     Pagination,
     Side,
-    Loading,
-    Foot
+    Loading
   },
   data() {
     return {
@@ -67,8 +64,7 @@ export default {
       tagList: [],
       sideBoxClose: false,
       isLoading: true,
-      loadingMsg: '加载中...',
-      footerIsFixed: false
+      loadingMsg: '加载中...'
     }
   },
   created() {
@@ -79,13 +75,6 @@ export default {
       this.allPage = res.data.allPage;
       this.articleList = res.data.articleArr;
       this.isLoading = false;
-      this.$nextTick(() => {
-        if (document.querySelector('.list__article').getBoundingClientRect().height < 550) {
-          this.footerIsFixed = true
-        } else {
-          this.footerIsFixed = false
-        }
-      })
     });
   },
   methods: {
@@ -117,19 +106,6 @@ export default {
         this.allPage = res.data.allPage;
         this.articleList = res.data.articleArr;
         this.isLoading = false
-        if (this.articleList.length == 0) {
-          this.footerIsFixed = true
-        } else {
-          this.footerIsFixed = false
-        }
-        this.$nextTick(() => {
-          // DOM updated
-          if (document.querySelector('.list__article').getBoundingClientRect().height < 550) {
-            this.footerIsFixed = true
-          } else {
-            this.footerIsFixed = false
-          }
-        })
       });
     }
   },

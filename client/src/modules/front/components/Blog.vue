@@ -34,5 +34,5 @@ export default {
   &__list
     max-width 1000px
     margin 0 auto
-    margin-top 60px
+    padding-top 60px
 </style>

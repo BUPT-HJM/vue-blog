@@ -10,7 +10,6 @@
       <div class="article__content markdown-body" v-html="compiledPost" ref="post">
       </div>
     </div>
-    <Foot></Foot>
   </div>
 </template>
 
@@ -18,7 +17,6 @@
 import articleApi from 'api/article.js'
 import marked from 'lib/marked.js'
 import Side from './common/Side.vue'
-import Foot from './common/Foot.vue'
 import Loading from 'publicComponents/Loading.vue'
 export default {
   name: 'article',
@@ -31,14 +29,12 @@ export default {
       hash: '',
       loadingMsg: '加载中...',
       isLoading: true,
-      footerIsFixed: false,
       over: false
     }
   },
   components: {
     Side,
-    Loading,
-    Foot
+    Loading
   },
   mounted() {
     this.hash = window.location.hash
