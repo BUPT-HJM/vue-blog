@@ -129,7 +129,7 @@ export default {
 <style lang="stylus" scoped>
   @import '../../assets/stylus/_settings.styl'
   .sideBox
-    width 200px
+    width 250px
     float left
     text-align center
     &__img

@@ -79,14 +79,17 @@ export default {
 }
 </script>
 
+<style lang="stylus">
+  @import '../assets/stylus/markdown.styl'
+</style>
 <style lang="stylus" scoped>
 @import '../assets/stylus/_settings.styl'
 .article
-  max-width 850px
+  max-width 1000px
   margin 80px auto 0 auto
   padding 0 20px 0px 20px
   &__main
-    margin-left 250px
+    margin-left 260px
     min-height 100%
   &__title
     font-size 24px

@@ -143,7 +143,7 @@ export default {
   padding 10px
   &__article
     list-style none
-    margin-left 250px
+    margin-left 260px
   &__article__item
     margin 0 auto
     padding 10px

@@ -24,6 +24,7 @@ export default {
 
 <style lang="stylus">
   @import 'assets/stylus/main.styl'
+  @import 'assets/stylus/markdown.styl'
   #app
     width 100%
     height 100%

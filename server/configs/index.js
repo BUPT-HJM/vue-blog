@@ -26,7 +26,7 @@ let config = {
 //     pass: ''
 //   },
 //   jwt: {
-//     secret: ''
+//     secret: 'xxx'
 //   },
 //   admin: {
 //   	 user: '',
