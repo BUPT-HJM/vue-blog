@@ -6,6 +6,7 @@
 
 <p align="center">
     <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-1.png" width="700px">
+    <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-admin-22.png" width="700px">
     <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-2.png" width="700px">
     <br>
     访问链接:123.206.67.156:9000
@@ -28,6 +29,9 @@
     - 前后端鉴权使用[jwt](https://github.com/auth0/node-jsonwebtoken)
 
 > webpack部分没有直接使用vue-cli，自己写了个文件区分环境来配置，因为不是作为脚手架，没有做类似golb读取文件的工作，写成一个文件虽然比较庞大，但是个人觉得可能更容易理解所以没有分割开
+
+## 更多细节
+123.206.67.156:9000
 
 ## 快速开始
 - 需要Node.js 6+版本
@@ -82,8 +86,12 @@ module.exports = {
 ```
 
 ## todo
+- 支持移动端查看大图
 - 支持修改密码
 - 支持评论（这个还没考虑好自己开发还是使用第三方，等域名备案好再看看）
 - 支持图片上传
 - 优化页面
 - SSR
+
+## LICENSE
+[MIT](https://github.com/BUPT-HJM/vue-blog/blob/master/LICENSE)
