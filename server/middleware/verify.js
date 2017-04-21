@@ -12,7 +12,7 @@ export default async(ctx, next) => {
     tokenContent = await jwt.verify(token, config.jwt.secret);
   } catch (err) {
     if ('TokenExpiredError' === err.name) {
-      ctx.throw(401, 'token expired');
+      ctx.throw(401, 'token expired,请及时本地保存数据！');
     }
     ctx.throw(401, 'invalid token');
   }
