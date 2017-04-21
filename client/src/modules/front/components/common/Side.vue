@@ -1,6 +1,6 @@
 <template>
   <div class="sideBox">
-    <div class="sideBox__mask" @click="closeSideBox"></div>
+    <div class="sideBox__mask" :class="{ 'sideBox__mask--show': sideBoxOpen}" @click="closeSideBox"></div>
     <div class="sideBox__main" :class="{ 'sideBox__main--open': sideBoxOpen}">
       <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="sideBox__img" @click="backToIndex">
       <p class="sideBox__name">小深刻的秋鼠</p>
@@ -257,6 +257,9 @@ export default {
         bottom 0
         display block
         z-index 1
+        display none
+      &__mask--show
+        display block
       &__tagItem:hover
         color $grey
       &__tagItem--active:hover
