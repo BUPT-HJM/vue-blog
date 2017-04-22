@@ -106,14 +106,18 @@ export default {
       let scrollTop = 0,
         bodyScrollTop = 0,
         documentScrollTop = 0;　　
-      if (document.body) {　　　　
+      if (document.body) {
+        // 如果屏幕宽度小于850就直接return,不再去获取滚动值
+        if(document.body.clientWidth < 850) {
+          return;
+        }　
         bodyScrollTop = document.body.scrollTop;　　
       }　　
       if (document.documentElement) {　　　　
         documentScrollTop = document.documentElement.scrollTop;　　
       }　　
       this.scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-      console.log(this.scrollTop)
+      // console.log(this.scrollTop)
     },
     clearSelectTagArr() {
       this.selectTagArr = []
