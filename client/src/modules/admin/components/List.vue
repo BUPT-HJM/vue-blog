@@ -166,6 +166,7 @@ export default {
   },
   watch: {
     selectTagArr(val, oldVal) {
+      console.log(val)
       console.log("change selectTagArr")
       this.getAllArticles({
         tag: val

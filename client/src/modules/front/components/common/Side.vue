@@ -11,7 +11,7 @@
         </li>
       </ul>
       <ul class="sideBox__tagList" v-if="isInList">
-        <li v-for="tag in tagList" class="sideBox__tagItem" :class="{ 'sideBox__tagItem--active': (typeof selectTagArr.find(function(e){return e.id == tag.id}) !== 'undefined')}" @click="toggleSelect(tag.id, tag.name)">
+        <li v-for="tag in tags" class="sideBox__tagItem" :class="{ 'sideBox__tagItem--active': (typeof selectTags.find(function(e){return e.id == tag.id}) !== 'undefined')}" @click="toggleSelectTags({id:tag.id, name:tag.name})">
           <span>{{tag.name}}</span>
         </li>
       </ul>
@@ -30,13 +30,19 @@
 <script>
 import tagApi from 'api/tag.js'
 import throttle from 'lib/throttle.js'
+import {
+  mapGetters,
+  mapMutations,
+  mapActions
+} from 'vuex'
+
 export default {
   name: 'sideBox',
   data() {
     return {
       tagList: [],
-      selectTagArr: [],
-      sideBoxOpen: false,
+      //selectTagArr: [],
+      //sideBoxOpen: false,
       scrollTop: 0,
       iconList: [{
         name: 'github',
@@ -54,53 +60,41 @@ export default {
       required: false
     }
   },
-  mounted() {
-    tagApi.getAllTags().then(res => {
-      this.tagList = res.data.tagArr;
-    })
+  computed: {
+    ...mapGetters([
+      'tags',
+      'selectTags',
+      'sideBoxOpen'
+    ]),
   },
   created() {
+    if(typeof window == 'undefined') {
+      return;
+    }
     console.log('side created')
-    this.$eventBus.$on('toggleSideBox', this.toggleSideBox);
-    this.$eventBus.$on('closeSideBox', this.closeSideBox);
-    this.$eventBus.$on('clearSelectTagArr', this.clearSelectTagArr)
     if(!this.isInList) {
        window.onscroll = throttle(this.getScrollTop, 30)
-    } 
+    }
+    if(this.isInList && this.tags.length == 0) {
+      this.getAllTags()
+    }
   },
   beforeDestroy() {
     console.log('side beforeDestroy')
     window.onscroll = null
-    this.$eventBus.$off('toggleSideBox', this.toggleSideBox);
-    this.$eventBus.$off('closeSideBox', this.closeSideBox);
-    this.$eventBus.$off('clearSelectTagArr', this.clearSelectTagArr)
   },
   methods: {
+    ...mapMutations({
+      setSelectTags: 'SET_SELECT_TAGS',
+      toggleSideBox: 'TOGGLE_SIDEBOX',
+      closeSideBox: 'CLOSE_SIDEBOX',
+      toggleSelectTags: 'TOGGLE_SELECT_TAGS'
+    }),
+    ...mapActions([
+      'getAllTags'
+    ]),
     backToIndex() {
       this.$router.push('/')
-    },
-    toggleSideBox() {
-      this.sideBoxOpen = !this.sideBoxOpen
-    },
-    closeSideBox() {
-      this.sideBoxOpen = false
-    },
-    toggleSelect(id, name) {
-      if (typeof this.selectTagArr.find(function(e) {
-          return e.id == id
-        }) == 'undefined') {
-        this.selectTagArr.push({
-          id,
-          name
-        })
-      } else {
-        this.selectTagArr = this.selectTagArr.filter((e) => {
-          return e.id !== id;
-        })
-      }
-      this.$eventBus.$emit('filterListByTag', {
-        tag: this.selectTagArr
-      });
     },
     getScrollTop() {
       let scrollTop = 0,
@@ -116,14 +110,14 @@ export default {
       if (document.documentElement) {　　　　
         documentScrollTop = document.documentElement.scrollTop;　　
       }　　
+      console.log(this.scrollTop)
       this.scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-      // console.log(this.scrollTop)
+      // console.log(this.scrollTop) 
     },
     clearSelectTagArr() {
-      this.selectTagArr = []
+      this.setSelectTags([])
     }
   },
-  computed: {},
   watch: {
   }
 }

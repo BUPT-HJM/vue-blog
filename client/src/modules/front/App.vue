@@ -4,7 +4,7 @@
       <Top></Top>
       <transition name="fade" mode="out-in">
         <!-- keep-alive排除article -->
-        <keep-alive exclude="article">
+        <keep-alive exclude="article"> 
           <router-view>
           </router-view>
         </keep-alive>
@@ -37,7 +37,7 @@ export default {
     height 100%
     
 	.fade-enter-active, .fade-leave-active
-    transition opacity .2s
+    transition opacity .1s
 
   .fade-enter, .fade-leave-active
   	opacity 0 

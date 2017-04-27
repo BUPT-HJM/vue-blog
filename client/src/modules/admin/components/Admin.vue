@@ -18,6 +18,7 @@ import List from './List.vue'
 import {
   mapMutations
 } from 'vuex'
+
 export default {
   name: 'admin',
   components: {

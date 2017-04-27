@@ -1,45 +1,62 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
-import Axios from "axios";
-
-import './assets/stylus/main.styl'
+import Axios from "axios"
+import store from './store'
+import { sync } from 'vuex-router-sync'
 
 import App from './App'
-import Blog from './components/Blog.vue'
+import List from './components/List.vue'
 import Article from './components/Article.vue'
 
 // 解决移动端300ms延迟问题
-import Fastclick from 'fastclick'
-Fastclick.attach(document.body)
-
+if (typeof window !== "undefined") {
+  const Fastclick = require('fastclick')
+  Fastclick.attach(document.body)
+}
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Blog },
-  { path: '/article/:id', component: Article },
-  { path: '/tag/:id', component: Blog },
-  { path: '*', component: Blog }
+  { path: '/', component: List },
+  { path: '/article/:id', component: Article, meta: { scrollToTop: true } },
+  { path: '/page/:page', component: List },
+  { path: '*', redirect: '/' }
 ]
 
+let navigatorAction = false
 const router = new VueRouter({
   mode: 'history',
+  scrollBehavior: (to, from, savedPosition) => {
+    if (to == from) {
+      navigatorAction = true
+    } else {
+      navigatorAction = false
+    }
+  },
   routes
 })
 
-// 定义全局event bus,不使用vuex管理
-var EventBus = new Vue();
-Object.defineProperties(Vue.prototype, {
-  $eventBus: {
-    get: function() {
-      return EventBus;
-    }
-  }
-});
+if (typeof window !== "undefined") {
+  router.afterEach((to, from) => {
+    setTimeout(() => {
+      if (navigatorAction) {
+        return;
+      }
+      if (document && to.meta.scrollToTop) {
+        console.log(to)
+        console.log("回到顶部")
+        document.body.scrollTop = 0
+      }
+    }, 300)
+  })
+}
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
+
+sync(store, router)
+
+const app = new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 })
+export { app, router, store }

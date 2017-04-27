@@ -21,4 +21,3 @@ export const CLEAR_SELECT_TAG = 'CLEAR_SELECT_TAG'
 //page
 export const GET_ALL_PAGE = 'GET_ALL_PAGE'
 export const GET_CUR_PAGE = 'GET_CUR_PAGE'
-

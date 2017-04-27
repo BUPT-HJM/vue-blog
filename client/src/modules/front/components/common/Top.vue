@@ -5,6 +5,11 @@
   </header>
 </template>
 <script>
+import {
+  mapActions,
+  mapMutations
+} from 'vuex'
+
 export default {
   name: 'top-header',
   data() {
@@ -13,12 +18,15 @@ export default {
   created() {
   },
   methods: {
-    toggleSideBox() {
-      this.$eventBus.$emit('toggleSideBox');
-    },
+    ...mapActions([
+      'getAllPosts'
+    ]),
+    ...mapMutations({
+      toggleSideBox: 'TOGGLE_SIDEBOX',
+      setSelectTags: 'SET_SELECT_TAGS'
+    }),
     clearFilter() {
-      this.$eventBus.$emit('filterListByTag',{tag: []});
-      this.$eventBus.$emit('clearSelectTagArr')
+      this.setSelectTags([])
     }
   },
   computed: {

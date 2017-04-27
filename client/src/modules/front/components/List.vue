@@ -5,26 +5,26 @@
       <Loading :loadingMsg='loadingMsg'></Loading>
     </div>
     <ul class="list__article">
-      <li class="list__article__filterMsg" v-if="(selectTagArr.length !== 0)">
+      <li class="list__article__filterMsg" v-if="(selectTags.length !== 0)">
         筛选
         <span>{{filterMsg}}</span> 
         分类
       </li>
-      <template v-if="articleList.length!==0 && isLoading == false">
-        <li v-for="(article, index) in articleList" class="list__article__item">
+      <template v-if="posts.length!==0 && isLoading == false">
+        <li v-for="(article, index) in posts" class="list__article__item">
           <h1 class="list__article__item__title"><router-link :to="'article/'+article.id">{{ article.title }}</router-link></h1>
           <div class="list__article__item__info">
             <p class="list__article__item__time">{{article.createTime}}</p>
             <div class="list__article__item__abstract markdown-body" v-html="compiledMarkdown(article.abstract)"></div>
             <!-- <span v-for="tag in article.tags"> {{tag.name}}</span> -->
             <p>
-              <router-link :to="'article/'+article.id" class="continue-reading">继续阅读...</router-link>
+              <router-link :to="'/article/'+article.id" class="continue-reading">继续阅读...</router-link>
             </p>
           </div>
         </li>
         <pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></pagination>
       </template>
-      <div v-if="articleList.length==0 && isLoading==false" class="msg-box">
+      <div v-if="posts.length==0 && isLoading==false" class="msg-box">
         <p>暂时没有相关文章</p>
       </div>
     </ul>
@@ -37,12 +37,26 @@ import Loading from 'publicComponents/Loading.vue'
 import Side from './common/Side.vue'
 import articleApi from 'api/article.js'
 import marked from 'lib/marked.js'
+
+import {
+  mapGetters,
+  mapActions
+} from 'vuex'
+
 export default {
   name: 'list',
   computed: {
+    ...mapGetters([
+      'posts',
+      'tags',
+      'curPage',
+      'allPage',
+      'selectTags',
+      'searchTags'
+    ]),
     filterMsg() {
       let msg = ''
-      this.selectTagArr.forEach((item) => {
+      this.selectTags.forEach((item) => {
         msg += item.name + '、'
       })
       return msg.replace(/、$/, '')
@@ -55,61 +69,54 @@ export default {
   },
   data() {
     return {
-      allPage: 0,
-      curPage: 1,
-      limit: 5,
-      selectTagArr: [],
-      searchTag: [],
-      articleList: [],
-      tagList: [],
       sideBoxClose: false,
-      isLoading: true,
+      isLoading: false,
       loadingMsg: '加载中...'
     }
   },
   created() {
-    this.$eventBus.$on('filterListByTag', this.filterListByTag);
   },
-  mounted() {
-    articleApi.getAllPublishArticles('', '', this.limit).then(res => {
-      this.allPage = res.data.allPage;
-      this.articleList = res.data.articleArr;
+  beforeMount() {
+    // 用来判断是否有数据，有数据就不再请求了
+    if(this.tags.length !== 0) {
+      return;
+    }
+    this.isLoading = true;
+    this.getAllPosts({page:this.$store.state.route.params.page}).then(()=> {
       this.isLoading = false;
-    });
+    })
+  },
+  preFetch(store) {
+    store.dispatch('getAllTags')
+    return store.dispatch('getAllPosts',{page:store.state.route.params.page}).then(()=>{
+    })
   },
   methods: {
+    ...mapActions([
+      'getAllPosts',
+      'getAllTags'
+    ]),
     compiledMarkdown(value) {
       return marked(value)
     },
     changePage(cur) {
-      articleApi.getAllPublishArticles(this.searchTag, cur, this.limit).then(res => {
-        this.allPage = res.data.allPage;
-        this.articleList = res.data.articleArr;
-        this.curPage = cur;
-      });
-    },
-    filterListByTag({
-      tag
-    }) {
-      if (this.selectTagArr.length == 0 && tag.length == 0) {
-        return;
-      }
-      this.isLoading = true
-      this.selectTagArr = tag
-      this.searchTag = []
-      if (tag.length) {
-        tag.forEach((item) => {
-          this.searchTag.push(item.id)
-        })
-      }
-      articleApi.getAllPublishArticles(this.searchTag, '', this.limit).then(res => {
-        this.allPage = res.data.allPage;
-        this.articleList = res.data.articleArr;
-        this.isLoading = false
-      });
+      this.isLoading = true;
+      this.$router.push('/page/' + cur)
+      this.getAllPosts({tag:this.searchTags, page:cur}).then(() => {
+        this.isLoading = false;
+      })
     }
   },
-  watch: {}
+  watch: {
+    selectTags() {
+      this.isLoading = true;
+      this.getAllPosts({
+        tag: this.searchTags
+      }).then(()=> {
+        this.isLoading = false;
+      })
+    }
+  }
 }
 </script>
 
@@ -117,6 +124,9 @@ export default {
 @import '../assets/stylus/_settings.styl'
 .list
   padding 10px
+  max-width 1000px
+  margin 0 auto
+  padding-top 80px
   &__article
     list-style none
     margin-left 260px

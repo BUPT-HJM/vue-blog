@@ -27,7 +27,6 @@ const mutations = {
     sessionStorage.setItem('token', token);
   },
   [types.DELETE_TOKEN](state) {
-    sessionStorage.removeItem('token');
     state.token = null;
   }
 }
