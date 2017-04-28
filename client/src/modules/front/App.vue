@@ -37,16 +37,11 @@ export default {
     height 100%
     
 	.fade-enter-active, .fade-leave-active
-    transition opacity .1s
+    transition all .2s ease
 
   .fade-enter, .fade-leave-active
   	opacity 0 
-  // side组件 position fixed会跟transform影响，还没有解决，暂时放弃transform 
-  // .fade-enter
-  //   transform translate(50px, 0px)
-
-  // .fade-leave-active
-  //   transform translate(-50px, 0px)
+    
   .wrap 
     min-height 100%
     margin-bottom -($footer-height)
@@ -65,4 +60,10 @@ export default {
       color $blue-link
       &:hover
         text-decoration underline
+  @media screen and (max-width: 850px) 
+    .fade-enter
+      transform translate(30px, 0px)
+
+    .fade-leave-active
+      transform translate(-30px, 0px)
 </style>

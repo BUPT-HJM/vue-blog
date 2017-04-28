@@ -81,7 +81,7 @@ export default {
 @import '../assets/stylus/_settings.styl'
 .article
   max-width 1000px
-  margin 80px auto 0 auto
+  margin 85px auto 0 auto
   padding 0 20px 0px 20px
   &__main
     margin-left 260px
@@ -104,6 +104,7 @@ export default {
 @media screen and (max-width: 850px) 
   .article
     position relative
+    margin-top 80px
     &__main
       margin-left 0
     &__loading

@@ -37,6 +37,16 @@ const router = new VueRouter({
 })
 
 if (typeof window !== "undefined") {
+  router.beforeEach((to, from, next) => {
+    if(to.path === '/' && store.state.sideBoxOpen) {
+      store.commit('CLOSE_SIDEBOX')
+      setTimeout(function() {
+        next()
+      }, 100)
+    } else {
+      next()
+    }
+  })
   router.afterEach((to, from) => {
     setTimeout(() => {
       if (navigatorAction) {
@@ -47,7 +57,7 @@ if (typeof window !== "undefined") {
         console.log("回到顶部")
         document.body.scrollTop = 0
       }
-    }, 300)
+    }, 200)
   })
 }
 

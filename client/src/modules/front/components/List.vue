@@ -126,14 +126,14 @@ export default {
   padding 10px
   max-width 1000px
   margin 0 auto
-  padding-top 80px
+  padding-top 85px
   &__article
     list-style none
     margin-left 260px
   &__article__item
     margin 0 auto
-    padding 10px
-    margin-bottom 5px
+    padding 0px 10px 10px 10px
+    margin-bottom 15px
     
   &__article__item__title
     font-size 24px
@@ -178,6 +178,9 @@ export default {
 @media screen and (max-width: 850px) 
   .list
     position relative
+    padding-top 80px
+    &__article__item
+      margin-bottom 10px
     &__article
       margin-left 0
     &__article__filterMsg
