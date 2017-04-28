@@ -10,6 +10,7 @@ import api from './api';
 import url from 'url';
 import path from 'path';
 import fs from 'fs';
+import { createBundleRenderer } from 'vue-server-renderer';
 const resolve = file => path.resolve(__dirname, file)
 
 mongoose.Promise = Promise;
@@ -36,7 +37,7 @@ app.use(serve('./client/static'));
 let renderer
 
 function createRenderer(bundle, template) {
-  return require('vue-server-renderer').createBundleRenderer(bundle, {
+  return createBundleRenderer(bundle, {
     template,
     cache: require('lru-cache')({
       max: 1000,
@@ -81,15 +82,29 @@ if (isProd) {
 
 // 流式渲染
 router.get('*', async(ctx, next) => {
-  let res = ctx.res
-  let req = ctx.req
+  let res = ctx.res;
+  let req = ctx.req;
   // 由于koa内有处理type，此处需要额外修改content-type
   ctx.type = 'html';
-  const s = Date.now()
+  const s = Date.now();
   let context = { url: req.url };
-  let r = renderer.renderToStream(context)
-    .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
-  ctx.body = r
+  // let r = renderer.renderToStream(context)
+  //   .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
+  // ctx.body = r
+  function renderToStringPromise() {
+    return new Promise((resolve, reject) => {
+      renderer.renderToString(context, (err, html) => {
+        if (err) {
+          console.log(err);
+        }
+        if (!isProd) {
+          console.log(`whole request: ${Date.now() - s}ms`)
+        }
+        resolve(html);
+      })
+    })
+  }
+  ctx.body = await renderToStringPromise();
 })
 
 app
