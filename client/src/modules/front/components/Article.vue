@@ -1,7 +1,10 @@
 <template>
   <div class="article">
+    <div class="article__loading" v-if="isLoading">
+      <Loading :loadingMsg='loadingMsg'></Loading>
+    </div>
     <Side :isInList='false' :category='category'></Side>
-    <div class="article__main">
+    <div class="article__main" v-if="!isLoading">
       <h1 class="article__title">{{currentPost.title}}</h1>
       <p class="article__time">{{currentPost.createTime}}</p>
       <div class="article__content markdown-body" v-html="currentPostCompile" ref="post">
@@ -11,6 +14,7 @@
 </template>
 
 <script>
+import Loading from 'publicComponents/Loading.vue'
 import articleApi from 'api/article.js'
 import marked from 'lib/marked.js'
 import Side from './common/Side.vue'
@@ -25,7 +29,9 @@ export default {
   computed: {},
   data() {
     return {
-      category: []
+      category: [],
+      isLoading: false,
+      loadingMsg: '加载中...'
     }
   },
   computed: {
@@ -38,10 +44,28 @@ export default {
     }
   },
   components: {
-    Side
+    Side,
+    Loading
   },
   beforeMount() {
+    // 如果想等说明数据已经拿到，就没必要进行再去取数据了
+    if(this.currentPost.id == this.$route.params.id) {
+      this.$nextTick(() => {
+        // 提取文章标签，生成目录
+        Array.from(this.$refs.post.querySelectorAll("h1,h2,h3,h4,h5,h6")).forEach((item, index) => {
+          item.id = item.localName + '-' + index;
+          this.category.push({
+            tagName: item.localName,
+            text: item.innerText,
+            href: '#' + item.localName + '-' + index
+          })
+        })
+      })
+      return;
+    }
+    this.isLoading = true;
     this.getPost(this.$route.params.id).then(() => {
+      this.isLoading = false;
       this.$nextTick(() => {
         // 提取文章标签，生成目录
         Array.from(this.$refs.post.querySelectorAll("h1,h2,h3,h4,h5,h6")).forEach((item, index) => {
@@ -54,7 +78,6 @@ export default {
         })
       })
     })
-    
   },
   preFetch(store) {
     return store.dispatch('getPost',store.state.route.params.id)
