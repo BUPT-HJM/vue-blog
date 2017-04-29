@@ -1,8 +1,5 @@
-'use strict'
-
 const hotMiddleware = require('webpack-hot-middleware')
 const PassThrough = require('stream').PassThrough;
-
 
 module.exports = (compiler, opts) => {
   const expressMiddleware = hotMiddleware(compiler, opts)
@@ -15,7 +12,6 @@ module.exports = (compiler, opts) => {
         ctx.state = state
         ctx.set(headers)
       }
-    },next)
-    // return next();
+    }, next);
   }
 }

@@ -1,7 +1,4 @@
-'use strict'
-
-
-const devMiddleware = require('webpack-dev-middleware')
+const devMiddleware = require('webpack-dev-middleware');
 
 module.exports = (compiler, opts) => {
   const expressMiddleware = devMiddleware(compiler, opts)

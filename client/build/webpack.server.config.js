@@ -1,7 +1,8 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
+const nodeExternals = require('webpack-node-externals')
 const base = require('./webpack.base.config')
-const VueSSRPlugin = require('vue-ssr-webpack-plugin')
+const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 const { resolve, join } = require('path');
 const CLIENT_FOLDER = resolve(__dirname, '../');
 let config = merge(base, {
@@ -14,13 +15,16 @@ let config = merge(base, {
   },
   resolve: {
   },
-  externals: Object.keys(require('../../package.json').dependencies),
+  externals: nodeExternals({ 
+    // 之前是通过读取package.json
+    whitelist: /\.css$/
+  }),
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.VUE_ENV': '"server"'
     }),
-    new VueSSRPlugin()
+    new VueSSRServerPlugin()
   ]
 })
 module.exports = config

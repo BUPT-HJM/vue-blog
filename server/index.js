@@ -42,7 +42,8 @@ function createRenderer(bundle, template) {
     cache: require('lru-cache')({
       max: 1000,
       maxAge: 1000 * 60 * 15
-    })
+    }),
+    runInNewContext: false
   })
 }
 
@@ -69,7 +70,7 @@ app.use(convert(historyApiFallback({
 
 if (isProd) {
   // 生产环境下直接读取构造渲染器
-  const bundle = require('../client/dist/vue-ssr-bundle.json')
+  const bundle = require('../client/dist/vue-ssr-server-bundle.json')
   const template = fs.readFileSync(resolve('../client/dist/front.html'), 'utf-8')
   renderer = createRenderer(bundle, template)
   app.use(serve('./client/dist'));
