@@ -90,6 +90,10 @@ router.get('*', async(ctx, next) => {
   const s = Date.now();
   let context = { url: req.url };
   // let r = renderer.renderToStream(context)
+  //   .on('data', chunk => {
+  //     console.log(chunk)
+  //     console.log("__________________")
+  //   })
   //   .on('end', () => console.log(`whole request: ${Date.now() - s}ms`))
   // ctx.body = r
   function renderToStringPromise() {

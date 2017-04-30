@@ -1,9 +1,11 @@
-import { app, router, store } from './main'
+import { createApp } from './app'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
 export default context => {
   const s = isDev && Date.now()
+  // 注意下面这句话要写在export函数里供服务端渲染调用，重新初始化那store、router
+  const { app, router, store } = createApp()
   return new Promise((resolve, reject) => {
     router.push(context.url)
     router.onReady(() => {

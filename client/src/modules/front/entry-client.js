@@ -1,4 +1,5 @@
-import { app, store, router } from './main'
+import { createApp } from './app'
+const { app, router, store } = createApp()
 
 // store替换使client rendering和server rendering匹配
 if (window.__INITIAL_STATE__) {

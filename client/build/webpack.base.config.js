@@ -13,7 +13,7 @@ let config = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
     'modules/admin': [
-      CLIENT_FOLDER + '/src/modules/admin/main'
+      CLIENT_FOLDER + '/src/modules/admin/app'
     ],
     'modules/front': [
       CLIENT_FOLDER + '/src/modules/front/entry-client'

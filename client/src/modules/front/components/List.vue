@@ -52,7 +52,8 @@ export default {
       'curPage',
       'allPage',
       'selectTags',
-      'searchTags'
+      'searchTags',
+      'currentPost'
     ]),
     filterMsg() {
       let msg = ''
@@ -78,7 +79,8 @@ export default {
   },
   beforeMount() {
     // 用来判断是否有数据，有数据就不再请求了
-    if(this.tags.length !== 0) {
+    if(this.currentPost.id == '') {
+      // 这句话说明不是从文章详细页过来的
       return;
     }
     this.isLoading = true;

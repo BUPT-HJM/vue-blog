@@ -7,7 +7,7 @@ import { MessageBox } from 'element-ui';
 
 import './assets/stylus/main.styl'
 
-import App from './App'
+import App from './App.vue'
 import Login from './components/Login.vue'
 import Admin from './components/Admin.vue'
 
