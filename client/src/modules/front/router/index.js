@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import List from './components/List.vue'
-// import Article from './components/Article.vue'
+// import List from '../components/List.vue'
+// import Article from '../components/Article.vue'
 
 Vue.use(VueRouter)
 

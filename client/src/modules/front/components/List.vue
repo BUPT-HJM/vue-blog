@@ -22,7 +22,7 @@
             </p>
           </div>
         </li>
-        <pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></pagination>
+        <Pagination :curPage='curPage' :allPage='allPage' @changePage='changePage'></Pagination>
       </template>
       <div v-if="posts.length==0 && isLoading==false" class="msg-box">
         <p>暂时没有相关文章</p>
@@ -70,7 +70,6 @@ export default {
   },
   data() {
     return {
-      sideBoxClose: false,
       isLoading: false,
       loadingMsg: '加载中...'
     }

@@ -87,7 +87,6 @@ export default {
 }
 </script>
 
-
 <style lang="stylus" scoped>
 .pagination
   display flex

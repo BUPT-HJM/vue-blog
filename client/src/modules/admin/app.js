@@ -8,9 +8,6 @@ import { MessageBox } from 'element-ui';
 import './assets/stylus/main.styl'
 
 import App from './App.vue'
-import Login from './components/Login.vue'
-import Admin from './components/Admin.vue'
-
 import store from './store'
 
 // 按需引入element-ui相关弹出
@@ -33,6 +30,8 @@ Vue.prototype.$message.error = (err) => { //重新定义默认参数
 
 Vue.use(VueRouter)
 
+const Login = resolve => require(['./components/Login.vue'], resolve)
+const Admin = resolve => require(['./components/Admin.vue'], resolve)
 const routes = [
   { path: '/admin/login', component: Login, meta: { authPage: true } },
   { path: '/admin', component: Admin }, {
