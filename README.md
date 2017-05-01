@@ -16,26 +16,24 @@
 
 
 ## 整体架构
-<img width="973" src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-3.png">
+<img width="973" src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-2-ssr.png">
 
 - client端分为`front`和`admin`，`webpack2`打包实现多页配置，开发模式下`hot reload`
     - admin端使用vue2、vuex、vue-router
-    - front端直接使用vue event bus、vue-router
+    - front端直接使用 ~~vue event bus~~ vuex(考虑到今后博客应用可能变复杂)、vue-router, Fastclick解决移动端300ms延迟问题
     - 编辑器使用[simplemde](https://github.com/NextStepWebs/simplemde-markdown-editor)
     - markdown解析和高亮使用marked.js和highlight.js
 - server
     - 使用koa2+koa-router实现RESTful API
     - mongoose连接mongodb
     - 前后端鉴权使用[jwt](https://github.com/auth0/node-jsonwebtoken)
-
-> ~~webpack部分没有直接使用vue-cli，自己写了个文件区分环境来配置，因为不是作为脚手架，没有做类似golb读取文件的工作，写成一个文件虽然比较庞大，但是个人觉得可能更容易理解所以没有分割开~~
-
+- 实现Server-Side Rendering服务端渲染
 
 ## 更多细节
 - 博客线上地址：http://123.206.67.156:9000/
 - 掘金文章：https://juejin.im/post/58f99b3cac502e006395e6e7
 
-> 细节待更新
+> 细节待更新（访问博客线上地址可以获得最新信息）
 
 ## 快速开始
 - 需要Node.js 6+版本
