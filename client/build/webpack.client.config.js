@@ -7,7 +7,6 @@ const SERVER_FOLDER = resolve(__dirname, '../../server');
 const productionEnv = process.env.NODE_ENV === 'production' ? true : false;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const merge = require('webpack-merge')
 const base = require('./webpack.base.config');
 
@@ -105,8 +104,8 @@ if (process.env.NODE_ENV === 'production') {
         }
       }],
       fallback: 'vue-style-loader'
-    }),
-  }
+    })
+  };
   // 删除HotModuleReplacementPlugin和NamedModulesPlugin
   config.plugins.shift();
   config.plugins.shift();

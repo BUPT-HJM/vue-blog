@@ -7,7 +7,6 @@ const SERVER_FOLDER = resolve(__dirname, '../../server');
 const productionEnv = process.env.NODE_ENV === 'production' ? true : false;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 let config = {
   devtool: '#cheap-module-eval-source-map',
@@ -27,8 +26,7 @@ let config = {
   externals: {
     'simplemde': 'SimpleMDE'
   },
-  plugins: [
-  ],
+  plugins: [],
   module: {
     rules: [{
       test: /\.vue$/,
@@ -38,7 +36,9 @@ let config = {
           styl: ['vue-style-loader', 'css-loader?minimize', 'stylus-loader'],
           stylus: ['vue-style-loader', 'css-loader?minimize', 'stylus-loader'],
           css: ['vue-style-loader', 'css-loader?minimize'],
-        }
+        },
+        preserveWhitespace: false,
+        postcss: [require('autoprefixer')({ browsers: ['last 7 versions'] })]
       }
     }, {
       test: /\.js$/,
