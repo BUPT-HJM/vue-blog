@@ -178,6 +178,7 @@ export default {
     .categoryBox
       padding-left 20px
       padding-right 15px
+      will-change transform
       &__title
         margin-top 15px
         margin-bottom 10px
