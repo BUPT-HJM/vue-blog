@@ -9,7 +9,7 @@
     <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-admin-22.png" width="700px">
     <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-2.png" width="700px">
     <br>
-    访问链接:http://123.206.67.156:9000/
+    访问链接:http://imhjm.com/
 </p>
 
 > 博客域名还没有配置，只展示前台部分，有兴趣的同学可以复制到浏览器地址栏访问，admin部分有兴趣的读者可以运行服务看
@@ -30,10 +30,11 @@
 - 实现Server-Side Rendering服务端渲染
 
 ## 更多细节
-- 博客线上地址：http://123.206.67.156:9000/
-- 掘金文章：https://juejin.im/post/58f99b3cac502e006395e6e7
+- 博客线上地址：http://imhjm.com/
+- [基于vue2、koa2、mongodb的个人博客](http://imhjm.com/article/58f76ed0c9eb43547d08ec6c)
+- [Vue2服务端渲染实践以及相关解读](http://imhjm.com/article/590710fbe3176b248999f88c)
 
-> 细节待更新（访问博客线上地址可以获得最新信息）
+> 访问博客线上地址可以获得最新信息
 
 ## 快速开始
 - 需要Node.js 6+版本
