@@ -2268,12 +2268,6 @@ ignore-by-default@^1.0.0:
   version "1.0.1"
   resolved "http://r.cnpmjs.org/ignore-by-default/download/ignore-by-default-1.0.1.tgz#48ca6d72f6c6a3af00a9ad4ae6876be3889e2b09"
 
-import-dir@^0.0.1:
-  version "0.0.1"
-  resolved "http://r.cnpmjs.org/import-dir/download/import-dir-0.0.1.tgz#9045e4aa48778e24648ed8952bf7347514ddcf27"
-  dependencies:
-    require-dir "^0.3.0"
-
 imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "http://r.cnpmjs.org/imurmurhash/download/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
@@ -4055,9 +4049,9 @@ request@^2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-require-dir@^0.3.0:
-  version "0.3.1"
-  resolved "http://r.cnpmjs.org/require-dir/download/require-dir-0.3.1.tgz#b5a8e28bae0343bb0d0cc38ab1f531e1931b264a"
+require-dir@^0.3.2:
+  version "0.3.2"
+  resolved "http://registry.npm.taobao.org/require-dir/download/require-dir-0.3.2.tgz#c1d5c75e9fbffde9f2e6b33e383db4f594b5a6a9"
 
 require-directory@^2.1.1:
   version "2.1.1"
