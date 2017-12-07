@@ -5,7 +5,7 @@ let config = {
     baseApi: '/api'
   },
   mongodb: {
-    url: 'mongodb://localhost:27017/vue-blog'
+    url: process.env.MONGO_URL || 'mongodb://localhost:27017/vue-blog'
   },
   jwt: {
     secret: 'me' //默认
@@ -19,6 +19,7 @@ let config = {
   	pwd: 'password'
   }
 }
+
 // 可在private.js定义自己私有的配置
 // module.exports = {
 //   mongodbSecret: {

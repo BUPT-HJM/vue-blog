@@ -12,9 +12,6 @@
     访问链接:http://imhjm.com/
 </p>
 
-> 博客域名还没有配置，只展示前台部分，有兴趣的同学可以复制到浏览器地址栏访问，admin部分有兴趣的读者可以运行服务看
-
-
 ## 整体架构
 <img width="973" src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-2-ssr.png">
 
@@ -41,6 +38,7 @@
 - 需要安装mongodb,并且运行mongodb服务,在`server/configs/index.js`中默认连接`mongodb://localhost:27017/vue-blog`
 - 配置`server/configs/index.js`,配置admin用户名、密码等,或者新建`server/configs/private.js`
 
+> 注：可使用docker快速开始，详见后文
 
 ``` bash
 # install dependencies 
@@ -67,6 +65,34 @@ npm run prod
 # need `npm install pm2 -g`
 npm run pm2
 ```
+
+## 使用docker快速开始
+- 首先，需要访问[docker官网](https://www.docker.com/)根据不同操作系统获取docker
+- docker官方文档：https://docs.docker.com/
+- mongo dockerhub文档：https://hub.docker.com/_/mongo/ （关于auth/volumes一些问题）
+
+``` bash
+# development mode（use volumes for test-edit-reload cycle）
+# 开发模式(使用挂载同步容器和用户主机上的文件以便于开发)
+# Build or rebuild services
+docker-compose build
+# Create and start containers
+docker-compose up
+
+# production mode
+# 生产模式
+# Build or rebuild services
+docker-compose -f docker-compose.prod.yml build
+# Create and start containers
+docker-compose -f docker-compose.prod.yml up
+
+# 进入容器开启交互式终端
+# (xxx指代容器名或者容器ID，可由`docker ps`查看)
+docker exec -it xxx bash
+```
+
+> 注：为了防止生产环境数据库被改写，生产模式数据库与开发环境数据库的链接不同，开发环境使用vue-blog，生产环境使用vue-blog-prod,具体可以看docker-compose配置文件
+
 
 ## 自定义配置
 server端配置文件位于`server/configs`目录下

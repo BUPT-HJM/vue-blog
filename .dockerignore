@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+**/dist/
+*.log
+*.pid
+stats.json
+test-code/
+server/logs/*.log

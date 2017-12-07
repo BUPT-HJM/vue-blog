@@ -1,0 +1,23 @@
+version: "3"
+services:
+  node:
+    build:
+      context: .
+      dockerfile: node.dockerfile
+    ports:
+      - "8889:8889"
+    environment:
+      NODE_ENV: development
+      MONGO_URL: mongodb://mongodb/vue-blog
+    volumes:
+      - .:/home/app/vue-blog
+      - /home/app/vue-blog/node_modules
+    command: ["npm", "run", "dev"]
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
