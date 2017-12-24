@@ -1757,6 +1757,10 @@ etag@~1.8.0:
   version "1.8.0"
   resolved "http://r.cnpmjs.org/etag/download/etag-1.8.0.tgz#6f631aef336d6c46362b51764044ce216be3c051"
 
+event-source-polyfill@^0.0.12:
+  version "0.0.12"
+  resolved "http://registry.npm.taobao.org/event-source-polyfill/download/event-source-polyfill-0.0.12.tgz#e539cd67fdef2760a16aa5262fa98134df52e3af"
+
 event-stream@~3.3.0:
   version "3.3.4"
   resolved "http://r.cnpmjs.org/event-stream/download/event-stream-3.3.4.tgz#4ab4c9a0f5a54db9338b4c34d86bfce8f4b35571"

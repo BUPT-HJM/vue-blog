@@ -55,6 +55,7 @@
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.0",
     "cz-conventional-changelog": "^2.1.0",
+    "event-source-polyfill": "^0.0.12",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "*",
     "html-webpack-plugin": "^2.28.0",

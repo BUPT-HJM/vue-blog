@@ -53,15 +53,15 @@ let config = merge(base, {
     }),
   ]
 })
-config.entry['modules/admin'].unshift('webpack-hot-middleware/client?reload=true')
-config.entry['modules/front'].unshift('webpack-hot-middleware/client?reload=true')
+config.entry['modules/admin'].unshift('event-source-polyfill', 'webpack-hot-middleware/client?reload=true')
+config.entry['modules/front'].unshift('event-source-polyfill', 'webpack-hot-middleware/client?reload=true')
 
 if (process.env.NODE_ENV === 'production') {
   // 删除devtool
   delete config.devtool;
   // 删除webpack-hot-middleware
-  config.entry['modules/admin'].shift();
-  config.entry['modules/front'].shift();
+  config.entry['modules/admin'].splice(0, 2);
+  config.entry['modules/front'].splice(0, 2);
   config.output.filename = '[name].[chunkhash:8].min.js';
   // 提取css
   config.module.rules[0].options.loaders = {
