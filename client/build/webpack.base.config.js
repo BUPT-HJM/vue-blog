@@ -12,9 +12,11 @@ let config = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
     'modules/admin': [
+      'babel-polyfill',
       CLIENT_FOLDER + '/src/modules/admin/app'
     ],
     'modules/front': [
+      'babel-polyfill',
       CLIENT_FOLDER + '/src/modules/front/entry-client'
     ]
   },

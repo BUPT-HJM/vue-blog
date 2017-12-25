@@ -4390,7 +4390,7 @@ stringstream@~0.0.4:
   version "0.0.5"
   resolved "http://r.cnpmjs.org/stringstream/download/stringstream-0.0.5.tgz#4e484cd4de5a0bbbee18e46307710a8a81621878"
 
-strip-ansi@^3.0.0, strip-ansi@^3.0.1:
+strip-ansi@3.0.1, strip-ansi@^3.0.0, strip-ansi@^3.0.1:
   version "3.0.1"
   resolved "http://r.cnpmjs.org/strip-ansi/download/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
   dependencies:
