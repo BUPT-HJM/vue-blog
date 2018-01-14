@@ -16,8 +16,7 @@ let config = merge(base, {
   resolve: {
   },
   externals: nodeExternals({ 
-    // 之前是通过读取package.json
-    whitelist: /\.css$/
+    whitelist: [/\.vue$/, /\.css$/]
   }),
   plugins: [
     new webpack.DefinePlugin({
