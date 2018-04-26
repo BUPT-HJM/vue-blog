@@ -9,7 +9,7 @@
     <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-admin-22.png" width="700px">
     <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-2.png" width="700px">
     <br>
-    访问链接:http://imhjm.com/
+    访问链接:https://imhjm.com/
 </p>
 
 ## 整体架构
@@ -100,27 +100,25 @@ server端配置文件位于`server/configs`目录下
 ``` javascript
 // 可新建private.js定义自己私有的配置
 module.exports = {
-  mongodbSecret: { // 如果mongodb设置用户名／密码可在此配置
-    user: '', 
-    pass: ''
-  },
-  jwt: { // 配置jwt secret
-    secret: ''
-  },
-  admin: { // 配置用户名／密码
-     user: '',
-     pwd: ''
-  }
+    mongodbSecret: { // 如果mongodb设置用户名／密码可在此配置
+        user: '', 
+        pass: ''
+    },
+    jwt: { // 配置jwt secret
+        secret: ''
+    },
+    admin: { // 配置用户名／密码
+        user: '',
+        pwd: ''
+    },
+    disqus: { // disqus评论
+        url: '',
+    },
+    baidu: { // 百度统计
+        url: '',
+    },
 }
 ```
-
-## todo
-- 支持移动端查看大图
-- 支持修改密码
-- 支持评论（这个还没考虑好自己开发还是使用第三方，等域名备案好再看看）
-- 支持图片上传
-- 优化页面
-- ~~SSR~~ SSR优化
 
 ## LICENSE
 [MIT](https://github.com/BUPT-HJM/vue-blog/blob/master/LICENSE)
