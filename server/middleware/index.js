@@ -5,18 +5,18 @@ import onerror from 'koa-onerror';
 import compress from 'koa-compress';
 
 export default function middleware() {
-  return convert.compose(
-    logger(),
-    bodyParser(),
-    compress({ 
-      filter: function(content_type) {
-        if (/event-stream/i.test(content_type)) { 
-        // 为了让hot reload生效，不对__webpack_hmr压缩
-          return false;
-        } else {
-          return true;
-        }
-      },
-    })
-  )
+    return convert.compose(
+        logger(),
+        bodyParser(),
+        compress({
+            filter: function (content_type) {
+                if (/event-stream/i.test(content_type)) {
+                    // 为了让hot reload生效，不对__webpack_hmr压缩
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+        })
+    );
 }
