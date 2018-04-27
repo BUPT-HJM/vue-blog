@@ -2,7 +2,7 @@
     <div class="sideBox">
         <div class="sideBox__mask" :class="{ 'sideBox__mask--show': sideBoxOpen}" @click="closeSideBox"></div>
         <div class="sideBox__main" :class="{ 'sideBox__main--open': sideBoxOpen}">
-            <img src="http://7xp9v5.com1.z0.glb.clouddn.com/touxiang.png" alt="" class="sideBox__img" @click="backToIndex">
+            <img src="https://img.imhjm.com/touxiang.png" alt="" class="sideBox__img" @click="backToIndex">
             <p class="sideBox__name">小深刻的秋鼠</p>
             <p class="sideBox__motto">Love Life, Love sharing</p>
             <ul class="sideBox__iconList">
