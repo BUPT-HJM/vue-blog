@@ -14,6 +14,8 @@
             <p>Copyright © <a href='https://github.com/BUPT-HJM'>BUPT-HJM</a>&nbsp;&nbsp;2017 </p>
             <p>Created by <a href="https://github.com/BUPT-HJM/vue-blog.git">vue-blog</a></p>
         </footer>
+        <!-- 防止disqus导致首页报错 -->
+        <div id="disqus_thread"></div>
     </div>
 </template>
 
@@ -30,7 +32,7 @@ export default {
 
 <style lang="stylus">
   @import 'assets/stylus/main.styl'
-    @import 'assets/stylus/markdown.styl'
+  @import 'assets/stylus/markdown.styl'
   $footer-height = 60px
   #app
     width 100%
@@ -66,4 +68,9 @@ export default {
 
     .fade-leave-active
       transform translate(-30px, 0px)
+</style>
+<style lang="stylus" scoped>
+  #app
+    #disqus_thread
+      display none
 </style>
