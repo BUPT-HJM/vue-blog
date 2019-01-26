@@ -5,15 +5,15 @@
 一个使用vue2、koa2、mongodb搭建的单用户博客，支持markdown编辑，文章标签分类，发布文章／撤回发布文章，支持服务端渲染（Server-Side Rendering）
 
 <p align="center">
-    <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-1.png" width="700px">
-    <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-admin-22.png" width="700px">
-    <img src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-2.png" width="700px">
+    <img src="http://img.imhjm.com/vue-blog-1.png" width="700px">
+    <img src="http://img.imhjm.com/vue-blog-admin-22.png" width="700px">
+    <img src="http://img.imhjm.com/vue-blog-2.png" width="700px">
     <br>
     访问链接:https://imhjm.com/
 </p>
 
 ## 整体架构
-<img width="973" src="http://7xp9v5.com1.z0.glb.clouddn.com/vue-blog-2-ssr.png">
+<img width="973" src="http://img.imhjm.com/vue-blog-2-ssr.png">
 
 - client端分为`front`和`admin`，`webpack2`打包实现多页配置，开发模式下`hot reload`
     - admin端使用vue2、vuex、vue-router
