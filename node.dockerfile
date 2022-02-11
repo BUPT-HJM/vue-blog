@@ -7,6 +7,6 @@ ENV HOME=/home/app
 COPY package.json package-lock.json $HOME/vue-blog/
 
 WORKDIR $HOME/vue-blog
-RUN npm install --registry=https://registry.npm.taobao.org
+RUN npm install --registry=https://registry.npmmirror.com
 
 COPY . $HOME/vue-blog
